@@ -44,6 +44,17 @@ Os papéis mudam ao fim de cada release. Quem é PO também é DevOps.
 
 O backlog, as sprints e as releases ficam no Jira.
 
+## Documentos
+
+Pasta no Google Drive: https://drive.google.com/drive/folders/1m_lYvzaFOp2JcKruRJZfTtRMfyEVXKPt
+
+- [Proposta](https://docs.google.com/document/d/1cvCfppfFUyMrlR5vKW8kzUz7ld3SvadsuaLUz4l3nRc/edit)
+- [Definition of Ready e Definition of Done](https://docs.google.com/document/d/1_e2WubM4swRMEKqpYfDwmfMXpO8Ydn_ZSthgrmniWns/edit)
+- [Plano de Qualidade](https://docs.google.com/document/d/1-ida9PUMd68Y-JBPOhpodR9vXwBqo3jekPJESSyKMBU/edit)
+- [Plano da Sprint 1](https://docs.google.com/document/d/1e_3jWniPo1ayAMduJLj30WU7ZRu9x5FYl6XWfpK0WSM/edit)
+
+Uma cópia em .docx de cada um fica na pasta `docs/`.
+
 ## Tecnologias
 
 Python 3.12 com FastAPI, PostgreSQL, React com TypeScript e GitHub Actions.
