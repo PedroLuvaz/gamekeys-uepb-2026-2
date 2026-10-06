@@ -1,0 +1,59 @@
+name: Bug
+description: Defeito encontrado no desenvolvimento ou nos testes
+title: "Bug: resumo do problema"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Todo bug também é cadastrado no Jira (tipo Bug). Severidade conforme o Plano de Qualidade (docs/Plano-de-Qualidade.docx).
+  - type: input
+    id: historia
+    attributes:
+      label: História relacionada (chave no Jira)
+      placeholder: "GK-7"
+    validations:
+      required: true
+  - type: dropdown
+    id: severidade
+    attributes:
+      label: Severidade
+      options:
+        - Crítica (impede o uso ou entrega chave errada)
+        - Alta (função importante não funciona)
+        - Média (funciona com contorno)
+        - Baixa (visual ou texto)
+    validations:
+      required: true
+  - type: textarea
+    id: passos
+    attributes:
+      label: Passos para reproduzir
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: obtido
+    attributes:
+      label: Resultado obtido
+    validations:
+      required: true
+  - type: textarea
+    id: evidencia
+    attributes:
+      label: Evidência
+      description: Print, log ou saída do teste.
+  - type: input
+    id: ambiente
+    attributes:
+      label: Ambiente
+      placeholder: "Local, Chrome, Windows 11"

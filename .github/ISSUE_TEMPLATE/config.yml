@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Quadro do projeto no Jira
+    url: https://pedrolucas0721.atlassian.net/jira/software/projects/GK/boards/34
+    about: Backlog, sprints e releases ficam no Jira.

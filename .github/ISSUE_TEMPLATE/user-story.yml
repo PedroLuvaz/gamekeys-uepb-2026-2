@@ -1,0 +1,53 @@
+name: História de usuário
+description: Item do backlog no formato "Eu como... preciso... de modo que..."
+title: "GK-xx Título da história"
+labels: ["user-story"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        O backlog oficial fica no Jira (espaço GK). Use este modelo para escrever a história no mesmo padrão
+        antes de cadastrar no Jira. Story Points, Sprint, Release e Prioridade são preenchidos nos campos do Jira.
+  - type: input
+    id: chave
+    attributes:
+      label: Chave no Jira
+      placeholder: "GK-7"
+  - type: textarea
+    id: historia
+    attributes:
+      label: História
+      placeholder: "Eu como <perfil>, preciso <ação>, de modo que <benefício>."
+    validations:
+      required: true
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Critérios de aceite
+      description: Pelo menos um cenário de sucesso e um de exceção.
+      placeholder: |
+        Cenário 1 (sucesso): título
+        Dado que ...
+        Quando ...
+        Então ...
+
+        Cenário 2 (exceção): título
+        Dado que ...
+        Quando ...
+        Então ...
+    validations:
+      required: true
+  - type: textarea
+    id: notas
+    attributes:
+      label: Dependências e observações
+  - type: checkboxes
+    id: dor
+    attributes:
+      label: Definition of Ready
+      options:
+        - label: Está no formato "Eu como... preciso... de modo que..."
+        - label: Tem critérios Dado que / Quando / Então, com sucesso e exceção
+        - label: Foi estimada no Planning Poker e tem no máximo 5 pontos
+        - label: Prioridade e release preenchidas no Jira
+        - label: Não depende de história que ainda não foi feita
