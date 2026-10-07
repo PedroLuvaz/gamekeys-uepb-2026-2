@@ -52,6 +52,7 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1m_lYvzaFOp2JcKruR
 - [Definition of Ready e Definition of Done](https://docs.google.com/document/d/1_e2WubM4swRMEKqpYfDwmfMXpO8Ydn_ZSthgrmniWns/edit)
 - [Plano de Qualidade](https://docs.google.com/document/d/1-ida9PUMd68Y-JBPOhpodR9vXwBqo3jekPJESSyKMBU/edit)
 - [Plano da Sprint 1](https://docs.google.com/document/d/1e_3jWniPo1ayAMduJLj30WU7ZRu9x5FYl6XWfpK0WSM/edit)
+- [Registro de Riscos](https://docs.google.com/document/d/1oSEonzAulY87ssaz6TzGdNFTCswyxCbSTtn1_LtVj8g/edit)
 
 Uma cópia em .docx de cada um fica na pasta `docs/`.
 
