@@ -53,8 +53,16 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1m_lYvzaFOp2JcKruR
 - [Plano de Qualidade](https://docs.google.com/document/d/1-ida9PUMd68Y-JBPOhpodR9vXwBqo3jekPJESSyKMBU/edit)
 - [Plano da Sprint 1](https://docs.google.com/document/d/1e_3jWniPo1ayAMduJLj30WU7ZRu9x5FYl6XWfpK0WSM/edit)
 - [Registro de Riscos](https://docs.google.com/document/d/1oSEonzAulY87ssaz6TzGdNFTCswyxCbSTtn1_LtVj8g/edit)
+- [Drivers Arquiteturais](https://docs.google.com/document/d/10U9jLK5_RB2MYaO2PXomXmlro3rJidd3Zxs0wIVX7TE/edit)
 
 Uma cópia em .docx de cada um fica na pasta `docs/`.
+
+Planilhas nos templates da disciplina (também anexadas no Jira):
+
+- `docs/DoD-Sprint-e-Release.xlsx`: Definition of Done de sprint e de release (anexo da GK-38)
+- `docs/Analise-de-Riscos-Baseada-em-Defeitos.xlsx`: 9 riscos, 3 atributos de qualidade × 3 integrantes (anexo do épico GK-64)
+
+A DoR e a DoD de cada história ficam no modelo de US, dentro de cada história no Jira.
 
 ## Tecnologias
 
