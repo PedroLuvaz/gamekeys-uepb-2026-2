@@ -61,6 +61,8 @@ Planilhas nos templates da disciplina (também anexadas no Jira):
 
 - `docs/DoD-Sprint-e-Release.xlsx`: Definition of Done de sprint e de release (anexo da GK-38)
 - `docs/Analise-de-Riscos-Baseada-em-Defeitos.xlsx`: 9 riscos, 3 atributos de qualidade × 3 integrantes (anexo do épico GK-64)
+- `docs/Plano-de-Qualidade.xlsx`: itens de qualidade com métrica, meta, forma de medição e responsável (anexo da GK-36)
+- `docs/Plano-de-Teste.docx`: escopo, estratégia, casos de teste ligados às US e cronograma (anexo da GK-36)
 
 A DoR e a DoD de cada história ficam no modelo de US, dentro de cada história no Jira.
 
