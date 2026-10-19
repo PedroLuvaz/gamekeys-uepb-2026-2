@@ -57,12 +57,12 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1m_lYvzaFOp2JcKruR
 
 Uma cópia em .docx de cada um fica na pasta `docs/`.
 
-Planilhas nos templates da disciplina (também anexadas no Jira):
+Documentos nos templates da disciplina (no Drive, em `docs/` e anexados no Jira):
 
-- `docs/DoD-Sprint-e-Release.xlsx`: Definition of Done de sprint e de release (anexo da GK-38)
-- `docs/Analise-de-Riscos-Baseada-em-Defeitos.xlsx`: 9 riscos, 3 atributos de qualidade × 3 integrantes (anexo do épico GK-64)
-- `docs/Plano-de-Qualidade.xlsx`: itens de qualidade com métrica, meta, forma de medição e responsável (anexo da GK-36)
-- `docs/Plano-de-Teste.docx`: escopo, estratégia, casos de teste ligados às US e cronograma (anexo da GK-36)
+- [DoD de Sprint e Release](https://drive.google.com/file/d/1Mr-6oT0po8POyaRGD75hCEQjqA-TzI4Q/view): Definition of Done de sprint e de release (anexo da GK-38)
+- [Análise de Riscos Baseada em Defeitos](https://drive.google.com/file/d/1-V-hE9YR3ZEPaU3jr15yCcHHMzlV64ej/view): 9 riscos, 3 atributos de qualidade × 3 integrantes (anexo do épico GK-64)
+- [Plano de Qualidade (planilha)](https://drive.google.com/file/d/1oFIoArPRYugK9tnwQFsLC75rlv7r4TiK/view): itens de qualidade com métrica, meta, forma de medição e responsável (anexo da GK-36)
+- [Plano de Teste](https://drive.google.com/file/d/1qXmh7E59SYTYdfxeKzZtY5n8A1jDZK6s/view): escopo, estratégia, casos de teste ligados às US e cronograma (anexo da GK-36)
 
 A DoR e a DoD de cada história ficam no modelo de US, dentro de cada história no Jira.
 
