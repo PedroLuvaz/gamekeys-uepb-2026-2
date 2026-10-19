@@ -20,9 +20,17 @@ base_branch() {
   echo "${ref#origin/}" | sed -E 's/^$/main/'
 }
 
+# Troca letra a letra (s///g) em vez de "sed y": o "y" com acentos falha quando o terminal
+# não está em UTF-8 (ex.: Git Bash sem LANG), e s///g compara bytes, então funciona em qualquer locale.
+SED_ACENTOS=""
+for par in ÁA ÀA ÂA ÃA ÄA áa àa âa ãa äa ÉE ÈE ÊE ËE ée èe êe ëe ÍI ÌI ÎI ÏI íi ìi îi ïi \
+           ÓO ÒO ÔO ÕO ÖO óo òo ôo õo öo ÚU ÙU ÛU ÜU úu ùu ûu üu ÇC çc ÑN ñn; do
+  SED_ACENTOS+="s/${par%?}/${par: -1}/g;"
+done
+
 slugify() {
   printf '%s' "$1" \
-    | sed -e 'y/ÁÀÂÃÄáàâãäÉÈÊËéèêëÍÌÎÏíìîïÓÒÔÕÖóòôõöÚÙÛÜúùûüÇçÑñ/AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuuCcNn/' \
+    | sed -e "$SED_ACENTOS" \
     | tr '[:upper:]' '[:lower:]' \
     | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//' \
     | cut -c1-50 | sed -E 's/-+$//'
@@ -77,7 +85,8 @@ corpo_pr() {
   local key="$1" issue="${2:-}" root tpl
   root=$(repo_root); tpl="$root/.github/pull_request_template.md"
   if [[ -f "$tpl" ]]; then
-    awk -v linha="$key - $JIRA_BASE/browse/$key" '$0=="GK-" {print linha; next} {print}' "$tpl"
+    # sub(\r) porque no Windows com autocrlf o template vem com CRLF e "GK-" nunca bateria
+    awk -v linha="$key - $JIRA_BASE/browse/$key" '{sub(/\r$/, "")} $0=="GK-" {print linha; next} {print}' "$tpl"
   else
     printf '## Chave no Jira\n\n%s - %s/browse/%s\n' "$key" "$JIRA_BASE" "$key"
   fi
@@ -171,9 +180,10 @@ cmd_dod() {
   else
     ok_falta "$([[ "$ci_ruins" -eq 0 && "$ci_pend" -eq 0 ]] && echo 1 || echo 0)" "CI verde ($ci_total checks, $ci_ruins com falha, $ci_pend pendentes)"
   fi
-  testes=$(jq -r '[.files[].path | select(test("(^|/)(tests?|__tests__|cypress)/|test_.*\\.py$|\\.(test|spec)\\.[jt]sx?$|\\.feature$"))] | length' <<<"$json")
+  # [.] em vez de \\. : barra invertida se perde ao passar argumento para jq.exe no Windows
+  testes=$(jq -r '[.files[].path | select(test("(^|/)(tests?|__tests__|cypress)/|test_.*[.]py$|[.](test|spec)[.][jt]sx?$|[.]feature$"))] | length' <<<"$json")
   ok_falta "$([[ "$testes" -gt 0 ]] && echo 1 || echo 0)" "testes adicionados ou alterados no PR ($testes arquivos)"
-  readme=$(jq -r '[.files[].path | select(test("(^|/)README\\.md$"))] | length' <<<"$json")
+  readme=$(jq -r '[.files[].path | select(test("(^|/)README[.]md$"))] | length' <<<"$json")
   echo "INFO  README tocado no PR: $([[ "$readme" -gt 0 ]] && echo sim || echo não) (só é exigido se mudou a forma de rodar o projeto)"
   echo
   echo "Não verificáveis aqui (confirmar com o papel responsável): cenários testados pelo QA, aceite do PO, homologação."
