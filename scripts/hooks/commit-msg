@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Exige "tipo: GK-N descrição" na primeira linha do commit (DoD: commit cita a chave do Jira).
+# Ative com: scripts/gk.sh install-hooks. Para ignorar uma vez: git commit --no-verify.
+set -euo pipefail
+
+primeira=$(grep -v '^#' "$1" | sed -n '1p')
+
+case "$primeira" in
+  Merge\ *|Revert\ *|fixup!*|squash!*) exit 0 ;;
+esac
+
+if [[ ! "$primeira" =~ ^(feat|fix|docs|chore|refactor|test|style|ci|build|perf)(\([a-z0-9._/-]+\))?:\ GK-[0-9]+\ .+ ]]; then
+  cat >&2 <<EOF
+Mensagem de commit fora do padrão do GameKeys.
+  recebido: $primeira
+  esperado: <tipo>: GK-N <descrição>
+  exemplo:  feat: GK-7 valida e-mail repetido no cadastro
+  tipos:    feat fix docs chore refactor test style ci build perf
+EOF
+  exit 1
+fi
