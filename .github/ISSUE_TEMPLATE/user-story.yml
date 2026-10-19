@@ -1,53 +1,102 @@
 name: História de usuário
-description: Item do backlog no formato "Eu como... preciso... de modo que..."
-title: "GK-xx Título da história"
+description: Item do backlog no modelo de User Story da disciplina
+title: "[US-XX] Título curto da funcionalidade"
 labels: ["user-story"]
 body:
   - type: markdown
     attributes:
       value: |
-        O backlog oficial fica no Jira (espaço GK). Use este modelo para escrever a história no mesmo padrão
-        antes de cadastrar no Jira. Story Points, Sprint, Release e Prioridade são preenchidos nos campos do Jira.
+        O backlog oficial fica no Jira (espaço GK). Este modelo é o mesmo usado nas histórias do Jira.
+        O número da US é o da chave no Jira (GK-7 = US-07).
   - type: input
-    id: chave
+    id: epico
     attributes:
-      label: Chave no Jira
-      placeholder: "GK-7"
+      label: Feature / Épico
+      placeholder: "Conta e acesso (GK-1)"
+    validations:
+      required: true
+  - type: dropdown
+    id: release
+    attributes:
+      label: Release
+      options: ["R1", "R2", "R3", "R4"]
+  - type: input
+    id: sprint
+    attributes:
+      label: Sprint
+      placeholder: "0 a 7"
+  - type: dropdown
+    id: prioridade
+    attributes:
+      label: Prioridade
+      options: ["Alta", "Média", "Baixa"]
+  - type: dropdown
+    id: pontos
+    attributes:
+      label: Story Points
+      options: ["1", "2", "3", "5", "8", "13"]
+  - type: input
+    id: responsavel
+    attributes:
+      label: Responsável
+      placeholder: "@usuario-github"
+  - type: dropdown
+    id: revisao
+    attributes:
+      label: Papel de revisão
+      options: ["QA", "PO"]
   - type: textarea
     id: historia
     attributes:
-      label: História
-      placeholder: "Eu como <perfil>, preciso <ação>, de modo que <benefício>."
+      label: História de usuário
+      value: |
+        Eu como <perfil de usuário>,
+        preciso <ação ou funcionalidade>,
+        de modo que <benefício ou valor de negócio>.
     validations:
       required: true
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto e observações (opcional)
+      placeholder: "Regras de negócio, protótipos, links, dependências de outras US"
   - type: textarea
     id: criterios
     attributes:
       label: Critérios de aceite
-      description: Pelo menos um cenário de sucesso e um de exceção.
-      placeholder: |
-        Cenário 1 (sucesso): título
-        Dado que ...
-        Quando ...
-        Então ...
+      value: |
+        Cenário 1: <situação principal (caminho feliz)>
+          Dado que <contexto inicial>
+          Quando <ação do usuário>
+          Então <resultado esperado>
 
-        Cenário 2 (exceção): título
-        Dado que ...
-        Quando ...
-        Então ...
+        Cenário 2: <situação alternativa ou de erro>
+          Dado que <contexto inicial>
+          Quando <ação do usuário>
+          Então <resultado esperado>
+          E <resultado adicional, se houver>
     validations:
       required: true
-  - type: textarea
-    id: notas
-    attributes:
-      label: Dependências e observações
   - type: checkboxes
     id: dor
     attributes:
-      label: Definition of Ready
+      label: Definition of Ready (DoR) - preencher antes da Sprint Planning
       options:
-        - label: Está no formato "Eu como... preciso... de modo que..."
-        - label: Tem critérios Dado que / Quando / Então, com sucesso e exceção
-        - label: Foi estimada no Planning Poker e tem no máximo 5 pontos
-        - label: Prioridade e release preenchidas no Jira
-        - label: Não depende de história que ainda não foi feita
+        - label: História escrita no formato "Eu como... preciso... de modo que..."
+        - label: Critérios de aceite escritos em Gherkin
+        - label: Estimativa de Story Points definida pela equipe
+        - label: Prioridade definida pelo PO
+        - label: Dependências identificadas
+        - label: Cabe em uma sprint
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of Done (DoD) - conferir na Sprint Review
+      options:
+        - label: Código revisado e integrado via Pull Request
+        - label: Critérios de aceite atendidos e validados pelo QA
+        - label: Testes escritos e passando
+        - label: Pipeline de CI sem falhas
+        - label: Implantado em ambiente de homologação (quando exigido na release)
+        - label: Documentação atualizada
+        - label: Aceita pelo PO
