@@ -6,7 +6,7 @@ Skill do Claude Code para a equipe do GameKeys criar e mover issues no Jira segu
 
 1. **Clonar o repositório.** A skill já vem em `.claude/skills/jira-gamekeys/` e os scripts em `scripts/`. O Claude Code carrega sozinho ao abrir a pasta do repo.
 2. **Conector Atlassian** autorizado na sua conta do Claude, com acesso ao site `pedrolucas0721.atlassian.net` (peça ao PO para te adicionar ao projeto GK, se ainda não estiver). Nenhum token vai para o repo: a autorização é de cada pessoa.
-3. **GitHub CLI:** instale (https://cli.github.com) e rode `gh auth login`.
+3. **GitHub CLI e jq:** instale o `gh` (https://cli.github.com) e rode `gh auth login`. Instale também o `jq`, usado pelo `gk.sh dod` (Windows: `winget install jqlang.jq`; Linux: `sudo apt install jq`; macOS: `brew install jq`).
 4. **Hook de commit** (exige `tipo: GK-N descrição`):
    ```bash
    scripts/gk.sh install-hooks

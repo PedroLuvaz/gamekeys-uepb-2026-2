@@ -85,6 +85,7 @@ A API sobe em http://127.0.0.1:8000 (verificação em `/saude`).
 
 ## Commits e branches
 
-- Branch: `GK-<número>-descricao-curta`
-- Commit: `tipo: GK-<número> descrição` (ex.: `feat: GK-12 cadastro de cliente`)
+- Branch: `<tipo>/GK-<número>-descricao-curta` (ex.: `feature/GK-12-carrinho-alterar-itens`)
+- Commit: `tipo: GK-<número> descrição` (ex.: `feat: GK-12 cadastro de cliente`). O hook `scripts/hooks/commit-msg` confere o formato; ative com `scripts/gk.sh install-hooks`
+- Branch e PR podem ser abertos com `scripts/gk.sh` (veja `scripts/gk.sh ajuda`) ou pela skill do Claude Code em `.claude/skills/jira-gamekeys/`
 - Toda mudança entra por pull request revisado por outro integrante.

@@ -29,7 +29,7 @@ Cada pessoa precisa do conector Atlassian autorizado na própria conta e com ace
 | Sprint | `customfield_10020` | id numérico da sprint (Sprint 0 = 35, Sprint 1 = 36). Para outras, leia de uma issue da sprint por JQL |
 | Release | `fixVersions` | por nome: "Release 1" a "Release 4" (ids 10000 a 10003) |
 | Épico | `parent` | chave do épico |
-| Prioridade | `priority` | `{"name": "Medium"}` em `additional_fields` funcionou na criação (GK-65). Se algum dia recusar, use `editJiraIssue` |
+| Prioridade | `priority` | Tente `{"name": "Medium"}` em `additional_fields` na criação. Ainda não foi confirmado numa issue real; se o Jira recusar, aplique depois com `editJiraIssue` |
 | Labels | `labels` | ver abaixo |
 
 ## Prioridade
@@ -71,7 +71,11 @@ As transições são globais (qualquer status para qualquer outro). Confirme os 
 
 ## Consultas úteis (JQL)
 
-- Sprint atual: `project = GK AND sprint in openSprints() ORDER BY status, key`
+**Atenção:** no JQL o tipo História se chama `Story` (ou use o id `10043`). `issuetype = História` devolve **zero** resultados sem dar erro. Na criação de issue o nome `História` funciona normalmente.
+
+- Todas as US: `project = GK AND issuetype = Story ORDER BY key`
+
+- Sprint atual: `project = GK AND sprint in openSprints() ORDER BY status, key` (vazio enquanto nenhuma sprint estiver iniciada no quadro; aí use a sprint pelo id)
 - Sprint 1: `project = GK AND sprint = 36 ORDER BY key`
 - Bugs críticos/altos abertos: `project = GK AND issuetype = Bug AND labels in (severidade-critica, severidade-alta) AND statusCategory != Done`
 - Parados em andamento: `project = GK AND status = "Em andamento" AND updated <= -3d` (regra do risco R01: tarefa parada há mais de 3 dias é redistribuída)
