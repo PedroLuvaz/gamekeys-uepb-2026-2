@@ -47,14 +47,15 @@ Obrigatórios: **épico, release, prioridade, pontos**. Sem eles, pergunte; não
 
 ## Tasks (quando a US entra na sprint)
 
-Task não nasce no backlog: só quando a US é puxada para uma sprint (Planning). Para `tasks GK-N`: confirme que a US está na sprint, proponha a lista de Tasks (ação curta, uma por entrega verificável, ex.: back-end, front-end, testes), mostre e espere o sim. Formato no Jira (Subtask dentro da US ou Tarefa ligada por `Relates`): na primeira vez, pergunte e registre a escolha em `config.md`. Task herda release e sprint da US e não leva pontos.
+Task não nasce no backlog: só quando a US é puxada para uma sprint (Planning). Para `tasks GK-N`: confirme que a US está na sprint, proponha a lista de Tasks (ação curta, uma por entrega verificável, ex.: back-end, front-end, testes), mostre e espere o sim. Formato no Jira (decidido em 20/10/2026): **Subtask dentro da US** (`issueTypeName` `Subtask`, `parent` = chave da US). A Subtask acompanha a release e a sprint da US e não leva pontos. Título curto no imperativo, ex.: `Criar endpoint de cadastro`.
 
 ## Criar Driver
 
 Driver arquitetural é do tipo **`Driver`** (não é US). Se o tipo não existir no projeto (`getJiraProjectIssueTypesMetadata`), pare e peça para o admin criá-lo em Configurações do espaço > Tipos de item; não use História no lugar.
 
-- **Descrição:** a ficha da professora (seções 1 a 8) de [templates.md](references/templates.md). A fonte do conteúdo é o documento dos Drivers no Drive (link no README e na GK-56).
+- **Descrição:** a ficha da professora, no texto exato do modelo "Driver arquitetural" de [templates.md](references/templates.md) (seções 1, 2, 3, 7 e 8, em bloco de código). A fonte do conteúdo é o documento dos Drivers no Drive (link no README e na GK-56).
 - **ID:** `DA-<SEG|CON|USA>-I<integrante>-<nº>`; título `[DA-SEG-I1-01] Senha guardada só como hash`.
+- **Responsável (assignee):** o integrante responsável da ficha (I1 Pedro, I2 Wagner, I3 Rodrigo; os papéis do Jira vêm de `lookupJiraAccountId`).
 - **Épico (`parent`):** o do atributo (Segurança GK-40, Confiabilidade GK-41, Usabilidade GK-42).
 - **Labels:** `driver-arquitetural`, o atributo (`seguranca`, `confiabilidade` ou `usabilidade`) e o ID do driver. Prioridade pela "Importância para o negócio" (Alta = High, Média = Medium) e label `prioridade-*`.
 - **Release:** `fixVersions` com a release alvo da ficha. **Sprint não**: a associação à sprint só acontece no Planning da sprint.

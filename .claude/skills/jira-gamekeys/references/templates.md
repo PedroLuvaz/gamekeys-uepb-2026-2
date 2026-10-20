@@ -1,48 +1,53 @@
 # Modelos de texto
 
-Descrições vão em Markdown (`contentFormat: markdown`). Os modelos espelham `.github/ISSUE_TEMPLATE/user-story.yml` e `bug.yml` e as histórias já existentes (ex.: GK-7).
+Descrições vão em Markdown (`contentFormat: markdown`). US e Driver seguem o padrão em texto da disciplina (corpo em bloco de código, DoR/DoD como caixas). Bug espelha `.github/ISSUE_TEMPLATE/bug.yml`.
 
 ## Título
 
-- US e Task: `[US-NN] Título curto` (NN = número da chave, com zero à esquerda abaixo de 10: GK-7 vira `[US-07]`). RNF: `[US-NN] RNF: ...`.
+- US: `[US-NN] Título curto` (NN = número da chave, com zero à esquerda abaixo de 10: GK-7 vira `[US-07]`). RNF: `[US-NN] RNF: ...`.
 - Bug: `[BUG] Título curto do problema`.
 
-## US / Task
+## US
 
-```markdown
-| Campo | Valor |
-| --- | --- |
-| Feature / Épico | <Nome do épico> (GK-<n>) |
-| Release | R<N> |
-| Sprint | <Sprint N ou "a definir no Planning"> |
-| Prioridade | <Muito alta | Alta | Média | Baixa> |
-| Story Points | <1|2|3|5|8|13> |
-| Responsável | <nome ou "a definir no Planning"> |
-| Papel de revisão | <QA | PO> |
+Padrão em **texto** (o mesmo da professora): o corpo vai dentro de um bloco de código, para o Jira manter as linhas `----`/`====` e o alinhamento. As seções **DoR e DoD ficam fora do bloco**, como lista de caixas clicáveis (`- [ ]`). O número da US é o da chave (GK-7 vira `[US-07]`). Campos em aberto: "a definir no Planning".
 
-### História de usuário
+````markdown
+```
+TÍTULO: [US-XX] <Título curto da funcionalidade>
 
-Eu como **<perfil>**, preciso **<ação>**, de modo que **<benefício>**.
+FEATURE / ÉPICO: <ex.: Conta e acesso (GK-1)>
+RELEASE: <R1 | R2 | R3 | R4>        SPRINT: <0 a 7 | a definir no Planning>
+PRIORIDADE: <Muito alta | Alta | Média | Baixa>  STORY POINTS: <1, 2, 3, 5, 8, 13>
+RESPONSÁVEL: <nome | a definir no Planning>      PAPEL DE REVISÃO: <PO | QA>
 
-### Contexto e observações
+----------------------------------------------------------------
+HISTÓRIA DE USUÁRIO
+----------------------------------------------------------------
+Eu como <perfil de usuário>,
+preciso <ação ou funcionalidade>,
+de modo que <benefício ou valor de negócio>.
 
-<regras de negócio, links, dependências de outras US; ou "Sem observações adicionais.">
+----------------------------------------------------------------
+CONTEXTO E OBSERVAÇÕES (opcional)
+----------------------------------------------------------------
+<Regras de negócio, protótipos, links, dependências de outras US>
 
-### Critérios de aceite
+----------------------------------------------------------------
+CRITÉRIOS DE ACEITE
+----------------------------------------------------------------
+Cenário 1: <situação principal (caminho feliz)>
+  Dado que <contexto inicial>
+  Quando <ação do usuário>
+  Então <resultado esperado>
 
-**Cenário 1 (sucesso): <título>**
+Cenário 2: <situação alternativa ou de erro>
+  Dado que <contexto inicial>
+  Quando <ação do usuário>
+  Então <resultado esperado>
+  E <resultado adicional, se houver>
+```
 
-* **Dado que** <contexto>
-* **Quando** <ação>
-* **Então** <resultado>
-
-**Cenário 2 (exceção): <título>**
-
-* **Dado que** <contexto>
-* **Quando** <ação>
-* **Então** <resultado>
-
-### Definition of Ready (DoR) - preencher antes da Sprint Planning
+**DEFINITION OF READY (DoR) - preencher antes da Sprint Planning**
 
 - [ ] História escrita no formato "Eu como... preciso... de modo que..."
 - [ ] Critérios de aceite escritos em Gherkin
@@ -51,7 +56,7 @@ Eu como **<perfil>**, preciso **<ação>**, de modo que **<benefício>**.
 - [ ] Dependências identificadas
 - [ ] Cabe em uma sprint
 
-### Definition of Done (DoD) - conferir na Sprint Review
+**DEFINITION OF DONE (DoD) - conferir na Sprint Review**
 
 - [ ] Código revisado e integrado via Pull Request
 - [ ] Critérios de aceite atendidos e validados pelo QA
@@ -60,73 +65,85 @@ Eu como **<perfil>**, preciso **<ação>**, de modo que **<benefício>**.
 - [ ] Implantado em ambiente de homologação (quando exigido na release)
 - [ ] Documentação atualizada
 - [ ] Aceita pelo PO
-```
+````
 
-US técnica (banco, infra, back-end, gestão): mesmo modelo. No lugar do perfil use "a equipe" ou "desenvolvedor" (ex.: "Eu como **desenvolvedor**, preciso **subir o PostgreSQL com Docker**, de modo que **todos rodem o ambiente igual**") e cenários verificáveis (ex.: "Dado que o Docker está instalado, Quando rodo o compose, Então o banco sobe na porta 5432"). As Tasks dessa US só são criadas quando ela entrar na sprint.
+(A linha de abertura e a de fechamento com três crases acima fazem parte do que vai para o Jira.) Marque `[x]` na DoR só o que foi conferido. US técnica (banco, infra, back-end, gestão): mesmo modelo, com "a equipe" ou "desenvolvedor" no lugar do perfil e cenários verificáveis. As Tasks (Subtasks) só nascem quando a US entra na sprint.
 
 ## Driver arquitetural
 
-Título: `[DA-SEG-I1-01] Resumo curto`. Descrição na ficha da professora (a mesma do documento dos Drivers no Drive). Cada medida precisa de número e unidade.
+Título no Jira: `[DA-SEG-I1-01] Resumo curto`. Descrição **exatamente** neste texto (formato da professora), dentro de um bloco de código. Seções 1, 2, 3, 7 e 8; prioridade, ligações com US e release ficam nos campos do Jira (Prioridade, links "relates to", Versões corrigidas). Cada medida precisa de número e unidade. Responsável do Jira = integrante responsável.
 
-```markdown
-### 1. Identificação
-
-| Campo | Valor |
-| --- | --- |
-| ID do driver | DA-<SEG|CON|USA>-I<1|2|3>-<nº> |
-| Título | <resumo curto> |
-| Equipe / Projeto | GameKeys |
-| Integrante responsável | <nome> |
-| Atributo de qualidade | <Segurança | Confiabilidade | Usabilidade> |
-| Versão / Data / Release alvo | 1.0 / <dd/mm/aaaa> / <R1..R4> |
-| Status | <Rascunho | Validado pelo PO | Em implementação | Verificado> |
-
-### 2. Descrição do driver
-
-O sistema deve <...>.
-
-### 3. Cenário arquitetural
-
-| Parte | Conteúdo |
-| --- | --- |
-| Fonte do estímulo | <quem ou o que gera o estímulo> |
-| Estímulo | <a condição que o sistema precisa tratar> |
-| Artefato | <parte do sistema afetada> |
-| Ambiente | <em que condições o sistema está> |
-| Resposta | <o que o sistema deve fazer> |
-| Medida da resposta | <como saber que foi atendido, com número e unidade> |
-
-### 4. Prioridade
-
-Importância para o negócio: <Alta | Média | Baixa>. Dificuldade técnica: <Alta | Média | Baixa>.
-
-### 5. Decisão arquitetural
-
-Decisão: <...>. Alternativa considerada: <... e por que foi descartada>.
-
-### 6. Ligações
-
-Itens do Jira: <GK-N, ...>. Risco ligado: <atributo / integrante: defeito (risco N, estratégia)> (planilha de Análise de Riscos Baseada em Defeitos). Plano de Qualidade: <atributo>.
-
-### 7. Verificação
-
-* **Como o cenário será testado ou medido:** <...>
-* **Ferramenta / quem executa / quando:** <...>
-* **Critério de aceite (Gherkin):** Dado que <contexto>; Quando <estímulo>; Então <resposta com a medida>
-* **Resultado obtido / Atendeu?:** <valor> / <Sim | Não | Parcial>
-* **Evidência:** <link ou arquivo>
-
-### 8. Checklist do driver
-
-- [ ] Atributo de qualidade identificado
-- [ ] Declaração do driver clara, em uma frase
-- [ ] As seis partes do cenário preenchidas (fonte, estímulo, artefato, ambiente, resposta, medida)
-- [ ] Medida da resposta com número e unidade, verificável
-- [ ] Prioridade definida (importância e dificuldade)
-- [ ] Ligado a pelo menos uma US e a um risco ou item do plano de qualidade
-- [ ] Forma de verificação definida
-- [ ] Validado pelo PO
+````markdown
 ```
+DRIVER ARQUITETURAL - GAMEKEYS
+
+================================================================
+1. IDENTIFICAÇÃO
+================================================================
+ID do driver: <DA-SEG-I1-01>   (DA-<sigla do atributo>-<integrante>-<nº do driver>)
+Título: <resumo curto>
+Equipe / Projeto: GameKeys
+Integrante responsável: <nome>
+Atributo de qualidade: <Segurança | Confiabilidade | Usabilidade | outro>
+Versão: 1.0        Data: <dd/mm/aaaa>        Release alvo: <R1 | R2 | R3 | R4>
+Status: <Rascunho | Validado pelo PO | Em implementação | Verificado>
+
+================================================================
+2. DESCRIÇÃO DO DRIVER
+================================================================
+Declaração (uma frase, começando por "O sistema deve..."):
+<O sistema deve ...>
+
+================================================================
+3. CENÁRIO ARQUITETURAL
+================================================================
+Fonte do estímulo (quem ou o que gera o estímulo):
+<...>
+
+Estímulo (a condição que o sistema precisa tratar):
+<...>
+
+Artefato (parte do sistema afetada):
+<...>
+
+Ambiente (em que condições o sistema está):
+<...>
+
+Resposta (o que o sistema deve fazer):
+<...>
+
+Medida da resposta (como saber que foi atendido, com número e unidade):
+<...>
+
+================================================================
+7. VERIFICAÇÃO
+================================================================
+Como o cenário será testado ou medido:
+<...>
+
+Ferramenta / quem executa / quando:
+<...>
+
+Critério de aceite (Gherkin, opcional):
+  Dado que <contexto>
+  Quando <estímulo>
+  Então <resposta com a medida>
+
+Resultado obtido: <valor medido>      Atendeu? <Sim | Não | Parcial>
+Evidência (link ou arquivo): <...>
+
+================================================================
+8. CHECKLIST DO DRIVER
+================================================================
+[ ] Atributo de qualidade identificado
+[ ] Declaração do driver clara, em uma frase
+[ ] As seis partes do cenário preenchidas (fonte, estímulo, artefato, ambiente, resposta, medida)
+[ ] Medida da resposta com número e unidade, verificável
+[ ] Prioridade definida (importância e dificuldade)
+[ ] Ligado a pelo menos uma US e a um risco ou item do plano de qualidade
+[ ] Forma de verificação definida
+```
+````
 
 ## Bug
 

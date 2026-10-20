@@ -18,8 +18,8 @@ Cada pessoa precisa do conector Atlassian autorizado na própria conta e com ace
 | História (Story) | 10043 | US, RF, RNF e itens de gestão/documentação. O backlog só tem US e Épico |
 | Bug | 10044 | Só sob pedido do usuário |
 | Epic | 10042 | Não criar sem pedido |
-| Tarefa | 10045 | Legado da Sprint 0 (parent GK-6). Task nova só nasce quando a US entra na sprint (formato a confirmar: Subtask ou Tarefa ligada) |
-| Subtask | 10041 | Candidata ao formato das Tasks, dentro da US |
+| Tarefa | 10045 | Legado da Sprint 0 (parent GK-6). Não usar para trabalho novo |
+| Subtask | 10041 | **É a Task**: nasce dentro da US só quando ela entra na sprint (decisão de 20/10/2026) |
 | Driver | a criar | Tipo dos drivers arquiteturais. Ainda não existe (20/10/2026): o admin cria em Configurações do espaço > Tipos de item e habilita Prioridade, Versões corrigidas, Categorias e Story point |
 
 ## Campos
