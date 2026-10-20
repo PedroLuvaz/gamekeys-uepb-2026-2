@@ -20,7 +20,7 @@ Cada pessoa precisa do conector Atlassian autorizado na própria conta e com ace
 | Epic | 10042 | Não criar sem pedido |
 | Tarefa | 10045 | Legado da Sprint 0 (parent GK-6). Não usar para trabalho novo |
 | Subtask | 10041 | **É a Task**: nasce dentro da US só quando ela entra na sprint (decisão de 20/10/2026) |
-| Driver | a criar | Tipo dos drivers arquiteturais. Ainda não existe (20/10/2026): o admin cria em Configurações do espaço > Tipos de item e habilita Prioridade, Versões corrigidas, Categorias e Story point |
+| Driver | 10046 | Tipo dos drivers arquiteturais (criado em 20/10/2026, com Prioridade, Versões corrigidas e Categorias habilitadas). Não é US |
 
 ## Campos
 
