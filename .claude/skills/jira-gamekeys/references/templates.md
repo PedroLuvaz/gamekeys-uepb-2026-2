@@ -62,7 +62,71 @@ Eu como **<perfil>**, preciso **<ação>**, de modo que **<benefício>**.
 - [ ] Aceita pelo PO
 ```
 
-Task técnica (banco, infra, back-end): mesmo modelo. No lugar do perfil use "a equipe" (ex.: "Eu como **desenvolvedor**, preciso **subir o PostgreSQL com Docker**, de modo que **todos rodem o ambiente igual**") e cenários verificáveis (ex.: "Dado que o Docker está instalado, Quando rodo o compose, Então o banco sobe na porta 5432").
+US técnica (banco, infra, back-end, gestão): mesmo modelo. No lugar do perfil use "a equipe" ou "desenvolvedor" (ex.: "Eu como **desenvolvedor**, preciso **subir o PostgreSQL com Docker**, de modo que **todos rodem o ambiente igual**") e cenários verificáveis (ex.: "Dado que o Docker está instalado, Quando rodo o compose, Então o banco sobe na porta 5432"). As Tasks dessa US só são criadas quando ela entrar na sprint.
+
+## Driver arquitetural
+
+Título: `[DA-SEG-I1-01] Resumo curto`. Descrição na ficha da professora (a mesma do documento dos Drivers no Drive). Cada medida precisa de número e unidade.
+
+```markdown
+### 1. Identificação
+
+| Campo | Valor |
+| --- | --- |
+| ID do driver | DA-<SEG|CON|USA>-I<1|2|3>-<nº> |
+| Título | <resumo curto> |
+| Equipe / Projeto | GameKeys |
+| Integrante responsável | <nome> |
+| Atributo de qualidade | <Segurança | Confiabilidade | Usabilidade> |
+| Versão / Data / Release alvo | 1.0 / <dd/mm/aaaa> / <R1..R4> |
+| Status | <Rascunho | Validado pelo PO | Em implementação | Verificado> |
+
+### 2. Descrição do driver
+
+O sistema deve <...>.
+
+### 3. Cenário arquitetural
+
+| Parte | Conteúdo |
+| --- | --- |
+| Fonte do estímulo | <quem ou o que gera o estímulo> |
+| Estímulo | <a condição que o sistema precisa tratar> |
+| Artefato | <parte do sistema afetada> |
+| Ambiente | <em que condições o sistema está> |
+| Resposta | <o que o sistema deve fazer> |
+| Medida da resposta | <como saber que foi atendido, com número e unidade> |
+
+### 4. Prioridade
+
+Importância para o negócio: <Alta | Média | Baixa>. Dificuldade técnica: <Alta | Média | Baixa>.
+
+### 5. Decisão arquitetural
+
+Decisão: <...>. Alternativa considerada: <... e por que foi descartada>.
+
+### 6. Ligações
+
+Itens do Jira: <GK-N, ...>. Risco ligado: <atributo / integrante: defeito (risco N, estratégia)> (planilha de Análise de Riscos Baseada em Defeitos). Plano de Qualidade: <atributo>.
+
+### 7. Verificação
+
+* **Como o cenário será testado ou medido:** <...>
+* **Ferramenta / quem executa / quando:** <...>
+* **Critério de aceite (Gherkin):** Dado que <contexto>; Quando <estímulo>; Então <resposta com a medida>
+* **Resultado obtido / Atendeu?:** <valor> / <Sim | Não | Parcial>
+* **Evidência:** <link ou arquivo>
+
+### 8. Checklist do driver
+
+- [ ] Atributo de qualidade identificado
+- [ ] Declaração do driver clara, em uma frase
+- [ ] As seis partes do cenário preenchidas (fonte, estímulo, artefato, ambiente, resposta, medida)
+- [ ] Medida da resposta com número e unidade, verificável
+- [ ] Prioridade definida (importância e dificuldade)
+- [ ] Ligado a pelo menos uma US e a um risco ou item do plano de qualidade
+- [ ] Forma de verificação definida
+- [ ] Validado pelo PO
+```
 
 ## Bug
 

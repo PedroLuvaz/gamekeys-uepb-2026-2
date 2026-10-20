@@ -15,11 +15,12 @@ Cada pessoa precisa do conector Atlassian autorizado na própria conta e com ace
 
 | Nome | id | Uso |
 |---|---|---|
-| História (Story) | 10043 | US, RF, RNF e Task (Task também é US) |
+| História (Story) | 10043 | US, RF, RNF e itens de gestão/documentação. O backlog só tem US e Épico |
 | Bug | 10044 | Só sob pedido do usuário |
 | Epic | 10042 | Não criar sem pedido |
-| Tarefa | 10045 | Legado da Sprint 0 (parent GK-6). Não usar para trabalho novo |
-| Subtask | 10041 | Opcional, dentro de uma US |
+| Tarefa | 10045 | Legado da Sprint 0 (parent GK-6). Task nova só nasce quando a US entra na sprint (formato a confirmar: Subtask ou Tarefa ligada) |
+| Subtask | 10041 | Candidata ao formato das Tasks, dentro da US |
+| Driver | a criar | Tipo dos drivers arquiteturais. Ainda não existe (20/10/2026): o admin cria em Configurações do espaço > Tipos de item e habilita Prioridade, Versões corrigidas, Categorias e Story point |
 
 ## Campos
 
@@ -49,6 +50,7 @@ O modelo de US tem só Alta, Média e Baixa, mas o backlog usa Muito alta nas US
 - Sprint (quando já planejada): `sprint-N`.
 - Atributo de qualidade (RNF): `seguranca`, `confiabilidade`, `usabilidade`.
 - Outras em uso: `banco`, `infra`, `backend`, `documentação`, `tech-debt`, `avaliacao`, `risco`.
+- Driver: `driver-arquitetural`, o atributo (acima) e o ID, ex.: `DA-SEG-I1-01`.
 - Bug: `bug`, `release-N`, `sprint-N`. A severidade vai na descrição e na label `severidade-critica|alta|media|baixa` (convenção desta skill; ainda não existia no Jira, proponha ao SM adotar).
 
 ## Épicos
@@ -79,7 +81,8 @@ As transições são globais (qualquer status para qualquer outro). Confirme os 
 - Sprint 1: `project = GK AND sprint = 36 ORDER BY key`
 - Bugs críticos/altos abertos: `project = GK AND issuetype = Bug AND labels in (severidade-critica, severidade-alta) AND statusCategory != Done`
 - Parados em andamento: `project = GK AND status = "Em andamento" AND updated <= -3d` (regra do risco R01: tarefa parada há mais de 3 dias é redistribuída)
-- Última chave: `project = GK ORDER BY key DESC` com `maxResults=1`
+- Última chave: `project = GK ORDER BY key DESC` com `maxResults=1`. Chave apagada não volta: a próxima pode ser maior que última + 1 (GK-65 foi apagado, a seguinte saiu GK-66)
+- Drivers: `project = GK AND issuetype = Driver ORDER BY key`
 
 Respostas de busca grandes estouram o limite: peça só os campos necessários (`summary, status, issuetype, priority, labels, parent, customfield_10016, customfield_10020`).
 
