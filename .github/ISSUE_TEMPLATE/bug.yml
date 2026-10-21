@@ -6,7 +6,14 @@ body:
   - type: markdown
     attributes:
       value: |
-        Todo bug também é cadastrado no Jira (tipo Bug). Severidade conforme o Plano de Qualidade (docs/Plano-de-Qualidade.docx).
+        Todo bug também é cadastrado no Jira (tipo Bug).
+
+        | Severidade | Quando é | Prazo |
+        |---|---|---|
+        | Crítica | Impede o uso ou entrega chave errada/duplicada | Corrigir no mesmo dia, bloqueia a Review |
+        | Alta | Função importante não funciona | Dentro da sprint |
+        | Média | Funciona, mas com contorno | Nesta sprint ou na próxima |
+        | Baixa | Visual ou texto | Vai para o backlog, o PO decide |
   - type: input
     id: historia
     attributes:

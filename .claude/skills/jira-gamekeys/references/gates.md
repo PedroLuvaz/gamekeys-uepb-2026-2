@@ -1,6 +1,6 @@
 # Gates: DoR e DoD
 
-Fontes: `docs/DoR-e-DoD.docx` (DoR), `.github/ISSUE_TEMPLATE/user-story.yml` (DoR e DoD de US), `.github/pull_request_template.md` e `docs/DoD-Sprint-e-Release.xlsx` (DoD de sprint e de release).
+Fontes: `.github/ISSUE_TEMPLATE/user-story.yml` (DoR e DoD de US, iguais ao modelo de US do Jira), `.github/pull_request_template.md` e `docs/DoD-Sprint-e-Release.xlsx` (DoD de sprint e de release).
 
 Cada item vira uma linha com **OK**, **FALTA** ou **NÃO VERIFICÁVEL**, mais a evidência. Nunca marque OK sem evidência.
 
