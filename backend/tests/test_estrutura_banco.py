@@ -1,39 +1,14 @@
 """GK-92: estrutura, restrições e carga validadas contra o banco de testes (TEST_DATABASE_URL).
 
-O banco de testes é apagado e recriado a cada execução; nunca aponte para o banco gamekeys.
+As fixtures banco e conexao ficam em conftest.py.
 """
-
-import os
 
 import psycopg
 import pytest
 
-from app import db  # noqa: F401  (carrega o .env.local)
 from app.migrar import migrar
 
-URL_TESTE = os.getenv("TEST_DATABASE_URL")
 HASH_BCRYPT = "$2b$12$" + "a" * 53
-
-pytestmark = pytest.mark.skipif(not URL_TESTE, reason="sem TEST_DATABASE_URL")
-
-
-@pytest.fixture(scope="module")
-def banco():
-    assert "gamekeys_teste" in URL_TESTE, "TEST_DATABASE_URL precisa ser o banco de testes"
-    with psycopg.connect(URL_TESTE, autocommit=True) as conexao:
-        conexao.execute(
-            "drop schema if exists core, catalogo cascade;"
-            " drop table if exists public.migracoes_aplicadas"
-        )
-    migrar(URL_TESTE, carga=True)
-    return URL_TESTE
-
-
-@pytest.fixture
-def conexao(banco):
-    with psycopg.connect(banco) as conexao:
-        yield conexao
-        conexao.rollback()
 
 
 def inserir_usuario(conexao, email, senha_hash=HASH_BCRYPT):
