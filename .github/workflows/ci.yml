@@ -43,8 +43,20 @@ jobs:
       - name: Migrações e carga de demonstração
         run: python -m app.migrar --carga
 
-      - name: Testes (pytest)
-        run: pytest -v
+      # Plano de Teste: smoke a cada push; o conjunto completo é a regressão da release.
+      - name: Smoke (pytest -m smoke)
+        run: pytest -m smoke -v --junitxml=relatorios/smoke.xml
+
+      - name: Testes completos (pytest)
+        run: pytest -v --junitxml=relatorios/pytest.xml
+
+      - name: Guardar relatórios de teste
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorios-de-teste
+          path: backend/relatorios/
+          if-no-files-found: warn
 
       - name: Dados continuam no banco depois de reiniciar
         working-directory: .

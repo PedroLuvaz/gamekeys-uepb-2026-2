@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 
 from app.config import Configuracoes
@@ -10,6 +11,7 @@ def configuracoes(ambiente: str) -> Configuracoes:
     return Configuracoes(ambiente=ambiente, database_url=None, origens_cors=(), timeout_banco=1)
 
 
+@pytest.mark.smoke
 def test_saude_responde_ok():
     resposta = client.get("/saude")
 

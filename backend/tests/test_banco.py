@@ -39,6 +39,7 @@ def test_banco_indisponivel_responde_503_sem_expor_a_conexao(monkeypatch):
 
 
 @pytest.mark.skipif(not os.getenv("DATABASE_URL"), reason="sem DATABASE_URL")
+@pytest.mark.smoke
 def test_saude_banco_consulta_o_postgres():
     resposta = client.get("/saude/banco")
 
@@ -49,6 +50,7 @@ def test_saude_banco_consulta_o_postgres():
     assert corpo["versao"]
 
 
+@pytest.mark.smoke
 def test_front_na_origem_permitida_consulta_a_api():
     preflight = client.options(
         "/saude",
