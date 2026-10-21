@@ -101,6 +101,41 @@ uvicorn app.main:app --reload
 
 A API sobe em http://127.0.0.1:8000 (verificação em `/saude` e, do banco, em `/saude/banco`).
 
+## Banco de dados
+
+PostgreSQL no Neon (projeto `weathered-shadow-77764238`, branch `production`). São dois bancos:
+
+| Banco | Uso |
+|---|---|
+| `gamekeys` | desenvolvimento e demonstração |
+| `gamekeys_teste` | testes automáticos; o pytest apaga e recria a estrutura a cada execução |
+
+### Conectar
+
+1. Peça o arquivo de conexão ao DevOps e salve como `.env.local` na raiz do repositório (o modelo está em `.env.example`). Esse arquivo é ignorado pelo git: não commite e não poste em grupo.
+2. A API lê `DATABASE_URL` (com pool). Migrações e cliente gráfico usam `DATABASE_URL_UNPOOLED` (direta).
+3. Em cliente gráfico (DBeaver, Database Client do VS Code), use os campos `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER` e `PGPASSWORD` do arquivo e ligue o SSL.
+
+O usuário da equipe (`gamekeys_equipe`) lê e grava dados, mas não cria nem altera tabelas: mudança de estrutura entra por migração em `backend/migracoes/`, aplicada pelo DevOps.
+
+### Estrutura (Sprint 1)
+
+| Schema | Tabela | Destaques |
+|---|---|---|
+| `core` | `usuarios` | e-mail único (sem diferenciar maiúsculas), senha só como hash bcrypt, data de nascimento, perfil `cliente` por padrão |
+| `catalogo` | `categorias` | nome e slug únicos |
+| `catalogo` | `jogos` | categoria obrigatória, preço ≥ 0, plataforma, classificação (L a 18), `chaves_disponiveis` (0 = Esgotado), `ativo` |
+
+Sempre escreva o schema no SQL (`catalogo.jogos`, não só `jogos`): pelo pool do Neon o `search_path` não se mantém entre transações. Compra, pedidos e chaves entram depois, no schema `vendas`.
+
+### Comandos (dentro de `backend/`)
+
+```bash
+python -m app.migrar            # aplica migrações pendentes
+python -m app.migrar --carga    # migrações + jogos de demonstração (pode repetir, não duplica)
+pytest                          # inclui os testes de estrutura, contra gamekeys_teste
+```
+
 ## Commits e branches
 
 - Branch: `<tipo>/GK-<número>-descricao-curta` (ex.: `feature/GK-12-carrinho-alterar-itens`)
