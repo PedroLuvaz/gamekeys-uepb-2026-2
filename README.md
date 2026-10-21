@@ -118,6 +118,16 @@ PostgreSQL no Neon (projeto `weathered-shadow-77764238`, branch `production`). S
 
 O usuário da equipe (`gamekeys_equipe`) lê e grava dados, mas não cria nem altera tabelas: mudança de estrutura entra por migração em `backend/migracoes/`, aplicada pelo DevOps.
 
+### Alternativa local: Docker Compose
+
+Para rodar o PostgreSQL na própria máquina (é o mesmo banco que o CI usa), com Docker instalado:
+
+```bash
+docker compose up -d --wait     # na raiz; cria gamekeys e gamekeys_teste na primeira vez
+```
+
+No `.env.local`, use as três URLs `localhost` comentadas no `.env.example`. Os dados ficam no volume `dados_postgres` e sobrevivem a `docker compose down` e a reinícios; só `docker compose down -v` apaga tudo. As credenciais `gamekeys`/`gamekeys` valem apenas para esse banco local.
+
 ### Estrutura (Sprint 1)
 
 | Schema | Tabela | Destaques |
