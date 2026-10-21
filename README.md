@@ -90,16 +90,33 @@ Python 3.12 com FastAPI, PostgreSQL, React com TypeScript e GitHub Actions.
 
 ## Como rodar o back-end
 
+1. Crie o `.env.local` na raiz a partir do `.env.example` (veja [Banco de dados](#banco-de-dados)).
+2. Instale, prepare o banco, teste e suba a API:
+
 ```bash
 cd backend
 python -m venv .venv
 .venv\Scripts\activate        # no Linux/macOS: source .venv/bin/activate
 pip install -e ".[dev]"
+python -m app.migrar --carga
 pytest
 uvicorn app.main:app --reload
 ```
 
-A API sobe em http://127.0.0.1:8000 (verificação em `/saude` e, do banco, em `/saude/banco`).
+A API sobe em http://127.0.0.1:8000:
+
+- `/saude`: a API está no ar
+- `/saude/banco`: a API alcança o PostgreSQL (503 se não alcançar, sem expor a conexão)
+- `/docs`: documentação automática dos endpoints (desligada com `AMBIENTE=producao`)
+
+O front-end em `http://localhost:5173` já pode chamar a API; outras origens entram em `CORS_ORIGENS`.
+
+O código fica em `backend/app/`: `rotas/` (endpoints), `esquemas/` (validação com Pydantic), `servicos/` (regras de negócio), `db.py` (acesso ao banco) e `config.py` (variáveis de ambiente).
+
+### Testes e CI
+
+- `pytest` roda tudo. Os testes de banco usam só `TEST_DATABASE_URL` (banco `gamekeys_teste`) e são pulados quando ela não está definida.
+- A cada push e pull request, o GitHub Actions sobe o PostgreSQL pelo `docker-compose.yml`, aplica migrações e carga, roda ruff e pytest e confere que os dados continuam no banco depois de reiniciá-lo.
 
 ## Banco de dados
 

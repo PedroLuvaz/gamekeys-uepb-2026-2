@@ -1,8 +1,9 @@
 name: CI
 
-# Build e testes a cada push, em qualquer branch.
+# Build e testes a cada push, em qualquer branch, e em todo pull request.
 on:
   push:
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -12,6 +13,11 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    # Banco local do docker-compose.yml: credenciais só de CI, sem segredo real.
+    env:
+      DATABASE_URL: postgresql://gamekeys:gamekeys@localhost:5432/gamekeys
+      DATABASE_URL_UNPOOLED: postgresql://gamekeys:gamekeys@localhost:5432/gamekeys
+      TEST_DATABASE_URL: postgresql://gamekeys:gamekeys@localhost:5432/gamekeys_teste
     steps:
       - uses: actions/checkout@v4
 
@@ -20,6 +26,10 @@ jobs:
           python-version: "3.12"
           cache: pip
           cache-dependency-path: backend/pyproject.toml
+
+      - name: Subir PostgreSQL (Docker Compose)
+        working-directory: .
+        run: docker compose up -d --wait
 
       - name: Instalar dependências
         run: pip install -e ".[dev]"
@@ -30,5 +40,17 @@ jobs:
       - name: Formatação (ruff)
         run: ruff format --check .
 
+      - name: Migrações e carga de demonstração
+        run: python -m app.migrar --carga
+
       - name: Testes (pytest)
         run: pytest -v
+
+      - name: Dados continuam no banco depois de reiniciar
+        working-directory: .
+        run: |
+          docker compose down
+          docker compose up -d --wait
+          jogos=$(docker compose exec -T postgres psql -U gamekeys -d gamekeys -tAc "select count(*) from catalogo.jogos")
+          echo "jogos depois de reiniciar: $jogos"
+          test "$jogos" = "24"
