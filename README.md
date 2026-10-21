@@ -99,7 +99,7 @@ pytest
 uvicorn app.main:app --reload
 ```
 
-A API sobe em http://127.0.0.1:8000 (verificação em `/saude`).
+A API sobe em http://127.0.0.1:8000 (verificação em `/saude` e, do banco, em `/saude/banco`).
 
 ## Commits e branches
 
