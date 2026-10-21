@@ -1,10 +1,22 @@
+"""Ponto de entrada da API.
+
+Organização:
+    config.py   variáveis de ambiente
+    db.py       acesso ao banco (pool de conexões)
+    esquemas/   validação de entrada e saída (Pydantic)
+    servicos/   regras de negócio
+    rotas/      endpoints HTTP
+"""
+
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-import psycopg
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-from app.db import BancoNaoConfigurado, fechar_pool, verificar_banco
+from app.config import Configuracoes, carregar
+from app.db import fechar_pool
+from app.rotas import saude
 
 
 @asynccontextmanager
@@ -13,21 +25,25 @@ async def ciclo_de_vida(_: FastAPI) -> AsyncIterator[None]:
     fechar_pool()
 
 
-app = FastAPI(title="GameKeys API", version="0.1.0", lifespan=ciclo_de_vida)
+def criar_app(config: Configuracoes | None = None) -> FastAPI:
+    config = config or carregar()
+    # Documentação automática só fora de produção.
+    app = FastAPI(
+        title="GameKeys API",
+        version="0.1.0",
+        lifespan=ciclo_de_vida,
+        docs_url=None if config.em_producao else "/docs",
+        redoc_url=None,
+        openapi_url=None if config.em_producao else "/openapi.json",
+    )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=list(config.origens_cors),
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    app.include_router(saude.router)
+    return app
 
 
-@app.get("/saude")
-def saude() -> dict[str, str]:
-    """Verificação de saúde usada pelo CI e, depois, pelo deploy."""
-    return {"status": "ok"}
-
-
-@app.get("/saude/banco")
-def saude_banco() -> dict[str, str]:
-    """Confirma que a API consegue consultar o PostgreSQL."""
-    try:
-        return {"status": "ok", **verificar_banco()}
-    except BancoNaoConfigurado as erro:
-        raise HTTPException(status_code=503, detail=str(erro)) from erro
-    except psycopg.Error as erro:
-        raise HTTPException(status_code=503, detail="banco indisponível") from erro
+app = criar_app()

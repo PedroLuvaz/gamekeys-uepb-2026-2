@@ -15,7 +15,7 @@ from pathlib import Path
 
 import psycopg
 
-from app.db import RAIZ_DO_REPO  # noqa: F401  (carrega o .env.local)
+import app.config  # noqa: F401  (carrega o .env.local)
 
 PASTA_BACKEND = Path(__file__).resolve().parents[1]
 PASTA_MIGRACOES = PASTA_BACKEND / "migracoes"

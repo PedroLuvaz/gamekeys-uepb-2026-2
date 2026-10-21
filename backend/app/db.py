@@ -1,21 +1,12 @@
-"""Conexão com o PostgreSQL (Neon).
+"""Acesso ao PostgreSQL, compartilhado por todas as rotas.
 
-A aplicação usa a URL com pool (DATABASE_URL, host com -pooler). Migrações e pg_dump
+A aplicação usa a URL com pool (DATABASE_URL, host com -pooler no Neon). Migrações e pg_dump
 devem usar DATABASE_URL_UNPOOLED, que é a conexão direta.
 """
 
-import os
-from pathlib import Path
-
-from dotenv import load_dotenv
 from psycopg_pool import ConnectionPool
 
-RAIZ_DO_REPO = Path(__file__).resolve().parents[2]
-
-# `neon env pull` grava as variáveis na raiz do repositório. Variáveis já definidas no
-# ambiente (CI, deploy) têm prioridade sobre os arquivos.
-load_dotenv(RAIZ_DO_REPO / ".env.local")
-load_dotenv(RAIZ_DO_REPO / ".env")
+from app.config import carregar
 
 _pool: ConnectionPool | None = None
 
@@ -27,14 +18,15 @@ class BancoNaoConfigurado(RuntimeError):
 def obter_pool() -> ConnectionPool:
     global _pool
     if _pool is None:
-        url = os.getenv("DATABASE_URL")
-        if not url:
+        config = carregar()
+        if not config.database_url:
             raise BancoNaoConfigurado("DATABASE_URL não definida")
         # O PgBouncer do Neon roda em modo transação: sem prepared statements no servidor.
         _pool = ConnectionPool(
-            url,
+            config.database_url,
             min_size=1,
             max_size=5,
+            timeout=config.timeout_banco,
             kwargs={"prepare_threshold": None},
             open=True,
         )
