@@ -89,16 +89,79 @@ Python 3.12 com FastAPI, PostgreSQL, React com TypeScript e GitHub Actions.
 
 ## Como rodar o back-end
 
+1. Crie o `.env.local` na raiz a partir do `.env.example` (veja [Banco de dados](#banco-de-dados)).
+2. Instale, prepare o banco, teste e suba a API:
+
 ```bash
 cd backend
 python -m venv .venv
 .venv\Scripts\activate        # no Linux/macOS: source .venv/bin/activate
 pip install -e ".[dev]"
+python -m app.migrar --carga
 pytest
 uvicorn app.main:app --reload
 ```
 
-A API sobe em http://127.0.0.1:8000 (verificação em `/saude`).
+A API sobe em http://127.0.0.1:8000:
+
+- `/saude`: a API está no ar
+- `/saude/banco`: a API alcança o PostgreSQL (503 se não alcançar, sem expor a conexão)
+- `/docs`: documentação automática dos endpoints (desligada com `AMBIENTE=producao`)
+
+O front-end em `http://localhost:5173` já pode chamar a API; outras origens entram em `CORS_ORIGENS`.
+
+O código fica em `backend/app/`: `rotas/` (endpoints), `esquemas/` (validação com Pydantic), `servicos/` (regras de negócio), `db.py` (acesso ao banco) e `config.py` (variáveis de ambiente).
+
+### Testes e CI
+
+- `pytest` roda tudo (é a regressão). `pytest -m smoke` roda só a verificação rápida: API no ar, banco alcançável e front-end liberado pelo CORS. Os testes de banco usam só `TEST_DATABASE_URL` (banco `gamekeys_teste`) e são pulados quando ela não está definida.
+- A cada push e pull request, o GitHub Actions sobe o PostgreSQL pelo `docker-compose.yml`, aplica migrações e carga, roda ruff, o smoke e depois a suíte completa, e confere que os dados continuam no banco depois de reiniciá-lo.
+- Os relatórios JUnit (`smoke.xml` e `pytest.xml`) ficam no artefato `relatorios-de-teste` de cada execução, na aba Actions, mesmo quando algum teste falha. É a evidência para anexar no Jira.
+
+## Banco de dados
+
+PostgreSQL no Neon (projeto `weathered-shadow-77764238`, branch `production`). São dois bancos:
+
+| Banco | Uso |
+|---|---|
+| `gamekeys` | desenvolvimento e demonstração |
+| `gamekeys_teste` | testes automáticos; o pytest apaga e recria a estrutura a cada execução |
+
+### Conectar
+
+1. Peça o arquivo de conexão ao DevOps e salve como `.env.local` na raiz do repositório (o modelo está em `.env.example`). Esse arquivo é ignorado pelo git: não commite e não poste em grupo.
+2. A API lê `DATABASE_URL` (com pool). Migrações e cliente gráfico usam `DATABASE_URL_UNPOOLED` (direta).
+3. Em cliente gráfico (DBeaver, Database Client do VS Code), use os campos `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER` e `PGPASSWORD` do arquivo e ligue o SSL.
+
+O usuário da equipe (`gamekeys_equipe`) lê e grava dados, mas não cria nem altera tabelas: mudança de estrutura entra por migração em `backend/migracoes/`, aplicada pelo DevOps.
+
+### Alternativa local: Docker Compose
+
+Para rodar o PostgreSQL na própria máquina (é o mesmo banco que o CI usa), com Docker instalado:
+
+```bash
+docker compose up -d --wait     # na raiz; cria gamekeys e gamekeys_teste na primeira vez
+```
+
+No `.env.local`, use as três URLs `localhost` comentadas no `.env.example`. Os dados ficam no volume `dados_postgres` e sobrevivem a `docker compose down` e a reinícios; só `docker compose down -v` apaga tudo. As credenciais `gamekeys`/`gamekeys` valem apenas para esse banco local.
+
+### Estrutura (Sprint 1)
+
+| Schema | Tabela | Destaques |
+|---|---|---|
+| `core` | `usuarios` | e-mail único (sem diferenciar maiúsculas), senha só como hash bcrypt, data de nascimento, perfil `cliente` por padrão |
+| `catalogo` | `categorias` | nome e slug únicos |
+| `catalogo` | `jogos` | categoria obrigatória, preço ≥ 0, plataforma, classificação (L a 18), `chaves_disponiveis` (0 = Esgotado), `ativo` |
+
+Sempre escreva o schema no SQL (`catalogo.jogos`, não só `jogos`): pelo pool do Neon o `search_path` não se mantém entre transações. Compra, pedidos e chaves entram depois, no schema `vendas`.
+
+### Comandos (dentro de `backend/`)
+
+```bash
+python -m app.migrar            # aplica migrações pendentes
+python -m app.migrar --carga    # migrações + jogos de demonstração (pode repetir, não duplica)
+pytest                          # inclui os testes de estrutura, contra gamekeys_teste
+```
 
 ## Commits e branches
 

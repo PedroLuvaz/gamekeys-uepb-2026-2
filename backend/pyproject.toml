@@ -10,6 +10,9 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115",
     "uvicorn>=0.30",
+    "psycopg[binary]>=3.2",
+    "psycopg-pool>=3.2",
+    "python-dotenv>=1.0",
 ]
 
 [project.optional-dependencies]
@@ -24,6 +27,10 @@ include = ["app*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--strict-markers"
+markers = [
+    "smoke: verificação rápida da API e do banco, roda primeiro a cada push (Plano de Teste)",
+]
 
 [tool.ruff]
 line-length = 100

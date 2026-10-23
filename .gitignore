@@ -28,3 +28,7 @@ Thumbs.db
 # Banco local
 *.sqlite3
 *.dump
+.neon
+
+# Relatórios de teste (gerados pelo pytest e pelo CI)
+backend/relatorios/
