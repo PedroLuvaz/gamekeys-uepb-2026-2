@@ -1,5 +1,6 @@
 import os
 
+import psycopg
 import pytest
 from fastapi.testclient import TestClient
 
@@ -66,3 +67,18 @@ def test_origem_desconhecida_nao_recebe_liberacao_de_cors():
     resposta = client.get("/saude", headers={"Origin": "http://site-qualquer.com"})
 
     assert "access-control-allow-origin" not in resposta.headers
+
+
+def test_pool_substitui_conexao_encerrada_antes_de_atender_a_rota(banco, monkeypatch):
+    monkeypatch.setenv("DATABASE_URL", banco)
+    with db.obter_pool().connection() as conexao:
+        identificador = conexao.info.backend_pid
+
+    # Encerra somente a conexão que este teste acabou de criar no seu próprio pool.
+    with psycopg.connect(banco, autocommit=True) as controle:
+        assert controle.execute("select pg_terminate_backend(%s)", (identificador,)).fetchone()[0]
+
+    resposta = client.get("/saude/banco")
+
+    assert resposta.status_code == 200
+    assert resposta.json()["banco"] == "gamekeys_teste"

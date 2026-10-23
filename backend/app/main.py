@@ -16,7 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import Configuracoes, carregar
 from app.db import fechar_pool
-from app.rotas import saude
+from app.rotas import catalogo, saude
 
 
 @asynccontextmanager
@@ -43,6 +43,7 @@ def criar_app(config: Configuracoes | None = None) -> FastAPI:
         allow_headers=["*"],
     )
     app.include_router(saude.router)
+    app.include_router(catalogo.router)
     return app
 
 
