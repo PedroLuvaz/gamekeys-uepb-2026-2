@@ -54,6 +54,7 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1m_lYvzaFOp2JcKruR
 - [Plano da Sprint 1](https://docs.google.com/document/d/1e_3jWniPo1ayAMduJLj30WU7ZRu9x5FYl6XWfpK0WSM/edit)
 - [Registro de Riscos](https://docs.google.com/document/d/1oSEonzAulY87ssaz6TzGdNFTCswyxCbSTtn1_LtVj8g/edit)
 - [Drivers Arquiteturais](https://docs.google.com/document/d/10U9jLK5_RB2MYaO2PXomXmlro3rJidd3Zxs0wIVX7TE/edit)
+- DER do banco de dados (v1.0, 21/10/2026): fonte editável em `docs/banco/DER-GameKeys-v1.0.dbml` (abre no [dbdiagram.io](https://dbdiagram.io)); a imagem vigente fica anexada na GK-103
 
 Uma cópia em .docx de cada um fica na pasta `docs/`.
 

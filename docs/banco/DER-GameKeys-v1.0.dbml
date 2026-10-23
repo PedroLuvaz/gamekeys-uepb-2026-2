@@ -1,0 +1,164 @@
+// DER completo do GameKeys - fonte editável (GK-103 / GK-104)
+// Abra em https://dbdiagram.io (Import > DBML ou cole o conteúdo) para ver e exportar PNG/PDF.
+// Versão 1.0 - 21/10/2026. A imagem vigente está anexada na GK-103 (diagrama_gamekeys.png).
+// Ao mudar o modelo: crie DER-GameKeys-vX.Y.dbml, mantenha este arquivo e atualize a GK-103.
+
+Project GameKeys {
+  database_type: 'PostgreSQL'
+  Note: '''
+  DER completo do GameKeys - versão 1.0 (21/10/2026) - GK-103 / GK-104
+  Implementado na Sprint 1 (migração 0001): core.usuarios, catalogo.categorias, catalogo.jogos.
+  Demais tabelas: planejadas para as Releases 2 a 4.
+  '''
+}
+
+// ===================== core: contas de acesso =====================
+
+Table core.usuarios {
+  id bigint [pk, increment]
+  nome text [not null, note: '2 a 120 caracteres']
+  email text [not null, note: 'único sem diferenciar maiúsculas']
+  senha_hash text [not null, note: 'somente hash bcrypt (60 caracteres)']
+  data_nascimento date [not null]
+  perfil text [not null, default: 'cliente', note: 'cliente | administrador']
+  ativo boolean [not null, default: true]
+  criado_em timestamptz [not null, default: `now()`]
+  atualizado_em timestamptz [not null, default: `now()`]
+
+  indexes {
+    `lower(email)` [unique, name: 'usuarios_email_unico']
+  }
+  Note: 'R1 - implementada. Cadastro (GK-7) e login (GK-8).'
+}
+
+// ===================== catalogo: jogos à venda =====================
+
+Table catalogo.categorias {
+  id bigint [pk, increment]
+  nome text [not null, unique]
+  slug text [not null, unique]
+  Note: 'R1 - implementada. Gênero do jogo.'
+}
+
+Table catalogo.jogos {
+  id bigint [pk, increment]
+  categoria_id bigint [not null]
+  slug text [not null, unique]
+  nome text [not null]
+  descricao text [not null]
+  preco "numeric(10,2)" [not null, note: '>= 0']
+  plataforma text [not null]
+  classificacao text [not null, note: 'L | 10 | 12 | 14 | 16 | 18']
+  capa_url text
+  chaves_disponiveis integer [not null, default: 0, note: '0 = Esgotado. Na R3 passa a ser calculado de catalogo.chaves']
+  ativo boolean [not null, default: true, note: 'inativo não aparece no catálogo']
+  criado_em timestamptz [not null, default: `now()`]
+  atualizado_em timestamptz [not null, default: `now()`]
+
+  indexes {
+    categoria_id [name: 'jogos_categoria']
+    (nome, id) [name: 'jogos_ativos_por_nome', note: 'parcial: where ativo']
+  }
+  Note: 'R1 - implementada. Listagem (GK-9) e detalhe (GK-10).'
+}
+
+Table catalogo.chaves {
+  id bigint [pk, increment]
+  jogo_id bigint [not null]
+  codigo text [not null, unique, note: 'chave de ativação, nunca repetida']
+  status text [not null, default: 'disponivel', note: 'disponivel | reservada | vendida | invalidada']
+  cadastrada_por bigint [not null, note: 'administrador']
+  criado_em timestamptz [not null, default: `now()`]
+
+  indexes {
+    (jogo_id, status) [name: 'chaves_por_jogo_e_status']
+  }
+  Note: 'R2/R3 - planejada. Estoque de chaves e administração.'
+}
+
+// ===================== vendas: carrinho, pedido e entrega =====================
+
+Table vendas.carrinhos {
+  id bigint [pk, increment]
+  usuario_id bigint [not null, unique, note: 'um carrinho aberto por cliente']
+  criado_em timestamptz [not null, default: `now()`]
+  atualizado_em timestamptz [not null, default: `now()`]
+  Note: 'R2 - planejada.'
+}
+
+Table vendas.itens_carrinho {
+  carrinho_id bigint [not null]
+  jogo_id bigint [not null]
+  quantidade integer [not null, default: 1, note: '> 0']
+  adicionado_em timestamptz [not null, default: `now()`]
+
+  indexes {
+    (carrinho_id, jogo_id) [pk]
+  }
+  Note: 'R2 - planejada.'
+}
+
+Table vendas.pedidos {
+  id bigint [pk, increment]
+  usuario_id bigint [not null]
+  status text [not null, default: 'aguardando_pagamento', note: 'aguardando_pagamento | pago | cancelado']
+  valor_total "numeric(10,2)" [not null, note: '>= 0']
+  criado_em timestamptz [not null, default: `now()`]
+  pago_em timestamptz
+  cancelado_em timestamptz
+  Note: 'R2 - planejada. Cancelamento na R3, painel de pedidos na R4.'
+}
+
+Table vendas.itens_pedido {
+  id bigint [pk, increment]
+  pedido_id bigint [not null]
+  jogo_id bigint [not null]
+  chave_id bigint [unique, note: 'preenchida na entrega; unique = a mesma chave nunca é vendida duas vezes (DA-CON-I1-02)']
+  preco_unitario "numeric(10,2)" [not null, note: 'preço no momento da compra']
+  Note: 'R2 - planejada. Uma linha por chave comprada; a biblioteca do cliente (R3) lê daqui.'
+}
+
+Table vendas.pagamentos {
+  id bigint [pk, increment]
+  pedido_id bigint [not null, unique]
+  metodo text [not null, note: 'cartao | pix | boleto (simulado)']
+  status text [not null, note: 'aprovado | recusado']
+  valor "numeric(10,2)" [not null]
+  criado_em timestamptz [not null, default: `now()`]
+  Note: 'R2 - planejada. Pagamento simulado.'
+}
+
+// ===================== avaliacoes =====================
+
+Table avaliacoes.avaliacoes {
+  id bigint [pk, increment]
+  usuario_id bigint [not null]
+  jogo_id bigint [not null]
+  nota smallint [not null, note: '1 a 5']
+  comentario text
+  criado_em timestamptz [not null, default: `now()`]
+
+  indexes {
+    (usuario_id, jogo_id) [unique, name: 'uma_avaliacao_por_jogo']
+  }
+  Note: 'R4 - planejada. Só quem comprou o jogo pode avaliar (regra na API).'
+}
+
+// ===================== relacionamentos =====================
+
+Ref: catalogo.jogos.categoria_id > catalogo.categorias.id
+Ref: catalogo.chaves.jogo_id > catalogo.jogos.id
+Ref: catalogo.chaves.cadastrada_por > core.usuarios.id
+
+Ref: vendas.carrinhos.usuario_id - core.usuarios.id
+Ref: vendas.itens_carrinho.carrinho_id > vendas.carrinhos.id [delete: cascade]
+Ref: vendas.itens_carrinho.jogo_id > catalogo.jogos.id
+
+Ref: vendas.pedidos.usuario_id > core.usuarios.id
+Ref: vendas.itens_pedido.pedido_id > vendas.pedidos.id
+Ref: vendas.itens_pedido.jogo_id > catalogo.jogos.id
+Ref: vendas.itens_pedido.chave_id - catalogo.chaves.id
+Ref: vendas.pagamentos.pedido_id - vendas.pedidos.id
+
+Ref: avaliacoes.avaliacoes.usuario_id > core.usuarios.id
+Ref: avaliacoes.avaliacoes.jogo_id > catalogo.jogos.id
