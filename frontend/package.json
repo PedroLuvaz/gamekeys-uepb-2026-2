@@ -1,0 +1,37 @@
+{
+  "name": "gamekeys-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
+    "build": "tsc --noEmit && tsc -p cypress/tsconfig.json --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5173 --strictPort",
+    "test:e2e": "cypress run",
+    "test:integracao": "cypress run --config-file cypress.integracao.config.mjs",
+    "test:abrir": "cypress open",
+    "format": "prettier --write src index.html vite.config.ts cypress.config.mjs cypress.integracao.config.mjs cypress scripts"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": ["cypress/support/step_definitions/**/*.ts"],
+    "json": { "enabled": true, "output": "cypress/reports/cucumber.json" }
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^28.0.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "cypress": "^16.2.0",
+    "esbuild": "^0.28.2",
+    "prettier": "^3.9.10",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}

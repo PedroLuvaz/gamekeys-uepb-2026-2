@@ -28,6 +28,9 @@ def obter_pool() -> ConnectionPool:
             max_size=5,
             timeout=config.timeout_banco,
             kwargs={"prepare_threshold": None},
+            # O Neon pode encerrar conexões ociosas ao suspender o banco.
+            # Descartar a conexão inválida antes de entregá-la a uma rota.
+            check=ConnectionPool.check_connection,
             open=True,
         )
     return _pool

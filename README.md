@@ -112,10 +112,111 @@ O front-end em `http://localhost:5173` já pode chamar a API; outras origens ent
 
 O código fica em `backend/app/`: `rotas/` (endpoints), `esquemas/` (validação com Pydantic), `servicos/` (regras de negócio), `db.py` (acesso ao banco) e `config.py` (variáveis de ambiente).
 
+## Tela do catálogo e detalhe de jogos
+
+O front-end fica em `frontend/`, com React, TypeScript e Vite. Use Node.js 24 e pnpm
+11.25 (a versão está fixada no `package.json`). A configuração do banco continua somente
+no `.env.local` da raiz; não copie esse arquivo para o front-end.
+
+Com a API já configurada, abra dois terminais:
+
+```powershell
+# Terminal 1: API (na pasta do repositório)
+cd backend
+.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+```powershell
+# Terminal 2: interface (na pasta do repositório)
+cd frontend
+pnpm install --frozen-lockfile
+pnpm dev
+```
+
+Abra `http://127.0.0.1:5173`. O catálogo consulta os dados reais pela API: 20 jogos por
+página, preços em reais e indicação de disponibilidade. Os cartões abrem a ficha com
+descrição, gênero, plataforma e classificação; voltar ao catálogo preserva a página de
+origem. Os botões voltar/avançar do navegador e endereços diretos também funcionam.
+
+Quando a capa estiver ausente ou falhar, a interface mostra uma arte ilustrativa local,
+sem alterar o cadastro do jogo. Carregamento, catálogo vazio, página inexistente, jogo
+inativo/inexistente e falha de conexão possuem mensagens e ações apropriadas. A tela se
+adapta a celular e desktop. Compra e carrinho continuam fora desta entrega.
+
+O Vite encaminha `/api` para `http://127.0.0.1:8000` durante o desenvolvimento. Para outro
+ambiente, configure apenas o endereço público em `frontend/.env.local` seguindo
+`frontend/.env.example` e providencie o encaminhamento da API. Nunca use credenciais de
+banco em variáveis `VITE_*`.
+
+### Testes de interface
+
+Dentro de `frontend/`, com `pnpm dev` em execução:
+
+```powershell
+pnpm build            # confere TypeScript da aplicação/testes e gera dist/
+pnpm test:e2e         # Cypress/Cucumber com API simulada
+pnpm test:integracao  # tela + API em execução, usando somente consultas
+pnpm test:abrir       # opcional: interface do Cypress
+```
+
+Os onze cenários em `cypress/e2e/listagem-jogos.feature` cobrem paginação, esgotado,
+navegação ao detalhe e retorno, lista vazia, falha e nova tentativa, carregamento, página
+além da última, celular, jogo não encontrado, histórico do navegador, recarga e capa
+indisponível. Usam respostas simuladas na rede: não
+acessam nem recriam o banco do Neon. A base pode ser reaproveitada nos testes de cadastro
+e login. Relatórios JUnit e Cucumber ficam em `frontend/cypress/reports/`; capturas de
+falhas ficam em `frontend/cypress/screenshots/`. Esses arquivos são ignorados pelo Git.
+
+Os três testes em `cypress/integracao/catalogo-real.cy.ts` usam a API em execução e a
+carga de demonstração (mais de 20 jogos e um esgotado na segunda página), sem simular
+respostas. Fazem somente GET e não executam migrações. Ao rodá-los contra o Neon,
+nenhum dado é alterado. No CI, eles usam o PostgreSQL local do Docker Compose, com
+API e interface iniciadas no próprio job.
+
+### Consulta pública do catálogo (GK-84)
+
+`GET /jogos?pagina=1` retorna até 20 jogos ativos, em ordem de nome e, em caso de empate,
+identificador. Não exige login. O parâmetro `pagina` começa em 1 e aceita inteiros até
+2.147.483.647; valores fora desse intervalo ou não inteiros recebem HTTP 422.
+
+```json
+{
+  "itens": [
+    {
+      "id": 1,
+      "nome": "Lâmina do Sertão",
+      "capa_url": null,
+      "preco": "149.90",
+      "disponibilidade": "Disponível"
+    }
+  ],
+  "pagina": 1,
+  "por_pagina": 20,
+  "total": 23,
+  "total_paginas": 2
+}
+```
+
+O exemplo abrevia a lista de itens. O preço é uma string decimal para preservar centavos;
+`capa_url` pode ser nula (a carga de demonstração ainda não inclui capas). Jogos com zero
+chaves aparecem como `Esgotado`; inativos não aparecem nem entram no total. Uma página após a
+última retorna `itens: []` mantendo os totais; sem jogos ativos, ambos os totais são zero.
+Se o banco estiver indisponível, a API retorna HTTP 503 com uma mensagem em português.
+
+Para conferir pelo navegador: `http://127.0.0.1:8000/jogos` e
+`http://127.0.0.1:8000/jogos?pagina=2`. Os testes de integração em `test_catalogo_banco.py`
+usam o banco de testes, como o restante da suíte; use PostgreSQL local com Docker ou combine
+a execução com a equipe antes de usar o banco de teste compartilhado do Neon.
+
+`GET /jogos/{id}` retorna os mesmos campos do cartão, mais `descricao`, `genero`,
+`plataforma` e `classificacao`. Jogo inexistente ou inativo recebe HTTP 404 com a mesma
+mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da conexão.
+
 ### Testes e CI
 
 - `pytest` roda tudo (é a regressão). `pytest -m smoke` roda só a verificação rápida: API no ar, banco alcançável e front-end liberado pelo CORS. Os testes de banco usam só `TEST_DATABASE_URL` (banco `gamekeys_teste`) e são pulados quando ela não está definida.
 - A cada push e pull request, o GitHub Actions sobe o PostgreSQL pelo `docker-compose.yml`, aplica migrações e carga, roda ruff, o smoke e depois a suíte completa, e confere que os dados continuam no banco depois de reiniciá-lo.
+- O job de interface compila o front-end e executa os onze cenários com API simulada. O job de back-end também executa os três testes reais da tela integrada à API e ao PostgreSQL local. Relatórios e capturas de falhas são guardados como artefatos separados.
 - Os relatórios JUnit (`smoke.xml` e `pytest.xml`) ficam no artefato `relatorios-de-teste` de cada execução, na aba Actions, mesmo quando algum teste falha. É a evidência para anexar no Jira.
 
 ## Banco de dados

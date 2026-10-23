@@ -32,3 +32,6 @@ Thumbs.db
 
 # Relatórios de teste (gerados pelo pytest e pelo CI)
 backend/relatorios/
+frontend/cypress/screenshots/
+frontend/cypress/videos/
+frontend/cypress/reports/

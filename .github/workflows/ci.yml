@@ -7,6 +7,38 @@ on:
   workflow_dispatch:
 
 jobs:
+  frontend:
+    name: frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+      - name: Conferir TypeScript e gerar front-end
+        run: pnpm build
+      - name: Testar catálogo com Cypress/Cucumber e API simulada
+        run: |
+          pnpm dev > /tmp/gamekeys-vite.log 2>&1 &
+          pnpm test:e2e
+      - name: Guardar evidências de interface
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorios-de-interface
+          path: |
+            frontend/cypress/reports/
+            frontend/cypress/screenshots/
+          if-no-files-found: warn
+
   backend:
     name: backend
     runs-on: ubuntu-latest
@@ -49,6 +81,32 @@ jobs:
 
       - name: Testes completos (pytest)
         run: pytest -v --junitxml=relatorios/pytest.xml
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: frontend/package.json
+      - name: Preparar interface para integração real
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile
+      - name: Verificar tela, API e PostgreSQL integrados
+        working-directory: frontend
+        run: |
+          (cd ../backend && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/gamekeys-api.log 2>&1) &
+          pnpm dev > /tmp/gamekeys-vite.log 2>&1 &
+          node scripts/aguardar-api.mjs
+          pnpm test:integracao
+      - name: Guardar evidências de integração real
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorios-de-integracao-real
+          path: |
+            frontend/cypress/reports/
+            frontend/cypress/screenshots/
+          if-no-files-found: warn
 
       - name: Guardar relatórios de teste
         if: always()
