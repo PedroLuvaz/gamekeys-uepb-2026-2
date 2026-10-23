@@ -27,6 +27,10 @@ include = ["app*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--strict-markers"
+markers = [
+    "smoke: verificação rápida da API e do banco, roda primeiro a cada push (Plano de Teste)",
+]
 
 [tool.ruff]
 line-length = 100

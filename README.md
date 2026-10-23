@@ -115,8 +115,9 @@ O código fica em `backend/app/`: `rotas/` (endpoints), `esquemas/` (validação
 
 ### Testes e CI
 
-- `pytest` roda tudo. Os testes de banco usam só `TEST_DATABASE_URL` (banco `gamekeys_teste`) e são pulados quando ela não está definida.
-- A cada push e pull request, o GitHub Actions sobe o PostgreSQL pelo `docker-compose.yml`, aplica migrações e carga, roda ruff e pytest e confere que os dados continuam no banco depois de reiniciá-lo.
+- `pytest` roda tudo (é a regressão). `pytest -m smoke` roda só a verificação rápida: API no ar, banco alcançável e front-end liberado pelo CORS. Os testes de banco usam só `TEST_DATABASE_URL` (banco `gamekeys_teste`) e são pulados quando ela não está definida.
+- A cada push e pull request, o GitHub Actions sobe o PostgreSQL pelo `docker-compose.yml`, aplica migrações e carga, roda ruff, o smoke e depois a suíte completa, e confere que os dados continuam no banco depois de reiniciá-lo.
+- Os relatórios JUnit (`smoke.xml` e `pytest.xml`) ficam no artefato `relatorios-de-teste` de cada execução, na aba Actions, mesmo quando algum teste falha. É a evidência para anexar no Jira.
 
 ## Banco de dados
 
