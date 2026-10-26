@@ -1,7 +1,7 @@
-import { useEffect, useSyncExternalStore } from "react";
-import type { MouseEvent, ReactNode } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import type { FormEvent, MouseEvent, ReactNode } from "react";
 import ArteJogo from "./ArteJogo";
-import { precoEmReais, useConsulta } from "./api";
+import { cadastrarCliente, precoEmReais, useConsulta } from "./api";
 import type { DetalheDoJogo, Jogo, PaginaDeJogos } from "./api";
 
 function navegar(evento: MouseEvent<HTMLAnchorElement>, endereco: string) {
@@ -432,6 +432,162 @@ function Detalhe({ id, origem }: { id: string; origem: number }) {
   );
 }
 
+type EstadoCadastro =
+  | { tipo: "inicial" }
+  | { tipo: "enviando" }
+  | { tipo: "sucesso"; nome: string }
+  | { tipo: "erro"; mensagem: string };
+
+function Cadastro() {
+  const [estado, setEstado] = useState<EstadoCadastro>({ tipo: "inicial" });
+  const [dados, setDados] = useState({
+    nome: "",
+    email: "",
+    data_nascimento: "",
+    senha: "",
+  });
+  useEffect(() => {
+    document.title = "Criar conta | GameKeys";
+  }, []);
+
+  async function enviar(evento: FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    if (dados.senha.length < 8) {
+      setEstado({
+        tipo: "erro",
+        mensagem: "A senha deve ter pelo menos 8 caracteres.",
+      });
+      return;
+    }
+    setEstado({ tipo: "enviando" });
+    try {
+      const cliente = await cadastrarCliente(dados);
+      setDados((atual) => ({ ...atual, senha: "" }));
+      setEstado({ tipo: "sucesso", nome: cliente.nome });
+    } catch (erro) {
+      setEstado({
+        tipo: "erro",
+        mensagem:
+          erro instanceof Error
+            ? erro.message
+            : "Não foi possível concluir o cadastro. Tente novamente.",
+      });
+    }
+  }
+
+  const alterar = (campo: keyof typeof dados, valor: string) => {
+    setDados((atual) => ({ ...atual, [campo]: valor }));
+    if (estado.tipo === "erro") setEstado({ tipo: "inicial" });
+  };
+
+  return (
+    <section className="acesso" aria-labelledby="cadastro-titulo">
+      <div className="acesso-apresentacao">
+        <span className="sobretitulo pequeno">SUA CONTA GAMEKEYS</span>
+        <h1 id="cadastro-titulo">
+          Comece sua próxima <em>aventura.</em>
+        </h1>
+        <p>
+          Crie sua conta de cliente para preparar suas próximas compras de jogos
+          digitais.
+        </p>
+        <Link href="/" className="voltar-catalogo-acesso">
+          ← Continuar explorando o catálogo
+        </Link>
+      </div>
+      <div className="painel-acesso">
+        <h2>Criar conta</h2>
+        <p className="instrucao-formulario">
+          Preencha seus dados para se cadastrar.
+        </p>
+        {estado.tipo === "sucesso" ? (
+          <div
+            className="cadastro-sucesso"
+            role="status"
+            data-cy="cadastro-sucesso"
+          >
+            <span aria-hidden="true">✓</span>
+            <h3>Conta criada com sucesso</h3>
+            <p>{estado.nome}, seu cadastro como Cliente foi concluído.</p>
+            <Link href="/" className="botao">
+              Ir para o catálogo →
+            </Link>
+          </div>
+        ) : (
+          <form onSubmit={enviar} data-cy="formulario-cadastro">
+            <label>
+              Nome
+              <input
+                name="nome"
+                autoComplete="name"
+                value={dados.nome}
+                onChange={(e) => alterar("nome", e.target.value)}
+                minLength={2}
+                maxLength={120}
+                required
+              />
+            </label>
+            <label>
+              E-mail
+              <input
+                name="email"
+                type="email"
+                autoComplete="email"
+                value={dados.email}
+                onChange={(e) => alterar("email", e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Data de nascimento
+              <input
+                name="data_nascimento"
+                type="date"
+                autoComplete="bday"
+                max={new Date().toISOString().slice(0, 10)}
+                value={dados.data_nascimento}
+                onChange={(e) => alterar("data_nascimento", e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Senha
+              <input
+                name="senha"
+                type="password"
+                autoComplete="new-password"
+                value={dados.senha}
+                onChange={(e) => alterar("senha", e.target.value)}
+                aria-describedby="ajuda-senha"
+                required
+              />
+              <small id="ajuda-senha">Use pelo menos 8 caracteres.</small>
+            </label>
+            {estado.tipo === "erro" && (
+              <p
+                className="erro-formulario"
+                role="alert"
+                data-cy="erro-cadastro"
+              >
+                {estado.mensagem}
+              </p>
+            )}
+            <button
+              className="botao botao-formulario"
+              disabled={estado.tipo === "enviando"}
+              data-cy="enviar-cadastro"
+            >
+              {estado.tipo === "enviando"
+                ? "Criando conta…"
+                : "Criar minha conta"}
+            </button>
+          </form>
+        )}
+      </div>
+    </section>
+  );
+}
+
 export default function App() {
   const endereco = useSyncExternalStore(
     assinar,
@@ -447,6 +603,7 @@ export default function App() {
       : 1;
   const detalhe = url.pathname.match(/^\/jogos\/(\d+)\/?$/);
   const ehCatalogo = url.pathname === "/" || url.pathname === "/catalogo";
+  const ehCadastro = url.pathname === "/cadastro";
   useEffect(() => {
     document.getElementById("conteudo")?.focus({ preventScroll: true });
   }, [endereco]);
@@ -467,13 +624,20 @@ export default function App() {
               <span className="marca-ponto">.</span>
             </span>
           </Link>
-          <nav aria-label="Menu principal">
+          <nav className="navegacao-principal" aria-label="Menu principal">
             <Link
               href="/"
               className="nav-catalogo"
               aria-current={ehCatalogo ? "page" : undefined}
             >
               Catálogo
+            </Link>
+            <Link
+              href="/cadastro"
+              className="nav-cadastro"
+              aria-current={ehCadastro ? "page" : undefined}
+            >
+              Criar conta
             </Link>
           </nav>
           <span className="cabecalho-nota">
@@ -482,7 +646,9 @@ export default function App() {
         </div>
       </header>
       <main id="conteudo" className="largura" tabIndex={-1}>
-        {detalhe ? (
+        {ehCadastro ? (
+          <Cadastro />
+        ) : detalhe ? (
           <Detalhe
             key={detalhe[1]}
             id={detalhe[1]}

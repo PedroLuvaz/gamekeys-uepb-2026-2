@@ -23,12 +23,58 @@ export interface DetalheDoJogo extends Jogo {
   classificacao: string;
 }
 
+export interface DadosDeCadastro {
+  nome: string;
+  email: string;
+  data_nascimento: string;
+  senha: string;
+}
+
+export interface ClienteCadastrado {
+  id: number;
+  nome: string;
+  email: string;
+  data_nascimento: string;
+  perfil: "cliente";
+}
+
 type Estado<T> =
   | { chave: string; status: "carregando" }
   | { chave: string; status: "pronto"; dados: T }
   | { chave: string; status: "erro"; naoEncontrado: boolean };
 
 const baseDaApi = (import.meta.env.VITE_API_URL || "/api").replace(/\/$/, "");
+
+function mensagemDaApi(corpo: unknown) {
+  if (!corpo || typeof corpo !== "object" || !("detail" in corpo)) return null;
+  const detalhe = corpo.detail;
+  if (typeof detalhe === "string") return detalhe;
+  if (Array.isArray(detalhe) && typeof detalhe[0]?.msg === "string")
+    return detalhe[0].msg.replace(/^Value error, /, "");
+  return null;
+}
+
+export async function cadastrarCliente(
+  dados: DadosDeCadastro,
+): Promise<ClienteCadastrado> {
+  let resposta: Response;
+  try {
+    resposta = await fetch(`${baseDaApi}/clientes`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    });
+  } catch {
+    throw new Error("Não foi possível falar com o servidor. Tente novamente.");
+  }
+  const corpo = (await resposta.json().catch(() => null)) as unknown;
+  if (!resposta.ok)
+    throw new Error(
+      mensagemDaApi(corpo) ||
+        "Não foi possível concluir o cadastro. Tente novamente.",
+    );
+  return corpo as ClienteCadastrado;
+}
 
 export function useConsulta<T>(caminho: string) {
   const [tentativa, setTentativa] = useState(0);
