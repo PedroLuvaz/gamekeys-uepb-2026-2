@@ -101,15 +101,21 @@ p {
   align-items: center;
   gap: 24px;
 }
-.nav-cadastro {
+.nav-cadastro,
+.nav-acesso,
+.nav-sair {
   padding: 10px 14px;
   border: 1px solid #ffffff30;
   border-radius: 8px;
   font-size: 13px;
   color: #e9e7f2;
+  background: transparent;
 }
 .nav-cadastro:hover,
-.nav-cadastro[aria-current="page"] {
+.nav-cadastro[aria-current="page"],
+.nav-acesso:hover,
+.nav-acesso[aria-current="page"],
+.nav-sair:hover {
   border-color: var(--lima);
   color: var(--lima);
 }
@@ -744,6 +750,15 @@ p {
   font-size: 12px;
   line-height: 1.5;
 }
+.aviso-sessao {
+  padding: 11px 13px;
+  margin: 0 0 18px;
+  border-radius: 8px;
+  background: #fff7df;
+  color: #745b18;
+  font-size: 12px;
+  line-height: 1.5;
+}
 .botao-formulario {
   width: 100%;
   margin-top: 3px;
@@ -773,6 +788,69 @@ p {
   font-size: 13px;
   line-height: 1.6;
   margin: 10px auto 24px;
+}
+.alternativa-acesso {
+  margin-top: 22px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+.alternativa-acesso a {
+  color: var(--roxo);
+  font-weight: 600;
+}
+.conta {
+  min-height: calc(100vh - 206px);
+  padding: 58px 0 70px;
+}
+.painel-conta {
+  max-width: 720px;
+  margin: auto;
+  padding: 46px;
+  border: 1px solid var(--linha);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 18px 60px #281f3b0d;
+}
+.painel-conta h1 {
+  margin: 13px 0 10px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 38px;
+  letter-spacing: -1.5px;
+}
+.painel-conta > p {
+  color: var(--muted);
+}
+.painel-conta dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 32px 0;
+}
+.painel-conta dl > div {
+  padding: 18px;
+  border-radius: 10px;
+  background: #f5f3f9;
+}
+.painel-conta dt {
+  color: var(--muted);
+  font-size: 11px;
+}
+.painel-conta dd {
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+.acoes-conta {
+  display: flex;
+  gap: 12px;
+}
+.botao-secundario {
+  background: #eeeaf5;
+  color: #3a3047;
+}
+.botao-secundario:hover {
+  background: #ddd4ec;
 }
 
 @media (min-width: 1500px) {
@@ -872,7 +950,9 @@ p {
   .navegacao-principal {
     gap: 13px;
   }
-  .nav-cadastro {
+  .nav-cadastro,
+  .nav-acesso,
+  .nav-sair {
     padding: 8px 10px;
     font-size: 11px;
   }
@@ -1036,8 +1116,17 @@ p {
     padding: 27px 22px;
     border-radius: 14px;
   }
+  .painel-conta {
+    padding: 28px 22px;
+  }
+  .painel-conta h1 {
+    font-size: 31px;
+  }
+  .painel-conta dl {
+    grid-template-columns: 1fr;
+  }
 }
-@media (max-width: 380px) {
+@media (max-width: 430px) {
   .cabecalho-conteudo {
     padding-left: 14px;
     padding-right: 14px;

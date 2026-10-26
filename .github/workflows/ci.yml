@@ -50,6 +50,9 @@ jobs:
       DATABASE_URL: postgresql://gamekeys:gamekeys@localhost:5432/gamekeys
       DATABASE_URL_UNPOOLED: postgresql://gamekeys:gamekeys@localhost:5432/gamekeys
       TEST_DATABASE_URL: postgresql://gamekeys:gamekeys@localhost:5432/gamekeys_teste
+      # Valor exclusivo do ambiente efêmero de CI; não é credencial de produção.
+      JWT_SECRET: gamekeys-ci-chave-efemera-com-mais-de-32-bytes
+      JWT_DURACAO_MINUTOS: 60
     steps:
       - uses: actions/checkout@v4
 

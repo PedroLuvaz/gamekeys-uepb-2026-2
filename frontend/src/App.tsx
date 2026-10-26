@@ -1,8 +1,31 @@
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import type { FormEvent, MouseEvent, ReactNode } from "react";
 import ArteJogo from "./ArteJogo";
-import { cadastrarCliente, precoEmReais, useConsulta } from "./api";
-import type { DetalheDoJogo, Jogo, PaginaDeJogos } from "./api";
+import {
+  cadastrarCliente,
+  consultarUsuario,
+  encerrarSessao,
+  entrar,
+  ErroDaApi,
+  guardarSessao,
+  lerSessao,
+  precoEmReais,
+  useConsulta,
+} from "./api";
+import type {
+  ClienteCadastrado,
+  DetalheDoJogo,
+  Jogo,
+  PaginaDeJogos,
+  SessaoLocal,
+} from "./api";
+
+function irPara(endereco: string, substituir = false) {
+  if (`${location.pathname}${location.search}` === endereco) return;
+  history[substituir ? "replaceState" : "pushState"]({}, "", endereco);
+  dispatchEvent(new PopStateEvent("popstate"));
+  window.scrollTo({ top: 0 });
+}
 
 function navegar(evento: MouseEvent<HTMLAnchorElement>, endereco: string) {
   if (
@@ -14,10 +37,7 @@ function navegar(evento: MouseEvent<HTMLAnchorElement>, endereco: string) {
   )
     return;
   evento.preventDefault();
-  if (`${location.pathname}${location.search}` === endereco) return;
-  history.pushState({}, "", endereco);
-  dispatchEvent(new PopStateEvent("popstate"));
-  window.scrollTo({ top: 0 });
+  irPara(endereco);
 }
 
 function Link({
@@ -509,8 +529,8 @@ function Cadastro() {
             <span aria-hidden="true">✓</span>
             <h3>Conta criada com sucesso</h3>
             <p>{estado.nome}, seu cadastro como Cliente foi concluído.</p>
-            <Link href="/" className="botao">
-              Ir para o catálogo →
+            <Link href="/login" className="botao">
+              Entrar na minha conta →
             </Link>
           </div>
         ) : (
@@ -588,11 +608,215 @@ function Cadastro() {
   );
 }
 
+type EstadoLogin =
+  | { tipo: "inicial" }
+  | { tipo: "enviando" }
+  | { tipo: "erro"; mensagem: string };
+
+function Login({ aoEntrar }: { aoEntrar: (sessao: SessaoLocal) => void }) {
+  const [estado, setEstado] = useState<EstadoLogin>({ tipo: "inicial" });
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const sessaoExpirada = new URL(location.href).searchParams.has("expirada");
+  useEffect(() => {
+    document.title = "Entrar | GameKeys";
+  }, []);
+
+  async function enviar(evento: FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    setEstado({ tipo: "enviando" });
+    try {
+      const criada = await entrar(email, senha);
+      aoEntrar(guardarSessao(criada));
+    } catch (erro) {
+      setEstado({
+        tipo: "erro",
+        mensagem:
+          erro instanceof Error
+            ? erro.message
+            : "Não foi possível entrar. Tente novamente.",
+      });
+    }
+  }
+
+  return (
+    <section className="acesso" aria-labelledby="login-titulo">
+      <div className="acesso-apresentacao">
+        <span className="sobretitulo pequeno">BEM-VINDO DE VOLTA</span>
+        <h1 id="login-titulo">
+          Continue sua próxima <em>aventura.</em>
+        </h1>
+        <p>Entre com sua conta para acessar sua área protegida.</p>
+        <Link href="/" className="voltar-catalogo-acesso">
+          ← Continuar explorando o catálogo
+        </Link>
+      </div>
+      <div className="painel-acesso">
+        <h2>Entrar</h2>
+        <p className="instrucao-formulario">
+          Use o e-mail e a senha informados no cadastro.
+        </p>
+        {sessaoExpirada && estado.tipo !== "erro" && (
+          <p className="aviso-sessao" role="status" data-cy="sessao-expirada">
+            Sua sessão expirou. Entre novamente para continuar.
+          </p>
+        )}
+        <form onSubmit={enviar} data-cy="formulario-login">
+          <label>
+            E-mail
+            <input
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (estado.tipo === "erro") setEstado({ tipo: "inicial" });
+              }}
+              required
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              name="senha"
+              type="password"
+              autoComplete="current-password"
+              value={senha}
+              onChange={(e) => {
+                setSenha(e.target.value);
+                if (estado.tipo === "erro") setEstado({ tipo: "inicial" });
+              }}
+              required
+            />
+          </label>
+          {estado.tipo === "erro" && (
+            <p className="erro-formulario" role="alert" data-cy="erro-login">
+              {estado.mensagem}
+            </p>
+          )}
+          <button
+            className="botao botao-formulario"
+            disabled={estado.tipo === "enviando"}
+            data-cy="enviar-login"
+          >
+            {estado.tipo === "enviando" ? "Entrando…" : "Entrar"}
+          </button>
+        </form>
+        <p className="alternativa-acesso">
+          Ainda não tem conta? <Link href="/cadastro">Cadastre-se</Link>
+        </p>
+      </div>
+    </section>
+  );
+}
+
+type EstadoConta =
+  | { tipo: "carregando" }
+  | { tipo: "pronto"; usuario: ClienteCadastrado }
+  | { tipo: "erro"; mensagem: string };
+
+function Conta({
+  sessao,
+  aoExpirar,
+  aoSair,
+}: {
+  sessao: SessaoLocal;
+  aoExpirar: () => void;
+  aoSair: () => void;
+}) {
+  const [tentativa, setTentativa] = useState(0);
+  const [estado, setEstado] = useState<EstadoConta>({ tipo: "carregando" });
+  useEffect(() => {
+    document.title = "Minha conta | GameKeys";
+    let ativa = true;
+    setEstado({ tipo: "carregando" });
+    consultarUsuario(sessao.token)
+      .then((usuario) => {
+        if (ativa) setEstado({ tipo: "pronto", usuario });
+      })
+      .catch((erro) => {
+        if (!ativa) return;
+        if (erro instanceof ErroDaApi && erro.status === 401) {
+          aoExpirar();
+          return;
+        }
+        setEstado({
+          tipo: "erro",
+          mensagem:
+            erro instanceof Error
+              ? erro.message
+              : "Não foi possível carregar sua conta.",
+        });
+      });
+    return () => {
+      ativa = false;
+    };
+  }, [sessao.token, tentativa, aoExpirar]);
+
+  return (
+    <section className="conta" data-cy="conta-protegida">
+      {estado.tipo === "carregando" ? (
+        <div className="detalhe-carregando" role="status">
+          Validando sua sessão…
+        </div>
+      ) : estado.tipo === "erro" ? (
+        <EstadoDaTela erro titulo="Não foi possível carregar sua conta">
+          <p>{estado.mensagem}</p>
+          <button className="botao" onClick={() => setTentativa((n) => n + 1)}>
+            Tentar novamente
+          </button>
+        </EstadoDaTela>
+      ) : (
+        <div className="painel-conta">
+          <span className="sobretitulo pequeno">ÁREA PROTEGIDA</span>
+          <h1>Olá, {estado.usuario.nome}</h1>
+          <p>Sua sessão está autenticada como Cliente.</p>
+          <dl>
+            <div>
+              <dt>E-mail</dt>
+              <dd>{estado.usuario.email}</dd>
+            </div>
+            <div>
+              <dt>Data de nascimento</dt>
+              <dd>
+                {new Date(
+                  `${estado.usuario.data_nascimento}T00:00:00`,
+                ).toLocaleDateString("pt-BR")}
+              </dd>
+            </div>
+          </dl>
+          <div className="acoes-conta">
+            <Link href="/" className="botao">
+              Explorar catálogo
+            </Link>
+            <button
+              className="botao botao-secundario"
+              onClick={aoSair}
+              data-cy="sair"
+            >
+              Sair
+            </button>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function RedirecionarParaLogin() {
+  useEffect(() => {
+    irPara("/login", true);
+  }, []);
+  return <div className="detalhe-carregando">Redirecionando para o login…</div>;
+}
+
 export default function App() {
   const endereco = useSyncExternalStore(
     assinar,
     () => `${location.pathname}${location.search}`,
   );
+  const [sessao, setSessao] = useState<SessaoLocal | null>(() => lerSessao());
   const url = new URL(endereco, location.origin);
   const paginaValida = (valor: string | null) =>
     valor &&
@@ -604,6 +828,40 @@ export default function App() {
   const detalhe = url.pathname.match(/^\/jogos\/(\d+)\/?$/);
   const ehCatalogo = url.pathname === "/" || url.pathname === "/catalogo";
   const ehCadastro = url.pathname === "/cadastro";
+  const ehLogin = url.pathname === "/login";
+  const ehConta = url.pathname === "/conta";
+
+  const expirarSessao = useCallback(() => {
+    encerrarSessao();
+    setSessao(null);
+    irPara("/login?expirada=1", true);
+  }, []);
+  const sair = useCallback(() => {
+    encerrarSessao();
+    setSessao(null);
+    irPara("/login", true);
+  }, []);
+
+  useEffect(() => {
+    if (!sessao) return;
+    const restante = sessao.expiraEm - Date.now();
+    if (restante <= 0) {
+      if (location.pathname === "/conta") expirarSessao();
+      else {
+        encerrarSessao();
+        setSessao(null);
+      }
+      return;
+    }
+    const temporizador = window.setTimeout(() => {
+      if (location.pathname === "/conta") expirarSessao();
+      else {
+        encerrarSessao();
+        setSessao(null);
+      }
+    }, restante);
+    return () => clearTimeout(temporizador);
+  }, [sessao, expirarSessao]);
   useEffect(() => {
     document.getElementById("conteudo")?.focus({ preventScroll: true });
   }, [endereco]);
@@ -632,13 +890,37 @@ export default function App() {
             >
               Catálogo
             </Link>
-            <Link
-              href="/cadastro"
-              className="nav-cadastro"
-              aria-current={ehCadastro ? "page" : undefined}
-            >
-              Criar conta
-            </Link>
+            {!sessao && (
+              <Link
+                href="/cadastro"
+                className="nav-cadastro"
+                aria-current={ehCadastro ? "page" : undefined}
+              >
+                Criar conta
+              </Link>
+            )}
+            {sessao ? (
+              <>
+                <Link
+                  href="/conta"
+                  className="nav-acesso"
+                  aria-current={ehConta ? "page" : undefined}
+                >
+                  Minha conta
+                </Link>
+                <button className="nav-sair" onClick={sair}>
+                  Sair
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                className="nav-acesso"
+                aria-current={ehLogin ? "page" : undefined}
+              >
+                Entrar
+              </Link>
+            )}
           </nav>
           <span className="cabecalho-nota">
             <span /> Jogos digitais, novas possibilidades
@@ -648,6 +930,19 @@ export default function App() {
       <main id="conteudo" className="largura" tabIndex={-1}>
         {ehCadastro ? (
           <Cadastro />
+        ) : ehLogin ? (
+          <Login
+            aoEntrar={(novaSessao) => {
+              setSessao(novaSessao);
+              irPara("/conta", true);
+            }}
+          />
+        ) : ehConta ? (
+          sessao ? (
+            <Conta sessao={sessao} aoExpirar={expirarSessao} aoSair={sair} />
+          ) : (
+            <RedirecionarParaLogin />
+          )
         ) : detalhe ? (
           <Detalhe
             key={detalhe[1]}
