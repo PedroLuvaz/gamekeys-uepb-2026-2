@@ -38,6 +38,30 @@ export interface ClienteCadastrado {
   perfil: "cliente";
 }
 
+export interface SessaoCriada {
+  access_token: string;
+  token_type: "bearer";
+  expires_in: number;
+  usuario: ClienteCadastrado;
+}
+
+export interface SessaoLocal {
+  token: string;
+  expiraEm: number;
+  usuario: ClienteCadastrado;
+}
+
+const CHAVE_DA_SESSAO = "gamekeys.sessao";
+
+export class ErroDaApi extends Error {
+  constructor(
+    mensagem: string,
+    readonly status: number,
+  ) {
+    super(mensagem);
+  }
+}
+
 type Estado<T> =
   | { chave: string; status: "carregando" }
   | { chave: string; status: "pronto"; dados: T }
@@ -74,6 +98,85 @@ export async function cadastrarCliente(
         "Não foi possível concluir o cadastro. Tente novamente.",
     );
   return corpo as ClienteCadastrado;
+}
+
+export async function entrar(
+  email: string,
+  senha: string,
+): Promise<SessaoCriada> {
+  let resposta: Response;
+  try {
+    resposta = await fetch(`${baseDaApi}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, senha }),
+    });
+  } catch {
+    throw new ErroDaApi(
+      "Não foi possível falar com o servidor. Tente novamente.",
+      0,
+    );
+  }
+  const corpo = (await resposta.json().catch(() => null)) as unknown;
+  if (!resposta.ok)
+    throw new ErroDaApi(
+      mensagemDaApi(corpo) || "Não foi possível entrar. Tente novamente.",
+      resposta.status,
+    );
+  return corpo as SessaoCriada;
+}
+
+export async function consultarUsuario(
+  token: string,
+): Promise<ClienteCadastrado> {
+  let resposta: Response;
+  try {
+    resposta = await fetch(`${baseDaApi}/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch {
+    throw new ErroDaApi(
+      "Não foi possível validar sua sessão. Tente novamente.",
+      0,
+    );
+  }
+  const corpo = (await resposta.json().catch(() => null)) as unknown;
+  if (!resposta.ok)
+    throw new ErroDaApi(
+      mensagemDaApi(corpo) || "Não foi possível validar sua sessão.",
+      resposta.status,
+    );
+  return corpo as ClienteCadastrado;
+}
+
+export function guardarSessao(sessao: SessaoCriada): SessaoLocal {
+  const local = {
+    token: sessao.access_token,
+    expiraEm: Date.now() + sessao.expires_in * 1000,
+    usuario: sessao.usuario,
+  };
+  sessionStorage.setItem(CHAVE_DA_SESSAO, JSON.stringify(local));
+  return local;
+}
+
+export function lerSessao(): SessaoLocal | null {
+  try {
+    const valor = sessionStorage.getItem(CHAVE_DA_SESSAO);
+    if (!valor) return null;
+    const sessao = JSON.parse(valor) as SessaoLocal;
+    if (!sessao.token || !sessao.usuario || sessao.expiraEm <= Date.now()) {
+      encerrarSessao();
+      return null;
+    }
+    return sessao;
+  } catch {
+    encerrarSessao();
+    return null;
+  }
+}
+
+export function encerrarSessao() {
+  sessionStorage.removeItem(CHAVE_DA_SESSAO);
 }
 
 export function useConsulta<T>(caminho: string) {

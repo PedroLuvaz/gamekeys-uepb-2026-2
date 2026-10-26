@@ -107,6 +107,8 @@ A API sobe em http://127.0.0.1:8000:
 - `/saude`: a API está no ar
 - `/saude/banco`: a API alcança o PostgreSQL (503 se não alcançar, sem expor a conexão)
 - `POST /clientes`: cadastra uma conta Cliente com senha protegida por bcrypt
+- `POST /auth/login`: valida as credenciais e cria um JWT com duração configurável
+- `GET /auth/me`: devolve o cliente da sessão quando recebe um Bearer token válido
 - `/docs`: documentação automática dos endpoints (desligada com `AMBIENTE=producao`)
 
 O front-end em `http://localhost:5173` já pode chamar a API; outras origens entram em `CORS_ORIGENS`.
@@ -157,11 +159,11 @@ Dentro de `frontend/`, com `pnpm dev` em execução:
 ```powershell
 pnpm build            # confere TypeScript da aplicação/testes e gera dist/
 pnpm test:e2e         # Cypress/Cucumber com API simulada
-pnpm test:integracao  # tela + API em execução, usando somente consultas
+pnpm test:integracao  # tela + API + PostgreSQL locais, com dados fictícios isolados
 pnpm test:abrir       # opcional: interface do Cypress
 ```
 
-Os 23 cenários em `cypress/e2e/` cobrem cadastro, paginação, esgotado,
+Os 27 cenários em `cypress/e2e/` cobrem cadastro, login, sessão, paginação, esgotado,
 navegação ao detalhe e retorno, lista vazia, falha e nova tentativa, carregamento, página
 além da última, celular, jogo não encontrado, histórico do navegador, recarga e capa
 indisponível. Usam respostas simuladas na rede: não
@@ -169,9 +171,10 @@ acessam nem recriam o banco do Neon. A base pode ser reaproveitada nos testes de
 e login. Relatórios JUnit e Cucumber ficam em `frontend/cypress/reports/`; capturas de
 falhas ficam em `frontend/cypress/screenshots/`. Esses arquivos são ignorados pelo Git.
 
-Os sete testes em `cypress/integracao/` usam a API em execução e o PostgreSQL sem simular
-respostas. O teste de cadastro cria uma conta fictícia com e-mail único e prova a persistência
-ao repetir o e-mail; os demais consultam a carga de demonstração. Execute esta suíte somente
+Os nove testes em `cypress/integracao/` usam a API em execução e o PostgreSQL sem simular
+respostas. Os testes de cadastro e login criam contas fictícias com e-mail único para provar
+persistência, autenticação e mensagens seguras; os demais consultam a carga de demonstração.
+Execute esta suíte somente
 com os bancos locais `gamekeys` ou `gamekeys_teste`. No CI, ela usa o PostgreSQL do Docker
 Compose, com API e interface iniciadas no próprio job.
 
@@ -188,6 +191,25 @@ HTTP 422 e indisponibilidade do banco recebe HTTP 503 sem detalhes internos. A t
 unitários e de banco ficam em `backend/tests/test_clientes*.py`; os três cenários de aceite
 ficam em `frontend/cypress/e2e/cadastro.feature` e a integração real em
 `frontend/cypress/integracao/cadastro-real.cy.ts`.
+
+### Login e sessão (GK-8)
+
+`POST /auth/login` recebe `email` e `senha`, consulta o cliente persistido e compara o hash
+bcrypt. E-mail inexistente e senha incorreta recebem a mesma resposta HTTP 401, evitando
+confirmar se uma conta existe. Em caso de sucesso, a API emite um JWT HS256 com emissor e
+expiração; a duração padrão é 60 minutos e pode ser alterada por
+`JWT_DURACAO_MINUTOS`. Defina `JWT_SECRET` com um segredo forte fora do repositório.
+
+A interface `/login` guarda o token apenas em `sessionStorage`, valida a sessão em
+`GET /auth/me` antes de exibir `/conta`, remove o token no logout e também quando o prazo local
+expira ou a API responde 401. Assim, a sessão não sobrevive ao fechamento da aba. Esta escolha
+mantém o JWT no cliente e, portanto, exige a prevenção de XSS; a migração para cookie
+`HttpOnly`, `Secure` e `SameSite` fica como endurecimento posterior, pois muda o contrato de
+autenticação e precisa de validação da equipe. Catálogo e detalhe permanecem públicos.
+
+Os testes unitários e de banco ficam em `backend/tests/test_autenticacao*.py`; os quatro
+cenários de aceite ficam em `frontend/cypress/e2e/login.feature` e os dois testes com API e
+PostgreSQL reais em `frontend/cypress/integracao/login-real.cy.ts`.
 
 ### Detalhe do jogo (GK-10)
 
@@ -253,7 +275,7 @@ mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da c
 
 - `pytest` roda tudo (é a regressão). `pytest -m smoke` roda só a verificação rápida: API no ar, banco alcançável e front-end liberado pelo CORS. Os testes de banco usam só `TEST_DATABASE_URL` (banco `gamekeys_teste`) e são pulados quando ela não está definida.
 - A cada push e pull request, o GitHub Actions sobe o PostgreSQL pelo `docker-compose.yml`, aplica migrações e carga, roda ruff, o smoke e depois a suíte completa, e confere que os dados continuam no banco depois de reiniciá-lo.
-- O job de interface compila o front-end e executa os 23 cenários com API simulada. O job de back-end também executa os sete testes reais da tela integrada à API e ao PostgreSQL local. Relatórios e capturas de falhas são guardados como artefatos separados.
+- O job de interface compila o front-end e executa os 27 cenários com API simulada. O job de back-end também executa os nove testes reais da tela integrada à API e ao PostgreSQL local. Relatórios e capturas de falhas são guardados como artefatos separados.
 - Os relatórios JUnit (`smoke.xml` e `pytest.xml`) ficam no artefato `relatorios-de-teste` de cada execução, na aba Actions, mesmo quando algum teste falha. É a evidência para anexar no Jira.
 
 ## Banco de dados

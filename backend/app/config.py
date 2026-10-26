@@ -25,6 +25,8 @@ class Configuracoes:
     database_url: str | None
     origens_cors: tuple[str, ...]
     timeout_banco: float
+    jwt_secret: str | None = None
+    jwt_duracao_minutos: int = 60
 
     @property
     def em_producao(self) -> bool:
@@ -38,4 +40,6 @@ def carregar() -> Configuracoes:
         database_url=os.getenv("DATABASE_URL") or None,
         origens_cors=tuple(o.strip() for o in origens.split(",") if o.strip()),
         timeout_banco=float(os.getenv("BANCO_TIMEOUT_SEGUNDOS", "5")),
+        jwt_secret=os.getenv("JWT_SECRET") or None,
+        jwt_duracao_minutos=int(os.getenv("JWT_DURACAO_MINUTOS", "60")),
     )
