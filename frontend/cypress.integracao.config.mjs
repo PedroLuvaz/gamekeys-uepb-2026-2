@@ -5,6 +5,10 @@ import configuracaoBase from "./cypress.config.mjs";
 // A suíte real não gera Cucumber JSON: preserva as evidências dos cenários Gherkin.
 export default defineConfig({
   ...configuracaoBase,
+  // Identificador público consultado no banco local pelo CI; nenhuma credencial vai ao navegador.
+  expose: {
+    jogoInativoId: Number(process.env.GAMEKEYS_JOGO_INATIVO_ID || 0),
+  },
   reporterOptions: {
     ...configuracaoBase.reporterOptions,
     mochaFile: "cypress/reports/integracao-real-[hash].xml",

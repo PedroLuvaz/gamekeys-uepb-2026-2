@@ -84,10 +84,28 @@ function EstadoDaTela({
   );
 }
 
-function Falha({ tentarNovamente }: { tentarNovamente: () => void }) {
+function Falha({
+  tentarNovamente,
+  detalhe = false,
+}: {
+  tentarNovamente: () => void;
+  detalhe?: boolean;
+}) {
   return (
-    <EstadoDaTela erro titulo="Não foi possível carregar os jogos">
-      <p>A conexão com o catálogo falhou. Tente novamente em instantes.</p>
+    <EstadoDaTela
+      erro
+      titulo={
+        detalhe
+          ? "Não foi possível carregar o jogo"
+          : "Não foi possível carregar os jogos"
+      }
+    >
+      <p>
+        {detalhe
+          ? "A consulta aos detalhes falhou."
+          : "A conexão com o catálogo falhou."}{" "}
+        Tente novamente em instantes.
+      </p>
       <button
         className="botao"
         onClick={tentarNovamente}
@@ -323,15 +341,29 @@ function Detalhe({ id, origem }: { id: string; origem: number }) {
   );
   const voltar = origem > 1 ? `/?pagina=${origem}` : "/";
   useEffect(() => {
-    document.title = `${estado.status === "pronto" ? estado.dados.nome : "Detalhe do jogo"} | GameKeys`;
+    const titulo =
+      estado.status === "pronto"
+        ? estado.dados.nome
+        : estado.status === "erro" && estado.naoEncontrado
+          ? "Jogo não encontrado"
+          : "Detalhe do jogo";
+    document.title = `${titulo} | GameKeys`;
   }, [estado]);
   return (
-    <section className="detalhe" data-cy="detalhe">
+    <section
+      className="detalhe"
+      data-cy="detalhe"
+      aria-busy={estado.status === "carregando"}
+    >
       <Link href={voltar} className="voltar" data-cy="voltar-catalogo">
         ← Voltar ao catálogo
       </Link>
       {estado.status === "carregando" ? (
-        <div className="detalhe-carregando" role="status">
+        <div
+          className="detalhe-carregando"
+          role="status"
+          data-cy="carregando-detalhe"
+        >
           Carregando jogo…
         </div>
       ) : estado.status === "erro" ? (
@@ -343,7 +375,7 @@ function Detalhe({ id, origem }: { id: string; origem: number }) {
             </Link>
           </EstadoDaTela>
         ) : (
-          <Falha tentarNovamente={tentarNovamente} />
+          <Falha tentarNovamente={tentarNovamente} detalhe />
         )
       ) : (
         <div className="grade-detalhe">
@@ -353,19 +385,21 @@ function Detalhe({ id, origem }: { id: string; origem: number }) {
               {estado.dados.genero} · {estado.dados.plataforma}
             </span>
             <h1>{estado.dados.nome}</h1>
-            <p className="descricao-jogo">{estado.dados.descricao}</p>
+            <p className="descricao-jogo" data-cy="descricao-jogo">
+              {estado.dados.descricao}
+            </p>
             <dl className="ficha">
               <div>
                 <dt>Plataforma</dt>
-                <dd>{estado.dados.plataforma}</dd>
+                <dd data-cy="plataforma-jogo">{estado.dados.plataforma}</dd>
               </div>
               <div>
                 <dt>Gênero</dt>
-                <dd>{estado.dados.genero}</dd>
+                <dd data-cy="genero-jogo">{estado.dados.genero}</dd>
               </div>
               <div>
                 <dt>Classificação</dt>
-                <dd>
+                <dd data-cy="classificacao-jogo">
                   {estado.dados.classificacao === "L"
                     ? "Livre"
                     : `${estado.dados.classificacao} anos`}
@@ -373,8 +407,11 @@ function Detalhe({ id, origem }: { id: string; origem: number }) {
               </div>
             </dl>
             <div className="preco-detalhe">
-              <strong>{precoEmReais(estado.dados.preco)}</strong>
+              <strong data-cy="preco-jogo">
+                {precoEmReais(estado.dados.preco)}
+              </strong>
               <span
+                data-cy="disponibilidade-jogo"
                 className={
                   estado.dados.disponibilidade === "Esgotado"
                     ? "texto-esgotado"

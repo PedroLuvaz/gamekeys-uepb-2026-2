@@ -173,6 +173,27 @@ respostas. Fazem somente GET e não executam migrações. Ao rodá-los contra o 
 nenhum dado é alterado. No CI, eles usam o PostgreSQL local do Docker Compose, com
 API e interface iniciadas no próprio job.
 
+### Detalhe do jogo (GK-10)
+
+A GK-87 reutiliza `GET /jogos/{id}` e a mesma regra de disponibilidade da listagem:
+um jogo ativo sem chaves continua consultável como **Esgotado**. A GK-88 permite
+abrir a ficha pelo catálogo ou pelo endereço direto, com os seis dados do aceite
+(descrição, gênero, plataforma, classificação, preço e disponibilidade), recarga e
+retorno à página de origem. Inativo e inexistente recebem a mesma mensagem de não
+encontrado. Falha de comunicação permite tentar novamente.
+
+A GK-89 tem nove cenários isolados em `cypress/e2e/detalhe-jogo.feature`, com tags
+`@US-10`, `@GK-10`, `@R1`, `@smoke`, `@regressao` e `@excecao`. São executados
+junto ao catálogo por `pnpm test:e2e`, usando os dados fictícios de
+`cypress/fixtures/detalhe-jogo.json`. A integração real em
+`cypress/integracao/detalhe-real.cy.ts` compara os seis campos com a API e verifica
+um inativo cujo ID é consultado previamente no banco local. Ela exige
+`GAMEKEYS_JOGO_INATIVO_ID` no terminal que executa `pnpm test:integracao`; o CI
+prepara esse valor automaticamente, sem expor credenciais no navegador.
+
+Consulte [o roteiro da US-10](docs/testes/US-10-detalhe-do-jogo.md) para executar
+as verificações com PostgreSQL local e conferir a cobertura de cada subtask.
+
 ### Consulta pública do catálogo (GK-84)
 
 `GET /jogos?pagina=1` retorna até 20 jogos ativos, em ordem de nome e, em caso de empate,
