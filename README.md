@@ -106,6 +106,7 @@ A API sobe em http://127.0.0.1:8000:
 
 - `/saude`: a API está no ar
 - `/saude/banco`: a API alcança o PostgreSQL (503 se não alcançar, sem expor a conexão)
+- `POST /clientes`: cadastra uma conta Cliente com senha protegida por bcrypt
 - `/docs`: documentação automática dos endpoints (desligada com `AMBIENTE=producao`)
 
 O front-end em `http://localhost:5173` já pode chamar a API; outras origens entram em `CORS_ORIGENS`.
@@ -133,7 +134,8 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Abra `http://127.0.0.1:5173`. O catálogo consulta os dados reais pela API: 20 jogos por
+Abra `http://127.0.0.1:5173`. A opção **Criar conta** abre o formulário de cadastro. O
+catálogo consulta os dados reais pela API: 20 jogos por
 página, preços em reais e indicação de disponibilidade. Os cartões abrem a ficha com
 descrição, gênero, plataforma e classificação; voltar ao catálogo preserva a página de
 origem. Os botões voltar/avançar do navegador e endereços diretos também funcionam.
@@ -159,7 +161,7 @@ pnpm test:integracao  # tela + API em execução, usando somente consultas
 pnpm test:abrir       # opcional: interface do Cypress
 ```
 
-Os onze cenários em `cypress/e2e/listagem-jogos.feature` cobrem paginação, esgotado,
+Os 23 cenários em `cypress/e2e/` cobrem cadastro, paginação, esgotado,
 navegação ao detalhe e retorno, lista vazia, falha e nova tentativa, carregamento, página
 além da última, celular, jogo não encontrado, histórico do navegador, recarga e capa
 indisponível. Usam respostas simuladas na rede: não
@@ -167,11 +169,25 @@ acessam nem recriam o banco do Neon. A base pode ser reaproveitada nos testes de
 e login. Relatórios JUnit e Cucumber ficam em `frontend/cypress/reports/`; capturas de
 falhas ficam em `frontend/cypress/screenshots/`. Esses arquivos são ignorados pelo Git.
 
-Os três testes em `cypress/integracao/catalogo-real.cy.ts` usam a API em execução e a
-carga de demonstração (mais de 20 jogos e um esgotado na segunda página), sem simular
-respostas. Fazem somente GET e não executam migrações. Ao rodá-los contra o Neon,
-nenhum dado é alterado. No CI, eles usam o PostgreSQL local do Docker Compose, com
-API e interface iniciadas no próprio job.
+Os sete testes em `cypress/integracao/` usam a API em execução e o PostgreSQL sem simular
+respostas. O teste de cadastro cria uma conta fictícia com e-mail único e prova a persistência
+ao repetir o e-mail; os demais consultam a carga de demonstração. Execute esta suíte somente
+com os bancos locais `gamekeys` ou `gamekeys_teste`. No CI, ela usa o PostgreSQL do Docker
+Compose, com API e interface iniciadas no próprio job.
+
+### Cadastro de cliente (GK-7)
+
+`POST /clientes` recebe `nome`, `email`, `data_nascimento` e `senha`. O e-mail é normalizado
+para minúsculas e deve ser único; a senha precisa ter pelo menos oito caracteres e é persistida
+somente como hash bcrypt. O perfil inicial é `cliente`. A resposta HTTP 201 contém apenas
+`id`, `nome`, `email`, `data_nascimento` e `perfil` — nunca senha ou hash.
+
+E-mail repetido recebe HTTP 409 com mensagem genérica em português. Dados inválidos recebem
+HTTP 422 e indisponibilidade do banco recebe HTTP 503 sem detalhes internos. A tela
+`/cadastro` trata validação, envio, sucesso, duplicidade e falha de comunicação. Os testes
+unitários e de banco ficam em `backend/tests/test_clientes*.py`; os três cenários de aceite
+ficam em `frontend/cypress/e2e/cadastro.feature` e a integração real em
+`frontend/cypress/integracao/cadastro-real.cy.ts`.
 
 ### Detalhe do jogo (GK-10)
 
@@ -237,7 +253,7 @@ mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da c
 
 - `pytest` roda tudo (é a regressão). `pytest -m smoke` roda só a verificação rápida: API no ar, banco alcançável e front-end liberado pelo CORS. Os testes de banco usam só `TEST_DATABASE_URL` (banco `gamekeys_teste`) e são pulados quando ela não está definida.
 - A cada push e pull request, o GitHub Actions sobe o PostgreSQL pelo `docker-compose.yml`, aplica migrações e carga, roda ruff, o smoke e depois a suíte completa, e confere que os dados continuam no banco depois de reiniciá-lo.
-- O job de interface compila o front-end e executa os onze cenários com API simulada. O job de back-end também executa os três testes reais da tela integrada à API e ao PostgreSQL local. Relatórios e capturas de falhas são guardados como artefatos separados.
+- O job de interface compila o front-end e executa os 23 cenários com API simulada. O job de back-end também executa os sete testes reais da tela integrada à API e ao PostgreSQL local. Relatórios e capturas de falhas são guardados como artefatos separados.
 - Os relatórios JUnit (`smoke.xml` e `pytest.xml`) ficam no artefato `relatorios-de-teste` de cada execução, na aba Actions, mesmo quando algum teste falha. É a evidência para anexar no Jira.
 
 ## Banco de dados
