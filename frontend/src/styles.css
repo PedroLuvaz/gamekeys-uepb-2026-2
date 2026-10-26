@@ -556,7 +556,7 @@ p {
 }
 .grade-detalhe {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: 45px;
   align-items: start;
 }
@@ -571,6 +571,7 @@ p {
 }
 .conteudo-detalhe {
   padding: 12px 0;
+  overflow-wrap: anywhere;
 }
 .conteudo-detalhe h1 {
   font-family: "Space Grotesk", sans-serif;
@@ -583,6 +584,7 @@ p {
   font-size: 15px;
   line-height: 1.8;
   color: var(--muted);
+  white-space: pre-line;
 }
 .ficha {
   margin: 28px 0;
@@ -604,6 +606,7 @@ p {
 }
 .preco-detalhe {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 22px;
 }

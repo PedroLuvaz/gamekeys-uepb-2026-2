@@ -1,0 +1,24 @@
+{
+  "ativo": {
+    "id": 101,
+    "nome": "Caminhos de Aurora",
+    "capa_url": null,
+    "descricao": "Explore cidades flutuantes e descubra os caminhos de Aurora.\nUma aventura para todas as idades.",
+    "genero": "Aventura",
+    "plataforma": "PC",
+    "classificacao": "L",
+    "preco": "79.90",
+    "disponibilidade": "Disponível"
+  },
+  "esgotado": {
+    "id": 123,
+    "nome": "Fronteira de Titânio",
+    "capa_url": null,
+    "descricao": "Defenda a última fronteira em batalhas estratégicas.",
+    "genero": "Estratégia",
+    "plataforma": "PC",
+    "classificacao": "14",
+    "preco": "139.90",
+    "disponibilidade": "Esgotado"
+  }
+}

@@ -91,6 +91,12 @@ jobs:
       - name: Preparar interface para integração real
         working-directory: frontend
         run: pnpm install --frozen-lockfile
+      - name: Identificar jogo inativo na carga local (GK-10)
+        working-directory: .
+        run: |
+          jogo_inativo_id=$(docker compose exec -T postgres psql -U gamekeys -d gamekeys -tAc "select id from catalogo.jogos where not ativo order by id limit 1")
+          test -n "$jogo_inativo_id"
+          echo "GAMEKEYS_JOGO_INATIVO_ID=$jogo_inativo_id" >> "$GITHUB_ENV"
       - name: Verificar tela, API e PostgreSQL integrados
         working-directory: frontend
         run: |

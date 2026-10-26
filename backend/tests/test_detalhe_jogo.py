@@ -1,4 +1,4 @@
-"""Contrato de detalhe usado na navegação do catálogo, sem acessar o banco compartilhado."""
+"""GK-87: contrato público do detalhe, sem acessar o banco compartilhado."""
 
 from decimal import Decimal
 
@@ -6,6 +6,7 @@ import psycopg
 import pytest
 from fastapi.testclient import TestClient
 
+from app.db import BancoNaoConfigurado
 from app.esquemas.catalogo import DetalheDoJogo, Disponibilidade
 from app.main import app
 from app.servicos import catalogo
@@ -64,9 +65,12 @@ def test_identificador_invalido_nao_consulta_banco(monkeypatch, identificador):
     assert client.get(f"/jogos/{identificador}").status_code == 422
 
 
-def test_falha_no_detalhe_nao_expoe_conexao(monkeypatch):
+@pytest.mark.parametrize(
+    "erro", [psycopg.OperationalError("conexão privada"), BancoNaoConfigurado()]
+)
+def test_falha_no_detalhe_nao_expoe_conexao(monkeypatch, erro):
     def falhar(_):
-        raise psycopg.OperationalError("conexão privada")
+        raise erro
 
     monkeypatch.setattr(catalogo, "consultar_jogo", falhar)
 
