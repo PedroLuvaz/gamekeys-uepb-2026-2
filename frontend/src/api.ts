@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 export interface Jogo {
   id: number;
+  slug: string;
   nome: string;
   capa_url: string | null;
   preco: string;

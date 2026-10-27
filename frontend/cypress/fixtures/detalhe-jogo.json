@@ -1,6 +1,7 @@
 {
   "ativo": {
     "id": 101,
+    "slug": "caminhos-de-aurora",
     "nome": "Caminhos de Aurora",
     "capa_url": null,
     "descricao": "Explore cidades flutuantes e descubra os caminhos de Aurora.\nUma aventura para todas as idades.",
@@ -12,6 +13,7 @@
   },
   "esgotado": {
     "id": 123,
+    "slug": "fronteira-de-titanio",
     "nome": "Fronteira de Titânio",
     "capa_url": null,
     "descricao": "Defenda a última fronteira em batalhas estratégicas.",

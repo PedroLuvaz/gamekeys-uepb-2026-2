@@ -68,13 +68,14 @@ def test_campos_publicos_correspondem_ao_banco(cliente_catalogo, conexao):
     resposta = cliente_catalogo.get("/jogos")
 
     for item in resposta.json()["itens"]:
-        nome, capa, preco = conexao.execute(
-            "select nome, capa_url, preco from catalogo.jogos where id = %s", (item["id"],)
+        slug, nome, capa, preco = conexao.execute(
+            "select slug, nome, capa_url, preco from catalogo.jogos where id = %s", (item["id"],)
         ).fetchone()
+        assert item["slug"] == slug
         assert item["nome"] == nome
         assert item["capa_url"] == capa
         assert item["preco"] == str(preco)
-        assert set(item) == {"id", "nome", "capa_url", "preco", "disponibilidade"}
+        assert set(item) == {"id", "slug", "nome", "capa_url", "preco", "disponibilidade"}
 
 
 def test_pagina_apos_a_ultima_preserva_total(cliente_catalogo):

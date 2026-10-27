@@ -13,6 +13,7 @@ class Disponibilidade(StrEnum):
 
 class JogoNoCatalogo(BaseModel):
     id: int
+    slug: str
     nome: str
     capa_url: str | None
     preco: Decimal

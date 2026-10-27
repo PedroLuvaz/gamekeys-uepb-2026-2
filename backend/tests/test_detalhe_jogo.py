@@ -18,6 +18,7 @@ def test_detalhe_publico_exibe_os_campos_do_jogo(monkeypatch):
     def consultar(jogo_id):
         return DetalheDoJogo(
             id=jogo_id,
+            slug="tempestade-de-aco",
             nome="Tempestade de Aço",
             capa_url=None,
             preco=Decimal("139.90"),
@@ -35,6 +36,7 @@ def test_detalhe_publico_exibe_os_campos_do_jogo(monkeypatch):
     assert resposta.status_code == 200
     assert resposta.json() == {
         "id": 23,
+        "slug": "tempestade-de-aco",
         "nome": "Tempestade de Aço",
         "capa_url": None,
         "preco": "139.90",

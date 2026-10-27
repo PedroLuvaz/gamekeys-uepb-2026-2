@@ -7,6 +7,7 @@ import {
 
 interface JogoDetalhado {
   id: number;
+  slug: string;
   nome: string;
   capa_url: string | null;
   descricao: string;

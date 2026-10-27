@@ -11,7 +11,7 @@ JOGOS_POR_PAGINA = 20
 # O LEFT JOIN preserva o total mesmo com catálogo vazio ou página além da última.
 CONSULTA_PAGINADA = """
     with pagina as (
-        select id, nome, capa_url, preco, chaves_disponiveis
+        select id, slug, nome, capa_url, preco, chaves_disponiveis
         from catalogo.jogos
         where ativo
         order by nome, id
@@ -39,6 +39,7 @@ def listar_jogos(pagina: int = 1) -> PaginaDeJogos:
     itens = [
         JogoNoCatalogo(
             id=linha["id"],
+            slug=linha["slug"],
             nome=linha["nome"],
             capa_url=linha["capa_url"],
             preco=linha["preco"],
@@ -60,7 +61,7 @@ def consultar_jogo(jogo_id: int) -> DetalheDoJogo | None:
     """Reutiliza os dados e a disponibilidade do catálogo, sem expor jogos inativos."""
     with obter_pool().connection() as conexao, conexao.cursor(row_factory=dict_row) as cursor:
         linha = cursor.execute(
-            "select j.id, j.nome, j.capa_url, j.preco, j.chaves_disponiveis,"
+            "select j.id, j.slug, j.nome, j.capa_url, j.preco, j.chaves_disponiveis,"
             " j.descricao, c.nome as genero, j.plataforma, j.classificacao"
             " from catalogo.jogos j join catalogo.categorias c on c.id = j.categoria_id"
             " where j.id = %s and j.ativo",
@@ -70,6 +71,7 @@ def consultar_jogo(jogo_id: int) -> DetalheDoJogo | None:
         return None
     return DetalheDoJogo(
         id=linha["id"],
+        slug=linha["slug"],
         nome=linha["nome"],
         capa_url=linha["capa_url"],
         preco=linha["preco"],

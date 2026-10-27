@@ -37,6 +37,7 @@ def test_catalogo_publico_tem_contrato_paginado(monkeypatch, consulta, pagina):
             itens=[
                 JogoNoCatalogo(
                     id=7,
+                    slug="lamina-do-sertao",
                     nome="Lâmina do Sertão",
                     capa_url=None,
                     preco=Decimal("149.90"),
@@ -59,6 +60,7 @@ def test_catalogo_publico_tem_contrato_paginado(monkeypatch, consulta, pagina):
         "itens": [
             {
                 "id": 7,
+                "slug": "lamina-do-sertao",
                 "nome": "Lâmina do Sertão",
                 "capa_url": None,
                 "preco": "149.90",

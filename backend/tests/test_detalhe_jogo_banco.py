@@ -20,11 +20,11 @@ def cliente_detalhe(conexao, monkeypatch):
 @pytest.mark.parametrize("chaves", [0, 1, 30])
 def test_seis_dados_e_disponibilidade_correspondem_ao_banco(cliente_detalhe, conexao, chaves):
     jogo = conexao.execute(
-        "select j.id, j.nome, j.descricao, c.nome, j.plataforma, j.classificacao, j.preco"
+        "select j.id, j.slug, j.nome, j.descricao, c.nome, j.plataforma, j.classificacao, j.preco"
         " from catalogo.jogos j join catalogo.categorias c on c.id = j.categoria_id"
         " where j.ativo order by j.nome, j.id limit 1"
     ).fetchone()
-    jogo_id, nome, descricao, genero, plataforma, classificacao, preco = jogo
+    jogo_id, slug, nome, descricao, genero, plataforma, classificacao, preco = jogo
     conexao.execute(
         "update catalogo.jogos set chaves_disponiveis = %s where id = %s", (chaves, jogo_id)
     )
@@ -34,6 +34,7 @@ def test_seis_dados_e_disponibilidade_correspondem_ao_banco(cliente_detalhe, con
     assert resposta.status_code == 200
     assert resposta.json() == {
         "id": jogo_id,
+        "slug": slug,
         "nome": nome,
         "capa_url": None,
         "descricao": descricao,

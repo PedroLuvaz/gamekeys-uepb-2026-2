@@ -18,19 +18,21 @@ export default function ArteJogo({
   grande?: boolean;
 }) {
   const uid = useId();
-  const [falhou, setFalhou] = useState(false);
+  const [capaComFalha, setCapaComFalha] = useState<string | null>(null);
   const variante =
     [...jogo.nome].reduce((soma, letra) => soma + letra.charCodeAt(0), 0) % 6;
   const [fundo, meio, luz] = paletas[variante];
+  // Sem capa cadastrada, usa a capa de demonstração do slug em public/capas.
+  const capa = jogo.capa_url || `/capas/${jogo.slug}.webp`;
 
   return (
     <div className={`arte-jogo${grande ? " arte-grande" : ""}`}>
-      {jogo.capa_url && !falhou ? (
+      {capaComFalha !== capa ? (
         <img
-          src={jogo.capa_url}
-          alt={`Capa de ${jogo.nome}`}
-          loading="lazy"
-          onError={() => setFalhou(true)}
+          src={capa}
+          alt={`Capa do jogo ${jogo.nome}`}
+          loading={grande ? "eager" : "lazy"}
+          onError={() => setCapaComFalha(capa)}
         />
       ) : (
         <>

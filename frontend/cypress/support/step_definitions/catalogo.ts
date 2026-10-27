@@ -2,6 +2,7 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 const jogos = Array.from({ length: 23 }, (_, indice) => ({
   id: indice + 1,
+  slug: `aventura-${String(indice + 1).padStart(2, "0")}`,
   nome: `Aventura ${String(indice + 1).padStart(2, "0")}`,
   capa_url: null,
   preco: "49.90",
