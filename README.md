@@ -279,6 +279,23 @@ mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da c
 - O job `imagens Docker` gera as imagens da API e do front-end com `docker compose build`, para o `Dockerfile` não quebrar sem ninguém ver.
 - Os relatórios JUnit (`smoke.xml` e `pytest.xml`) ficam no artefato `relatorios-de-teste` de cada execução, na aba Actions, mesmo quando algum teste falha. É a evidência para anexar no Jira.
 
+### Deploy (Vercel)
+
+A API roda no Vercel como uma função Python, sem configuração extra: o Vercel acha o `app` em `backend/app/main.py`. O `backend/vercel.json` fixa a região `cle1` (Ohio), a mesma do Neon (`us-east-2`), e o `backend/.python-version` fixa o Python 3.12 do CI.
+
+Preparação (uma vez, na raiz do repositório):
+
+```bash
+npx vercel login
+npx vercel link                 # crie o projeto e responda "backend" como diretório do código
+scripts/vercel-env.sh           # envia DATABASE_URL, AMBIENTE e BANCO_TIMEOUT_SEGUNDOS
+```
+
+- Produção usa `AMBIENTE=producao` (sem `/docs`); preview usa `desenvolvimento`.
+- Quando o front-end tiver endereço, rode de novo com as origens dele: `scripts/vercel-env.sh https://gamekeys.vercel.app`.
+- Migrações não rodam no deploy: aplique com `python -m app.migrar` antes de publicar uma versão que mude o banco.
+- Depois do deploy, `/saude/banco` confirma que a API alcança o Neon.
+
 ## Banco de dados
 
 PostgreSQL no Neon (projeto `weathered-shadow-77764238`, branch `production`). São dois bancos:

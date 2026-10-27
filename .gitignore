@@ -35,3 +35,6 @@ backend/relatorios/
 frontend/cypress/screenshots/
 frontend/cypress/videos/
 frontend/cypress/reports/
+
+# Vercel (vínculo local criado pelo vercel link)
+.vercel
