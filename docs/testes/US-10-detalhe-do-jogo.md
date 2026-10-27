@@ -21,20 +21,15 @@ Os cenários usam as tags do Plano de Teste: `@US-10`, `@R1`, `@smoke`,
 com o Jira. Os dados simulados vêm de `frontend/cypress/fixtures/detalhe-jogo.json`;
 a integração real usa a carga fictícia existente da GK-57.
 
-## Execução com banco local
+## Execução local
 
-Requer Docker, Python 3.12+, Node.js 24 e pnpm 11.25. As variáveis abaixo valem
-somente para o terminal atual e apontam para o PostgreSQL local do projeto.
-O pytest recria a estrutura de `gamekeys_teste`; não use o banco compartilhado
-para esta execução.
+Requer Python 3.12+, Node.js 24 e pnpm 11.25. A API lê os bancos do Neon no `.env.local`
+da raiz. O pytest recria a estrutura de `gamekeys_teste`, que é compartilhado: combine
+a execução com a equipe. O CI roda a mesma sequência num PostgreSQL próprio do job.
 
 Terminal 1, na raiz do repositório:
 
 ```powershell
-docker compose up -d --wait
-$env:DATABASE_URL = "postgresql://gamekeys:gamekeys@127.0.0.1:5432/gamekeys"
-$env:DATABASE_URL_UNPOOLED = $env:DATABASE_URL
-$env:TEST_DATABASE_URL = "postgresql://gamekeys:gamekeys@127.0.0.1:5432/gamekeys_teste"
 cd backend
 .venv\Scripts\python.exe -m pip install -e ".[dev]"
 .venv\Scripts\python.exe -m app.migrar --carga
@@ -53,7 +48,7 @@ pnpm dev
 Terminal 3, na raiz do repositório:
 
 ```powershell
-$env:GAMEKEYS_JOGO_INATIVO_ID = (docker compose exec -T postgres psql -U gamekeys -d gamekeys -tAc "select id from catalogo.jogos where not ativo order by id limit 1").Trim()
+$env:GAMEKEYS_JOGO_INATIVO_ID = "8"   # Lenda Esquecida na carga de demonstração
 cd frontend
 pnpm build
 pnpm test:e2e

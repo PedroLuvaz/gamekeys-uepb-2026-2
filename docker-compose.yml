@@ -1,25 +1,25 @@
-# PostgreSQL local (GK-91), alternativa ao Neon e banco usado pelo CI.
-# Credenciais só de desenvolvimento: não são as do Neon e não protegem nada fora da sua máquina.
-#   docker compose up -d --wait     sobe o banco (os dados ficam no volume dados_postgres)
-#   docker compose down             para sem apagar os dados (down -v apaga o volume)
+# API e front-end em contêineres, usando o banco do Neon configurado no .env.local.
+# O banco não roda aqui: o CI usa um PostgreSQL próprio do GitHub Actions.
+#   docker compose up --build -d    sobe a API (8000) e o front-end (8080)
+#   docker compose logs -f api      acompanha a API
+#   docker compose down             para os dois
 
 services:
-  postgres:
-    image: postgres:18-alpine
-    environment:
-      POSTGRES_USER: gamekeys
-      POSTGRES_PASSWORD: gamekeys
-      POSTGRES_DB: gamekeys
+  api:
+    build: ./backend
+    env_file: .env.local
     ports:
-      - "5432:5432"
-    volumes:
-      - dados_postgres:/var/lib/postgresql
-      - ./backend/docker/criar-banco-de-teste.sql:/docker-entrypoint-initdb.d/01-banco-de-teste.sql:ro
+      - "8000:8000"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U gamekeys -d gamekeys"]
-      interval: 2s
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/saude')"]
+      interval: 5s
       timeout: 5s
-      retries: 30
+      retries: 12
 
-volumes:
-  dados_postgres:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      api:
+        condition: service_healthy

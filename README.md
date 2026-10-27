@@ -175,8 +175,8 @@ Os nove testes em `cypress/integracao/` usam a API em execução e o PostgreSQL 
 respostas. Os testes de cadastro e login criam contas fictícias com e-mail único para provar
 persistência, autenticação e mensagens seguras; os demais consultam a carga de demonstração.
 Execute esta suíte somente
-com os bancos locais `gamekeys` ou `gamekeys_teste`. No CI, ela usa o PostgreSQL do Docker
-Compose, com API e interface iniciadas no próprio job.
+com os bancos `gamekeys` ou `gamekeys_teste`. No CI, ela usa o PostgreSQL efêmero do
+próprio job, com API e interface iniciadas nele.
 
 ### Cadastro de cliente (GK-7)
 
@@ -264,8 +264,8 @@ Se o banco estiver indisponível, a API retorna HTTP 503 com uma mensagem em por
 
 Para conferir pelo navegador: `http://127.0.0.1:8000/jogos` e
 `http://127.0.0.1:8000/jogos?pagina=2`. Os testes de integração em `test_catalogo_banco.py`
-usam o banco de testes, como o restante da suíte; use PostgreSQL local com Docker ou combine
-a execução com a equipe antes de usar o banco de teste compartilhado do Neon.
+usam o banco de testes, como o restante da suíte. Localmente esse banco é o `gamekeys_teste`
+compartilhado do Neon: combine a execução com a equipe, porque o pytest recria a estrutura dele.
 
 `GET /jogos/{id}` retorna os mesmos campos do cartão, mais `descricao`, `genero`,
 `plataforma` e `classificacao`. Jogo inexistente ou inativo recebe HTTP 404 com a mesma
@@ -274,8 +274,9 @@ mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da c
 ### Testes e CI
 
 - `pytest` roda tudo (é a regressão). `pytest -m smoke` roda só a verificação rápida: API no ar, banco alcançável e front-end liberado pelo CORS. Os testes de banco usam só `TEST_DATABASE_URL` (banco `gamekeys_teste`) e são pulados quando ela não está definida.
-- A cada push e pull request, o GitHub Actions sobe o PostgreSQL pelo `docker-compose.yml`, aplica migrações e carga, roda ruff, o smoke e depois a suíte completa, e confere que os dados continuam no banco depois de reiniciá-lo.
+- A cada push e pull request, o GitHub Actions sobe um PostgreSQL próprio do job (serviço `postgres`), aplica migrações e carga, roda ruff, o smoke e depois a suíte completa, e confere que os dados continuam no banco depois de reiniciá-lo.
 - O job de interface compila o front-end e executa os 27 cenários com API simulada. O job de back-end também executa os nove testes reais da tela integrada à API e ao PostgreSQL local. Relatórios e capturas de falhas são guardados como artefatos separados.
+- O job `imagens Docker` gera as imagens da API e do front-end com `docker compose build`, para o `Dockerfile` não quebrar sem ninguém ver.
 - Os relatórios JUnit (`smoke.xml` e `pytest.xml`) ficam no artefato `relatorios-de-teste` de cada execução, na aba Actions, mesmo quando algum teste falha. É a evidência para anexar no Jira.
 
 ## Banco de dados
@@ -295,15 +296,17 @@ PostgreSQL no Neon (projeto `weathered-shadow-77764238`, branch `production`). S
 
 O usuário da equipe (`gamekeys_equipe`) lê e grava dados, mas não cria nem altera tabelas: mudança de estrutura entra por migração em `backend/migracoes/`, aplicada pelo DevOps.
 
-### Alternativa local: Docker Compose
+### Rodar com Docker (API e front-end)
 
-Para rodar o PostgreSQL na própria máquina (é o mesmo banco que o CI usa), com Docker instalado:
+O banco continua no Neon: o Docker sobe só a API e o front-end, lendo o `.env.local` da raiz. Com Docker instalado:
 
 ```bash
-docker compose up -d --wait     # na raiz; cria gamekeys e gamekeys_teste na primeira vez
+docker compose up --build -d    # API em http://localhost:8000 e loja em http://localhost:8080
+docker compose logs -f api      # acompanha a API
+docker compose down             # para os dois
 ```
 
-No `.env.local`, use as três URLs `localhost` comentadas no `.env.example`. Os dados ficam no volume `dados_postgres` e sobrevivem a `docker compose down` e a reinícios; só `docker compose down -v` apaga tudo. As credenciais `gamekeys`/`gamekeys` valem apenas para esse banco local.
+O front-end é o build do Vite servido pelo nginx, que repassa `/api` para a API, como o proxy do Vite faz em desenvolvimento. Para aplicar migrações pelo contêiner: `docker compose run --rm api python -m app.migrar`. O usuário da equipe não altera tabelas, então isso cabe ao DevOps.
 
 ### Estrutura (Sprint 1)
 

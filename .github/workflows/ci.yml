@@ -45,8 +45,26 @@ jobs:
     defaults:
       run:
         working-directory: backend
-    # Banco local do docker-compose.yml: credenciais só de CI, sem segredo real.
+    # PostgreSQL efêmero do próprio job: credenciais só de CI, sem segredo real.
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: gamekeys
+          POSTGRES_PASSWORD: gamekeys
+          POSTGRES_DB: gamekeys
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U gamekeys -d gamekeys"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 30
     env:
+      PGHOST: localhost
+      PGUSER: gamekeys
+      PGPASSWORD: gamekeys
+      PGDATABASE: gamekeys
       DATABASE_URL: postgresql://gamekeys:gamekeys@localhost:5432/gamekeys
       DATABASE_URL_UNPOOLED: postgresql://gamekeys:gamekeys@localhost:5432/gamekeys
       TEST_DATABASE_URL: postgresql://gamekeys:gamekeys@localhost:5432/gamekeys_teste
@@ -62,9 +80,8 @@ jobs:
           cache: pip
           cache-dependency-path: backend/pyproject.toml
 
-      - name: Subir PostgreSQL (Docker Compose)
-        working-directory: .
-        run: docker compose up -d --wait
+      - name: Criar banco de testes
+        run: psql -c "create database gamekeys_teste"
 
       - name: Instalar dependências
         run: pip install -e ".[dev]"
@@ -97,7 +114,7 @@ jobs:
       - name: Identificar jogo inativo na carga local (GK-10)
         working-directory: .
         run: |
-          jogo_inativo_id=$(docker compose exec -T postgres psql -U gamekeys -d gamekeys -tAc "select id from catalogo.jogos where not ativo order by id limit 1")
+          jogo_inativo_id=$(psql -tAc "select id from catalogo.jogos where not ativo order by id limit 1")
           test -n "$jogo_inativo_id"
           echo "GAMEKEYS_JOGO_INATIVO_ID=$jogo_inativo_id" >> "$GITHUB_ENV"
       - name: Verificar tela, API e PostgreSQL integrados
@@ -128,8 +145,19 @@ jobs:
       - name: Dados continuam no banco depois de reiniciar
         working-directory: .
         run: |
-          docker compose down
-          docker compose up -d --wait
-          jogos=$(docker compose exec -T postgres psql -U gamekeys -d gamekeys -tAc "select count(*) from catalogo.jogos")
+          docker restart ${{ job.services.postgres.id }}
+          until pg_isready -q; do sleep 1; done
+          jogos=$(psql -tAc "select count(*) from catalogo.jogos")
           echo "jogos depois de reiniciar: $jogos"
           test "$jogos" = "24"
+
+  imagens:
+    name: imagens Docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # O compose exige o .env.local; no CI ele fica vazio, porque só as imagens são geradas.
+      - name: Gerar imagens da API e do front-end
+        run: |
+          touch .env.local
+          docker compose build
