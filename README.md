@@ -16,13 +16,19 @@ O GameKeys controla o estoque de chaves, os pedidos e a entrega, mantendo separa
 
 ## Equipe
 
-| Integrante | Papel na Release 1 |
-|---|---|
-| Pedro Lucas Vaz de Andrade | Product Owner e DevOps |
-| Wagner Tiburcio da Silva Junior | QA |
-| Rodrigo Almeida Gomes | Scrum Master |
+| Integrante | Papel na Release 1 (até 29/10) | Papel na Release 2 (03/11 a 26/11) |
+|---|---|---|
+| Pedro Lucas Vaz de Andrade | Product Owner e DevOps | Scrum Master |
+| Wagner Tiburcio da Silva Junior | QA | Product Owner e DevOps |
+| Rodrigo Almeida Gomes | Scrum Master | QA |
 
 Os papéis mudam ao fim de cada release. Quem é PO também é DevOps.
+
+Passagem de bastão para a Release 2:
+
+- **PO e DevOps (Pedro → Wagner):** backlog da Release 2 priorizado no épico GK-3, com as histórias GK-11 a GK-16 prontas pela DoR; Release Notes R1; pipeline de CI, PostgreSQL local isolado para testes e o README como guia do ambiente.
+- **Scrum Master (Rodrigo → Pedro):** board 34 do Jira, calendário de cerimônias, atas da Sprint 1, planilha de riscos e DoD; ação aberta de exigir 1 aprovação antes do merge (Q-11).
+- **QA (Wagner → Rodrigo):** Plano de Teste com os 30 casos da Release 1, Plano de Qualidade com o Resultado R1 e Relatório de Qualidade R1; próximos casos: carrinho, reserva de chaves e teste de concorrência (Q-03).
 
 ## Responsabilidades
 
@@ -80,6 +86,8 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1-i4Zd4ZaVWxmGvYyZ
 | SM | [Ata da Retrospectiva - Sprint 1](https://docs.google.com/document/d/1ULUe4oHA-BC-EaJZ31KRAFLJCQisLzr0dLJJMXIGi0w/edit) | `docs/sprints/Ata-Retrospectiva-Sprint-1.docx` |
 | DevOps | [Ambiente de Desenvolvimento](https://docs.google.com/document/d/1OaaMgqvrrhDVbRpNBJA_hqpPTlLmJIo1WBjJm8YpTtM/edit) | `docs/Ambiente-de-Desenvolvimento.docx` |
 | QA | [Relatório de Qualidade R1](https://docs.google.com/document/d/1Q_8t9bU_Arh-kA1wIgAJGgsuEEVXl4R-o76b3t-cHr8/edit) | `docs/releases/Relatorio-de-Qualidade-R1.docx` |
+| SM | Relatório de Métricas R1 (velocity, burndown e impedimentos) | `docs/releases/Relatorio-de-Metricas-R1.docx` |
+| DevOps | Relatório do Pipeline R1 | `docs/releases/Relatorio-do-Pipeline-R1.docx` |
 
 O que vale é a versão do Drive, onde a equipe preenche. A cópia em `docs/` é atualizada no fim da sprint.
 
