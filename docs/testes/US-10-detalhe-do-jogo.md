@@ -23,13 +23,17 @@ a integração real usa a carga fictícia existente da GK-57.
 
 ## Execução local
 
-Requer Python 3.12+, Node.js 24 e pnpm 11.25. A API lê os bancos do Neon no `.env.local`
-da raiz. O pytest recria a estrutura de `gamekeys_teste`, que é compartilhado: combine
-a execução com a equipe. O CI roda a mesma sequência num PostgreSQL próprio do job.
+Requer Docker, Python 3.12+, Node.js 24 e pnpm 11.25. Os testes usam um PostgreSQL local
+isolado; a proteção da GK-106 recusa Neon e outros hosts remotos antes de executar qualquer
+SQL destrutivo. O CI roda a mesma sequência num PostgreSQL próprio do job.
 
 Terminal 1, na raiz do repositório:
 
 ```powershell
+docker compose -f docker-compose.test.yml up -d --wait
+$env:DATABASE_URL = "postgresql://gamekeys:gamekeys@127.0.0.1:5433/gamekeys_teste?sslmode=disable"
+$env:DATABASE_URL_UNPOOLED = $env:DATABASE_URL
+$env:TEST_DATABASE_URL = $env:DATABASE_URL
 cd backend
 .venv\Scripts\python.exe -m pip install -e ".[dev]"
 .venv\Scripts\python.exe -m app.migrar --carga
@@ -81,3 +85,9 @@ reiniciar o banco. Os relatórios JUnit/Cucumber e as capturas ficam nos artefat
 
 A evidência automatizada não substitui a revisão de outro integrante nem o aceite
 do PO. A US e as subtasks só devem ser concluídas conforme a DoD da equipe.
+
+Ao terminar, encerre apenas o banco local de testes:
+
+```powershell
+docker compose -f docker-compose.test.yml down
+```

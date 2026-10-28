@@ -171,12 +171,12 @@ acessam nem recriam o banco do Neon. A base pode ser reaproveitada nos testes de
 e login. Relatórios JUnit e Cucumber ficam em `frontend/cypress/reports/`; capturas de
 falhas ficam em `frontend/cypress/screenshots/`. Esses arquivos são ignorados pelo Git.
 
-Os nove testes em `cypress/integracao/` usam a API em execução e o PostgreSQL sem simular
+Os nove testes em `cypress/integracao/` usam a API em execução e o PostgreSQL local isolado sem simular
 respostas. Os testes de cadastro e login criam contas fictícias com e-mail único para provar
 persistência, autenticação e mensagens seguras; os demais consultam a carga de demonstração.
-Execute esta suíte somente
-com os bancos `gamekeys` ou `gamekeys_teste`. No CI, ela usa o PostgreSQL efêmero do
-próprio job, com API e interface iniciadas nele.
+Execute esta suíte somente com o banco `gamekeys_teste` criado por
+`docker-compose.test.yml`. No CI, ela usa o PostgreSQL efêmero do próprio job, com API e
+interface iniciadas nele. A proteção da GK-106 recusa o Neon e qualquer outro host remoto.
 
 ### Cadastro de cliente (GK-7)
 
@@ -265,7 +265,8 @@ Se o banco estiver indisponível, a API retorna HTTP 503 com uma mensagem em por
 Para conferir pelo navegador: `http://127.0.0.1:8000/jogos` e
 `http://127.0.0.1:8000/jogos?pagina=2`. Os testes de integração em `test_catalogo_banco.py`
 usam o banco de testes, como o restante da suíte. Localmente esse banco é o `gamekeys_teste`
-compartilhado do Neon: combine a execução com a equipe, porque o pytest recria a estrutura dele.
+isolado na porta 5433; o pytest recusa URLs do Neon antes de abrir a conexão e recria apenas
+a estrutura desse contêiner local.
 
 `GET /jogos/{id}` retorna os mesmos campos do cartão, mais `descricao`, `genero`,
 `plataforma` e `classificacao`. Jogo inexistente ou inativo recebe HTTP 404 com a mesma
@@ -273,7 +274,7 @@ mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da c
 
 ### Testes e CI
 
-- `pytest` roda tudo (é a regressão). `pytest -m smoke` roda só a verificação rápida: API no ar, banco alcançável e front-end liberado pelo CORS. Os testes de banco usam só `TEST_DATABASE_URL` (banco `gamekeys_teste`) e são pulados quando ela não está definida.
+- `pytest` roda tudo (é a regressão). `pytest -m smoke` roda só a verificação rápida: API no ar, banco alcançável e front-end liberado pelo CORS. Os testes de banco usam só `TEST_DATABASE_URL` (banco local `gamekeys_teste`) e são pulados quando ela não está definida. Por segurança, a suíte interrompe a execução antes da primeira conexão se o host não for `localhost`, `127.0.0.1` ou `::1`.
 - A cada push e pull request, o GitHub Actions sobe um PostgreSQL próprio do job (serviço `postgres`), aplica migrações e carga, roda ruff, o smoke e depois a suíte completa, e confere que os dados continuam no banco depois de reiniciá-lo.
 - O job de interface compila o front-end e executa os 27 cenários com API simulada. O job de back-end também executa os nove testes reais da tela integrada à API e ao PostgreSQL local. Relatórios e capturas de falhas são guardados como artefatos separados.
 - O job `imagens Docker` gera as imagens da API e do front-end com `docker compose build`, para o `Dockerfile` não quebrar sem ninguém ver.
@@ -298,12 +299,34 @@ scripts/vercel-env.sh           # envia DATABASE_URL, AMBIENTE e BANCO_TIMEOUT_S
 
 ## Banco de dados
 
-PostgreSQL no Neon (projeto `weathered-shadow-77764238`, branch `production`). São dois bancos:
+PostgreSQL no Neon (projeto `weathered-shadow-77764238`, branch `production`) para desenvolvimento e demonstração. Testes destrutivos usam outro PostgreSQL, local e descartável:
 
 | Banco | Uso |
 |---|---|
 | `gamekeys` | desenvolvimento e demonstração |
-| `gamekeys_teste` | testes automáticos; o pytest apaga e recria a estrutura a cada execução |
+| `gamekeys_teste` no Neon | legado compartilhado; proibido para execução do pytest |
+| `gamekeys_teste` local, porta 5433 | testes automáticos; o pytest apaga e recria somente esta estrutura isolada |
+
+### PostgreSQL local isolado para testes
+
+Na raiz do repositório:
+
+```powershell
+docker compose -f docker-compose.test.yml up -d --wait
+$env:TEST_DATABASE_URL = "postgresql://gamekeys:gamekeys@127.0.0.1:5433/gamekeys_teste?sslmode=disable"
+cd backend
+.venv\Scripts\python.exe -m pytest
+```
+
+Para a integração da interface, defina também `DATABASE_URL` e
+`DATABASE_URL_UNPOOLED` com a mesma URL apenas no terminal dos testes. Ao terminar:
+
+```powershell
+docker compose -f docker-compose.test.yml down
+```
+
+O arquivo de teste não lê credenciais do Neon. SSL continua obrigatório nas URLs de
+desenvolvimento e produção do Neon; `sslmode=disable` só é usado no loopback local.
 
 ### Conectar
 
