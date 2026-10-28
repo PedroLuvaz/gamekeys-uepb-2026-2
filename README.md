@@ -86,8 +86,8 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1-i4Zd4ZaVWxmGvYyZ
 | SM | [Ata da Retrospectiva - Sprint 1](https://docs.google.com/document/d/1ULUe4oHA-BC-EaJZ31KRAFLJCQisLzr0dLJJMXIGi0w/edit) | `docs/sprints/Ata-Retrospectiva-Sprint-1.docx` |
 | DevOps | [Ambiente de Desenvolvimento](https://docs.google.com/document/d/1OaaMgqvrrhDVbRpNBJA_hqpPTlLmJIo1WBjJm8YpTtM/edit) | `docs/Ambiente-de-Desenvolvimento.docx` |
 | QA | [Relatório de Qualidade R1](https://docs.google.com/document/d/1Q_8t9bU_Arh-kA1wIgAJGgsuEEVXl4R-o76b3t-cHr8/edit) | `docs/releases/Relatorio-de-Qualidade-R1.docx` |
-| SM | Relatório de Métricas R1 (velocity, burndown e impedimentos) | `docs/releases/Relatorio-de-Metricas-R1.docx` |
-| DevOps | Relatório do Pipeline R1 | `docs/releases/Relatorio-do-Pipeline-R1.docx` |
+| SM | [Relatório de Métricas R1](https://drive.google.com/file/d/14o1IOR7zsJshv1nD8OGk2PereJsrKMon/view) (velocity, burndown e impedimentos) | `docs/releases/Relatorio-de-Metricas-R1.docx` |
+| DevOps | [Relatório do Pipeline R1](https://drive.google.com/file/d/182Bwdq4Eo_4UzFWKuPhSx3FgqF18Cww5/view) | `docs/releases/Relatorio-do-Pipeline-R1.docx` |
 
 O que vale é a versão do Drive, onde a equipe preenche. A cópia em `docs/` é atualizada no fim da sprint.
 
