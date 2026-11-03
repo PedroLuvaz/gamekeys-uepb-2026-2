@@ -38,3 +38,6 @@ frontend/cypress/reports/
 
 # Vercel (vínculo local criado pelo vercel link)
 .vercel
+
+# Binários baixados localmente (ex.: ffmpeg do vídeo da Sprint 1)
+scripts/bin/

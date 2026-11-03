@@ -27,7 +27,7 @@ Os papéis mudam ao fim de cada release. Quem é PO também é DevOps.
 Passagem de bastão para a Release 2:
 
 - **PO e DevOps (Pedro → Wagner):** backlog da Release 2 priorizado no épico GK-3, com as histórias GK-11 a GK-16 prontas pela DoR; Release Notes R1; pipeline de CI, PostgreSQL local isolado para testes e o README como guia do ambiente.
-- **Scrum Master (Rodrigo → Pedro):** board 34 do Jira, calendário de cerimônias, atas da Sprint 1, planilha de riscos e DoD; ação aberta de exigir 1 aprovação antes do merge (Q-11).
+- **Scrum Master (Rodrigo → Pedro):** board 34 do Jira, calendário de cerimônias, atas da Sprint 1, planilha de riscos e DoD; a exigência de 1 aprovação antes do merge (Q-11) está ativa na `main` desde 03/11.
 - **QA (Wagner → Rodrigo):** Plano de Teste com os 30 casos da Release 1, Plano de Qualidade com o Resultado R1 e Relatório de Qualidade R1; próximos casos: carrinho, reserva de chaves e teste de concorrência (Q-03).
 
 ## Responsabilidades
@@ -379,4 +379,4 @@ pytest                          # inclui os testes de estrutura, contra gamekeys
 - Branch: `<tipo>/GK-<número>-descricao-curta` (ex.: `feature/GK-12-carrinho-alterar-itens`)
 - Commit: `tipo: GK-<número> descrição` (ex.: `feat: GK-12 cadastro de cliente`). O hook `scripts/hooks/commit-msg` confere o formato; ative com `scripts/gk.sh install-hooks`
 - Branch e PR podem ser abertos com `scripts/gk.sh` (veja `scripts/gk.sh ajuda`) ou pela skill do Claude Code em `.claude/skills/jira-gamekeys/`
-- Toda mudança entra por pull request revisado por outro integrante.
+- Toda mudança entra por pull request revisado por outro integrante. A `main` tem um ruleset (Settings > Rules) que exige PR com 1 aprovação de quem não fez o último push e os checks `frontend`, `backend` e `imagens Docker` verdes; não há bypass nem force push. Se um job do `ci.yml` mudar de nome, ajuste o ruleset junto.
