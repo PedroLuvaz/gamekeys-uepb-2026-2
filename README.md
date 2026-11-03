@@ -91,6 +91,16 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1-i4Zd4ZaVWxmGvYyZ
 
 O que vale é a versão do Drive, onde a equipe preenche. A cópia em `docs/` é atualizada no fim da sprint.
 
+### Release 2
+
+Pasta no Google Drive: https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByRFdmTL7EWpluAjH_
+
+| Papel | Documento | Repositório |
+|---|---|---|
+| SM | [Ata da Planning - Sprint 2](https://docs.google.com/document/d/12tAuNdJ9sn_yyHmyuh9Re8GtH_yCdZkFoKyMBKi-_Os/edit) | `docs/sprints/Ata-Planning-Sprint-2.docx` |
+
+Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
+
 ## Tecnologias
 
 Python 3.12 com FastAPI, PostgreSQL, React com TypeScript e GitHub Actions.
