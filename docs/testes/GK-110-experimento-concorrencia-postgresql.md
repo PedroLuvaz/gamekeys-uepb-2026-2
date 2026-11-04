@@ -107,11 +107,18 @@ having count(*) > 1;
 
 ## Execução registrada
 
-O resultado executado deve ser preenchido somente depois da execução contra o PostgreSQL local:
+Execução realizada por Rodrigo em 04/11/2026, no Git Bash do Windows, contra PostgreSQL 18
+local e isolado. Ambiente Python 3.12.14; nenhuma operação destrutiva foi executada no Neon.
 
-| Data | Commit | PostgreSQL | Rodadas × concorrentes | Resultado | Evidência |
-| --- | --- | --- | --- | --- | --- |
-| A executar | branch `test/GK-110-GK-116-concorrencia-qa` | local `gamekeys_teste` | 100 × 20 | pendente | relatório pytest/JSON local |
+| Comando | Commit testado | Ambiente | Resultado | Duração |
+| --- | --- | --- | --- | --- |
+| `pytest tests/test_concorrencia_gk110.py -v` | `62eb852` | Windows, Python 3.12.14, PostgreSQL 18 `gamekeys_teste` | 5/5 passaram | 9,88 s |
+| `python -m qa.gk110_concorrencia --rodadas 100 --concorrentes 20` | `62eb852` | mesmo PostgreSQL local isolado | 2.000 tentativas: 100 reservas, 1.900 recusas e 0 rodadas com falha | 9,001 s |
+| `pytest -v` | `62eb852` | mesmo ambiente | 92/92 passaram; 1 aviso não bloqueante de depreciação do `TestClient` | 25,62 s |
+
+O teste de stress confirmou, em cada uma das 100 rodadas, exatamente uma reserva, 19 recusas
+por esgotamento e nenhuma chave duplicada. Esses números comprovam o experimento isolado da
+GK-110; não representam execução do checkout real, que continua dependente de GK-15/GK-46.
 
 ## Limitações e próximos passos
 
