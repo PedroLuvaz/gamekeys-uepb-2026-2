@@ -32,6 +32,7 @@ testpaths = ["tests"]
 addopts = "--strict-markers"
 markers = [
     "smoke: verificação rápida da API e do banco, roda primeiro a cada push (Plano de Teste)",
+    "concorrencia: experimento real de transações no PostgreSQL local isolado",
 ]
 
 [tool.ruff]
