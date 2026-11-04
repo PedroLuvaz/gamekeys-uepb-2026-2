@@ -27,21 +27,21 @@ Legenda de estado:
 | QA-R2-008 | Alterar acima do estoque | item existente; nova quantidade excessiva | alteração recusada; valor anterior preservado | HTTP/mensagem + antes/depois | Preparado/aguarda GK-12 |
 | QA-R2-009 | Reservar chave disponível | cliente autenticado; pedido válido; chave livre | uma chave única fica associada ao pedido | API + `itens_pedido` sem mostrar código | Preparado/aguarda GK-15/GK-46 |
 | QA-R2-010 | Segunda compra sequencial da mesma chave | QA-R2-009 concluído; nenhuma outra chave | segunda compra recebe esgotado e não cria item | API + consulta de unicidade | Preparado/aguarda GK-15/GK-46 |
-| QA-R2-011 | Duas transações disputam a última chave | schema `qa_gk110`; 1 chave; 2 conexões | 1 reserva e 1 esgotado; segunda não espera o lock | pytest + consulta de integridade | Automatizado GK-110 |
-| QA-R2-012 | Rollback após reservar e antes do commit | schema `qa_gk110`; falha injetada | 0 pedidos/itens; chave volta a disponível | pytest + consulta de integridade | Automatizado GK-110 |
-| QA-R2-013 | 20 compras simultâneas × 100 rodadas | estado reiniciado a cada rodada; 1 chave | por rodada: 1 sucesso, 19 recusas, 0 duplicadas | JSON/JUnit + consulta SQL | Automatizado no experimento; checkout aguarda GK-15/GK-46 |
+| QA-R2-011 | Duas transações disputam a última chave | schema `qa_gk110`; 1 chave; 2 conexões | 1 reserva e 1 esgotado; segunda não espera o lock | pytest + consulta de integridade | Executado no experimento GK-110 |
+| QA-R2-012 | Rollback após reservar e antes do commit | schema `qa_gk110`; falha injetada | 0 pedidos/itens; chave volta a disponível | pytest + consulta de integridade | Executado no experimento GK-110 |
+| QA-R2-013 | 20 compras simultâneas × 100 rodadas | estado reiniciado a cada rodada; 1 chave | por rodada: 1 sucesso, 19 recusas, 0 duplicadas | JSON/JUnit + consulta SQL | Executado no experimento; checkout aguarda GK-15/GK-46 |
 | QA-R2-014 | Integridade referencial do pedido | pedido concluído | todo item aponta para pedido e chave existentes | consulta de órfãos retorna 0 | Preparado/aguarda schema de vendas |
 | QA-R2-015 | Estoque após sucesso | 1 chave antes da compra | estoque disponível passa a 0 uma única vez | consulta antes/depois | Preparado/aguarda GK-15 |
 | QA-R2-016 | Falha do pedido não consome estoque | falha forçada antes do commit | chave e estoque permanecem disponíveis | API/log controlado + consulta | Preparado/aguarda GK-15/GK-46 |
 | QA-R2-017 | JWT ausente | rota de carrinho/reserva protegida | HTTP 401; nenhuma alteração no banco | resposta + consulta | Preparado/aguarda rotas R2 |
 | QA-R2-018 | JWT inválido ou expirado | token adulterado/expirado | HTTP 401 uniforme; nenhuma alteração | resposta + consulta | Preparado/aguarda rotas R2 |
 | QA-R2-019 | Isolamento entre clientes | pedidos de clientes A e B | A não lê/reserva/recebe chave de B | respostas 403/404 + consulta por proprietário | Preparado/aguarda GK-15/GK-16 |
-| QA-R1-001 | Saúde da API e banco | API e PostgreSQL local disponíveis | `/saude` e `/saude/banco` respondem sem segredo | pytest `smoke` | Regressão existente |
-| QA-R1-002 | Cadastro e e-mail único | banco local migrado | cadastro válido persiste hash; duplicado é recusado | `test_clientes*.py` | Regressão existente |
-| QA-R1-003 | Login e rota protegida | cliente local cadastrado | JWT válido funciona; credencial inválida recebe 401 | `test_autenticacao*.py` | Regressão existente |
-| QA-R1-004 | Catálogo, paginação e esgotado | carga de demonstração | apenas ativos; totais e disponibilidade corretos | `test_catalogo*.py` | Regressão existente |
-| QA-R1-005 | Detalhe do jogo | jogo ativo/inativo/inexistente | contrato completo ou 404 uniforme | `test_detalhe_jogo*.py` | Regressão existente |
-| QA-R1-006 | Restrições e estrutura do banco | migrações aplicadas | constraints, índices, permissões e persistência válidos | testes de banco existentes | Regressão existente |
+| QA-R1-001 | Saúde da API e banco | API e PostgreSQL local disponíveis | `/saude` e `/saude/banco` respondem sem segredo | pytest `smoke` | Executado na regressão backend 92/92 |
+| QA-R1-002 | Cadastro e e-mail único | banco local migrado | cadastro válido persiste hash; duplicado é recusado | `test_clientes*.py` | Executado na regressão backend 92/92 |
+| QA-R1-003 | Login e rota protegida | cliente local cadastrado | JWT válido funciona; credencial inválida recebe 401 | `test_autenticacao*.py` | Executado na regressão backend 92/92 |
+| QA-R1-004 | Catálogo, paginação e esgotado | carga de demonstração | apenas ativos; totais e disponibilidade corretos | `test_catalogo*.py` | Executado na regressão backend 92/92 |
+| QA-R1-005 | Detalhe do jogo | jogo ativo/inativo/inexistente | contrato completo ou 404 uniforme | `test_detalhe_jogo*.py` | Executado na regressão backend 92/92 |
+| QA-R1-006 | Restrições e estrutura do banco | migrações aplicadas | constraints, índices, permissões e persistência válidos | testes de banco existentes | Executado na regressão backend 92/92 |
 
 ## Automação atual
 
@@ -80,8 +80,9 @@ experimento não deve ser renomeado nem apresentado como aprovação de GK-15/GK
 | --- | --- | --- | --- | --- |
 | Lint/formatação | `ruff check .` e `ruff format --check .` | Python local, 04/11/2026 | passou | executado |
 | Proteção do banco | seleção de testes `recusa or aceita` | sem conexão remota, 04/11/2026 | 11 passaram | executado |
-| Concorrência GK-110 | `pytest tests/test_concorrencia_gk110.py -v` | `gamekeys_teste` local | bloqueado: Docker Desktop local não iniciou | aguarda CI/aprovação do mantenedor |
-| Regressão backend | `pytest -v` | Windows local | interrompida: primeiro `TestClient` legado travou | aguarda CI Linux |
+| Concorrência GK-110 | `pytest tests/test_concorrencia_gk110.py -v` | Windows, Python 3.12.14, PostgreSQL 18 `gamekeys_teste`, 04/11/2026 | 5/5 passaram em 9,88 s | executado |
+| Stress GK-110/GK-72 | módulo QA com 100 rodadas × 20 concorrentes | mesmo PostgreSQL local isolado, 04/11/2026 | 2.000 tentativas; 100 reservas; 1.900 recusas; 0 falhas; 9,001 s | executado no experimento isolado |
+| Regressão backend | `pytest -v` | mesmo ambiente, 04/11/2026 | 92/92 passaram em 25,62 s; aviso de depreciação não bloqueante | executado |
 | Build frontend | `pnpm build` | Node/pnpm local, 04/11/2026 | passou | executado |
 | Regressão frontend | `pnpm test:e2e` | API simulada conforme R1 | não executada | aguarda CI |
 | Integração R2 | casos QA-R2-001 a 019 | API + PostgreSQL local | não executada | depende das histórias indicadas |
