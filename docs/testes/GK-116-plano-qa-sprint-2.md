@@ -78,10 +78,12 @@ experimento não deve ser renomeado nem apresentado como aprovação de GK-15/GK
 
 | Execução | Comando | Ambiente | Resultado | Situação |
 | --- | --- | --- | --- | --- |
-| Lint/formatação | `ruff check .` e `ruff format --check .` | Python local | a registrar no PR | aplicável agora |
-| Concorrência GK-110 | `pytest tests/test_concorrencia_gk110.py -v` | `gamekeys_teste` local | pendente de PostgreSQL local ativo | aplicável agora |
-| Regressão backend | `pytest -v` | `gamekeys_teste` local | pendente | aplicável agora |
-| Regressão frontend | `pnpm build` e `pnpm test:e2e` | API simulada conforme R1 | pendente | aplicável agora |
+| Lint/formatação | `ruff check .` e `ruff format --check .` | Python local, 04/11/2026 | passou | executado |
+| Proteção do banco | seleção de testes `recusa or aceita` | sem conexão remota, 04/11/2026 | 11 passaram | executado |
+| Concorrência GK-110 | `pytest tests/test_concorrencia_gk110.py -v` | `gamekeys_teste` local | bloqueado: Docker Desktop local não iniciou | aguarda CI/aprovação do mantenedor |
+| Regressão backend | `pytest -v` | Windows local | interrompida: primeiro `TestClient` legado travou | aguarda CI Linux |
+| Build frontend | `pnpm build` | Node/pnpm local, 04/11/2026 | passou | executado |
+| Regressão frontend | `pnpm test:e2e` | API simulada conforme R1 | não executada | aguarda CI |
 | Integração R2 | casos QA-R2-001 a 019 | API + PostgreSQL local | não executada | depende das histórias indicadas |
 
 Critério de relato: “passou” exige data, commit, comando e resultado. “Aguarda implementação” não
