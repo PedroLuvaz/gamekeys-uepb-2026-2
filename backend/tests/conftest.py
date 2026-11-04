@@ -19,6 +19,8 @@ HOSTS_LOCAIS = {"localhost", "127.0.0.1", "::1"}
 
 def _validar_url_banco_teste(url: str) -> str:
     """Aceita somente o banco local explícito ``gamekeys_teste``."""
+    # Impede que o pytest inclua a URL (que pode conter senha) no traceback.
+    __tracebackhide__ = True
     try:
         parametros = conninfo_to_dict(url)
     except (psycopg.Error, ValueError) as erro:
