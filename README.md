@@ -308,9 +308,11 @@ Preparação (uma vez, na raiz do repositório):
 ```bash
 npx vercel login
 npx vercel link                 # crie o projeto e responda "backend" como diretório do código
-scripts/vercel-env.sh           # envia DATABASE_URL, AMBIENTE e BANCO_TIMEOUT_SEGUNDOS
+scripts/vercel-env.sh           # envia DATABASE_URL, JWT_SECRET, AMBIENTE, BANCO_TIMEOUT_SEGUNDOS e JWT_DURACAO_MINUTOS
 ```
 
+- No projeto do Vercel, o diretório raiz é `backend` e o preset de framework é **FastAPI**. Sem o preset o build termina vazio e todas as rotas respondem 404.
+- O `JWT_SECRET` do `.env.local` precisa ter pelo menos 32 caracteres (`openssl rand -hex 32`); o script recusa o valor de exemplo.
 - Produção usa `AMBIENTE=producao` (sem `/docs`); preview usa `desenvolvimento`.
 - Quando o front-end tiver endereço, rode de novo com as origens dele: `scripts/vercel-env.sh https://gamekeys.vercel.app`.
 - Migrações não rodam no deploy: aplique com `python -m app.migrar` antes de publicar uma versão que mude o banco.
