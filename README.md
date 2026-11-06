@@ -301,7 +301,7 @@ mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da c
 
 ### Deploy (Vercel)
 
-A API roda no Vercel como uma função Python, sem configuração extra: o Vercel acha o `app` em `backend/app/main.py`. O `backend/vercel.json` fixa a região `cle1` (Ohio), a mesma do Neon (`us-east-2`), e o `backend/.python-version` fixa o Python 3.12 do CI.
+A API roda no Vercel como uma função Python: com o preset FastAPI, o Vercel acha o `app` em `backend/app/main.py`. O `backend/vercel.json` fixa a região `cle1` (Ohio), a mesma do Neon (`us-east-2`), e o `backend/.python-version` fixa o Python 3.12 do CI.
 
 Preparação (uma vez, na raiz do repositório):
 
@@ -317,6 +317,31 @@ scripts/vercel-env.sh           # envia DATABASE_URL, JWT_SECRET, AMBIENTE, BANC
 - Quando o front-end tiver endereço, rode de novo com as origens dele: `scripts/vercel-env.sh https://gamekeys.vercel.app`.
 - Migrações não rodam no deploy: aplique com `python -m app.migrar` antes de publicar uma versão que mude o banco.
 - Depois do deploy, `/saude/banco` confirma que a API alcança o Neon.
+
+#### Ambiente de homologação (Release 2)
+
+A partir da Release 2, a Sprint Review é feita sobre a versão publicada em homologação (GK-135 e GK-136).
+
+| Item | Situação em 06/11/2026 |
+|---|---|
+| Conta | Vercel Hobby do Pedro (`pedro-andrades-projects-abe06b11`). O plano Hobby não aceita membros; o acesso da equipe é decidido no estudo da GK-137 |
+| API | Projeto `gamekeys-api`, diretório raiz `backend`, preset FastAPI, Python 3.12, região `cle1`. Endereço: https://gamekeys-api.vercel.app |
+| Front-end | Projeto `gamekeys-web`, diretório raiz `frontend`, preset Vite. Ainda sem deploy (GK-139): falta definir `VITE_API_URL` e a reescrita das rotas da SPA para `index.html` |
+| Variáveis | `AMBIENTE`, `BANCO_TIMEOUT_SEGUNDOS` e `JWT_DURACAO_MINUTOS` enviadas. `DATABASE_URL` e `JWT_SECRET` são enviadas por quem tem as credenciais, com `scripts/vercel-env.sh` |
+| Proteção | Deployment Protection (login do Vercel) ligada em todos os endereços. Para a Review, o front precisa ficar público (`vercel project protection disable gamekeys-web --sso`) |
+| Verificação | `/saude` responde 200. `/saude/banco` responde 503 até a `DATABASE_URL` ser enviada |
+
+Com a proteção ligada, a verificação usa o próprio CLI, que passa pela proteção:
+
+```bash
+vercel curl /saude/banco --deployment gamekeys-api.vercel.app
+```
+
+Para publicar uma versão nova da API, na raiz do repositório vinculada ao `gamekeys-api`:
+
+```bash
+vercel deploy --prod
+```
 
 ## Banco de dados
 
