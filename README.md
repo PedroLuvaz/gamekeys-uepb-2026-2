@@ -99,7 +99,9 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByR
 |---|---|---|
 | PO | [Plano da Release 2](https://docs.google.com/document/d/1TBzpeiyrZG81ur2l_uoBKzavjskJAV71tsItetSN9JM/edit) (objetivo, papéis, escopo por sprint, capacidade e riscos) | cópia no fim da sprint |
 | QA | [Plano de Qualidade e Testes da Release 2](https://docs.google.com/document/d/1IFobma41GfA1SwybH1yJDNPN8vf76YyoLbZQ1Cg2DC4/edit) (metas, matriz de testes, riscos e DoD) | `docs/qualidade/Plano-de-Qualidade-e-Testes-Release-2.md` |
+| DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main e homologação) | `docs/releases/Relatorio-do-Pipeline-R2.docx` |
 | SM | [Ata da Planning - Sprint 2](https://docs.google.com/document/d/12tAuNdJ9sn_yyHmyuh9Re8GtH_yCdZkFoKyMBKi-_Os/edit) | `docs/sprints/Ata-Planning-Sprint-2.docx` |
+| SM | [Acompanhamento e Resultados - Sprint 2](https://docs.google.com/document/d/1DIxA-qxKtHKApLr_6_mDT_uOIiEZB6XLZDsJqB_MHRM/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/sprints/Acompanhamento-e-Resultados-Sprint-2.docx` |
 
 Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
 
@@ -302,7 +304,7 @@ mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da c
 
 ### Deploy (Vercel)
 
-A API roda no Vercel como uma função Python, sem configuração extra: o Vercel acha o `app` em `backend/app/main.py`. O `backend/vercel.json` fixa a região `cle1` (Ohio), a mesma do Neon (`us-east-2`), e o `backend/.python-version` fixa o Python 3.12 do CI.
+A API roda no Vercel como uma função Python: com o preset FastAPI, o Vercel acha o `app` em `backend/app/main.py`. O `backend/vercel.json` fixa a região `cle1` (Ohio), a mesma do Neon (`us-east-2`), e o `backend/.python-version` fixa o Python 3.12 do CI.
 
 Preparação (uma vez, na raiz do repositório):
 
@@ -318,6 +320,31 @@ scripts/vercel-env.sh           # envia DATABASE_URL, JWT_SECRET, AMBIENTE, BANC
 - Quando o front-end tiver endereço, rode de novo com as origens dele: `scripts/vercel-env.sh https://gamekeys.vercel.app`.
 - Migrações não rodam no deploy: aplique com `python -m app.migrar` antes de publicar uma versão que mude o banco.
 - Depois do deploy, `/saude/banco` confirma que a API alcança o Neon.
+
+#### Ambiente de homologação (Release 2)
+
+A partir da Release 2, a Sprint Review é feita sobre a versão publicada em homologação (GK-135 e GK-136).
+
+| Item | Situação |
+|---|---|
+| Conta | Vercel Hobby do Pedro (`pedro-andrades-projects-abe06b11`). O plano Hobby não aceita membros; o acesso da equipe é decidido no estudo da GK-137 |
+| API | Projeto `gamekeys-api`, diretório raiz `backend`, preset FastAPI, Python 3.12, região `cle1`. Endereço: https://gamekeys-api.vercel.app |
+| Front-end | Projeto `gamekeys-web`, diretório raiz `frontend`, preset Vite. Ainda sem deploy (GK-139): falta definir `VITE_API_URL` e a reescrita das rotas da SPA para `index.html` |
+| Variáveis | Todas enviadas em 06/11 com `scripts/vercel-env.sh`, em produção e preview: `DATABASE_URL` (banco `gamekeys`, pooler, role `gamekeys_equipe`), `JWT_SECRET`, `AMBIENTE`, `BANCO_TIMEOUT_SEGUNDOS` e `JWT_DURACAO_MINUTOS`. Quem envia é quem tem as credenciais |
+| Proteção | Deployment Protection (login do Vercel) ligada em todos os endereços. Para a Review, o front precisa ficar público (`vercel project protection disable gamekeys-web --sso`) |
+| Verificação (06/11) | `/saude` e `/saude/banco` respondem 200 (banco `gamekeys`, PostgreSQL 18); `/jogos` lista o catálogo; `/auth/login` com credencial errada responde 401 |
+
+Com a proteção ligada, a verificação usa o próprio CLI, que passa pela proteção:
+
+```bash
+vercel curl /saude/banco --deployment gamekeys-api.vercel.app
+```
+
+Para publicar uma versão nova da API, na raiz do repositório vinculada ao `gamekeys-api`:
+
+```bash
+vercel deploy --prod
+```
 
 ## Banco de dados
 
