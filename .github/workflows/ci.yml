@@ -25,9 +25,11 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Conferir TypeScript e gerar front-end
         run: pnpm build
+      # Testa o build gerado no passo anterior (o mesmo que o Vercel publica). No servidor de
+      # desenvolvimento, o StrictMode monta os componentes duas vezes e derrubava cenários do carrinho.
       - name: Testar catálogo com Cypress/Cucumber e API simulada
         run: |
-          pnpm dev > /tmp/gamekeys-vite.log 2>&1 &
+          pnpm preview > /tmp/gamekeys-vite.log 2>&1 &
           pnpm test:e2e
       - name: Guardar evidências de interface
         if: always()

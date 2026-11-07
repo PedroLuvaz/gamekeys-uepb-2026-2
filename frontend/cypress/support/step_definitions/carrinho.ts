@@ -24,7 +24,6 @@ let jogo: JogoDoCarrinho;
 let autenticado: boolean;
 let total: number;
 let demora: boolean;
-let liberarAdicao: (() => void) | null;
 let falhaDeRede: boolean;
 let recusa: { statusCode: number; body: unknown } | null;
 
@@ -35,7 +34,6 @@ Before({ tags: "@GK-119-UI" }, () => {
     autenticado = false;
     total = 0;
     demora = false;
-    liberarAdicao = null;
     falhaDeRede = false;
     recusa = null;
   });
@@ -62,14 +60,9 @@ Given("que há um jogo disponível para adicionar ao carrinho", () => {
         subtotal: (Number(jogo.preco) * total).toFixed(2),
       },
     };
-    if (demora)
-      return new Promise<void>((resolve) => {
-        liberarAdicao = () => {
-          pedido.reply(resposta);
-          resolve();
-        };
-      });
-    pedido.reply(resposta);
+    // Atraso nativo do Cypress: o formulário fica pendente por 3 s, tempo para o teste
+    // conferir o bloqueio e tentar reenviar, e a resposta chega sozinha depois.
+    pedido.reply({ ...resposta, delay: demora ? 3000 : 0 });
   }).as("adicaoCarrinho");
 });
 
@@ -161,9 +154,6 @@ When("tento repetir o envio pendente do carrinho", () => {
       );
     }
   });
-  cy.wrap(null)
-    .should(() => expect(liberarAdicao).to.be.a("function"))
-    .then(() => liberarAdicao!());
   cy.wait("@adicaoCarrinho");
 });
 
