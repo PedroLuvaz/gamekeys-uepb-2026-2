@@ -322,14 +322,14 @@ scripts/vercel-env.sh           # envia DATABASE_URL, JWT_SECRET, AMBIENTE, BANC
 
 A partir da Release 2, a Sprint Review é feita sobre a versão publicada em homologação (GK-135 e GK-136).
 
-| Item | Situação em 06/11/2026 |
+| Item | Situação |
 |---|---|
 | Conta | Vercel Hobby do Pedro (`pedro-andrades-projects-abe06b11`). O plano Hobby não aceita membros; o acesso da equipe é decidido no estudo da GK-137 |
 | API | Projeto `gamekeys-api`, diretório raiz `backend`, preset FastAPI, Python 3.12, região `cle1`. Endereço: https://gamekeys-api.vercel.app |
 | Front-end | Projeto `gamekeys-web`, diretório raiz `frontend`, preset Vite. Ainda sem deploy (GK-139): falta definir `VITE_API_URL` e a reescrita das rotas da SPA para `index.html` |
-| Variáveis | `AMBIENTE`, `BANCO_TIMEOUT_SEGUNDOS` e `JWT_DURACAO_MINUTOS` enviadas. `DATABASE_URL` e `JWT_SECRET` são enviadas por quem tem as credenciais, com `scripts/vercel-env.sh` |
+| Variáveis | Todas enviadas em 06/11 com `scripts/vercel-env.sh`, em produção e preview: `DATABASE_URL` (banco `gamekeys`, pooler, role `gamekeys_equipe`), `JWT_SECRET`, `AMBIENTE`, `BANCO_TIMEOUT_SEGUNDOS` e `JWT_DURACAO_MINUTOS`. Quem envia é quem tem as credenciais |
 | Proteção | Deployment Protection (login do Vercel) ligada em todos os endereços. Para a Review, o front precisa ficar público (`vercel project protection disable gamekeys-web --sso`) |
-| Verificação | `/saude` responde 200. `/saude/banco` responde 503 até a `DATABASE_URL` ser enviada |
+| Verificação (06/11) | `/saude` e `/saude/banco` respondem 200 (banco `gamekeys`, PostgreSQL 18); `/jogos` lista o catálogo; `/auth/login` com credencial errada responde 401 |
 
 Com a proteção ligada, a verificação usa o próprio CLI, que passa pela proteção:
 
