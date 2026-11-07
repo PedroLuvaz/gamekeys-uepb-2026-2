@@ -51,8 +51,13 @@ def banco():
         pytest.skip("sem TEST_DATABASE_URL")
     url_teste = _validar_url_banco_teste(URL_TESTE)
     with psycopg.connect(url_teste, autocommit=True) as conexao:
+        # Papel sem login, só no servidor local validado: exercita os grants das migrações.
         conexao.execute(
-            "drop schema if exists core, catalogo cascade;"
+            "do $$ begin if not exists (select from pg_roles where rolname='gamekeys_equipe')"
+            " then create role gamekeys_equipe nologin; end if; end; $$"
+        )
+        conexao.execute(
+            "drop schema if exists vendas, core, catalogo cascade;"
             " drop table if exists public.migracoes_aplicadas"
         )
     migrar(url_teste, carga=True)
