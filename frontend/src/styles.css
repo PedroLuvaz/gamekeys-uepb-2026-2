@@ -533,6 +533,10 @@ p {
 .botao:hover {
   background: #483362;
 }
+.botao:disabled {
+  background: #807a8b;
+  cursor: not-allowed;
+}
 .esqueleto {
   min-height: 270px;
   background: #fff;
@@ -656,6 +660,22 @@ p {
   border-radius: 8px;
   padding: 13px 15px;
 }
+.acao-carrinho {
+  margin-top: 20px;
+}
+.formulario-carrinho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+.formulario-carrinho label {
+  max-width: 120px;
+}
+.formulario-carrinho > [role] {
+  flex-basis: 100%;
+  margin: 0;
+}
 .detalhe-carregando {
   padding: 100px 0;
   text-align: center;
@@ -717,14 +737,16 @@ p {
   display: grid;
   gap: 17px;
 }
-.painel-acesso label {
+.painel-acesso label,
+.formulario-carrinho label {
   display: grid;
   gap: 7px;
   font-size: 12px;
   font-weight: 600;
   color: #414151;
 }
-.painel-acesso input {
+.painel-acesso input,
+.formulario-carrinho input {
   width: 100%;
   border: 1px solid #d7d6df;
   border-radius: 8px;
@@ -734,7 +756,8 @@ p {
   color: #242536;
   background: #fbfbfc;
 }
-.painel-acesso input:focus {
+.painel-acesso input:focus,
+.formulario-carrinho input:focus {
   outline: 3px solid #7054c524;
   border-color: var(--roxo);
 }

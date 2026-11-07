@@ -1,7 +1,14 @@
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import type { FormEvent, MouseEvent, ReactNode } from "react";
 import ArteJogo from "./ArteJogo";
 import {
+  adicionarAoCarrinho,
   cadastrarCliente,
   consultarUsuario,
   encerrarSessao,
@@ -355,7 +362,110 @@ function Catalogo({ pagina }: { pagina: number }) {
   );
 }
 
-function Detalhe({ id, origem }: { id: string; origem: number }) {
+type EstadoCarrinho =
+  | { tipo: "inicial" }
+  | { tipo: "enviando" }
+  | { tipo: "sucesso"; quantidade: number }
+  | { tipo: "erro"; mensagem: string };
+
+function FormularioCarrinho({
+  token,
+  jogoId,
+  aoExpirar,
+}: {
+  token: string;
+  jogoId: number;
+  aoExpirar: () => void;
+}) {
+  const [quantidade, setQuantidade] = useState("1");
+  const [estado, setEstado] = useState<EstadoCarrinho>({ tipo: "inicial" });
+  const envioPendente = useRef(false);
+  const enviando = estado.tipo === "enviando";
+
+  async function enviar(evento: FormEvent<HTMLFormElement>) {
+    evento.preventDefault();
+    if (envioPendente.current || !evento.currentTarget.reportValidity()) return;
+    envioPendente.current = true;
+    setEstado({ tipo: "enviando" });
+    try {
+      const item = await adicionarAoCarrinho(token, jogoId, Number(quantidade));
+      setEstado({ tipo: "sucesso", quantidade: item.quantidade });
+    } catch (erro) {
+      if (erro instanceof ErroDaApi && erro.status === 401) {
+        aoExpirar();
+        return;
+      }
+      setEstado({
+        tipo: "erro",
+        mensagem:
+          erro instanceof Error
+            ? erro.message
+            : "Não foi possível adicionar ao carrinho. Tente novamente.",
+      });
+    } finally {
+      envioPendente.current = false;
+    }
+  }
+
+  return (
+    <form
+      className="formulario-carrinho"
+      onSubmit={enviar}
+      aria-busy={enviando}
+    >
+      <label>
+        Quantidade
+        <input
+          type="number"
+          name="quantidade"
+          min="1"
+          max="2147483647"
+          step="1"
+          required
+          value={quantidade}
+          onChange={(evento) => setQuantidade(evento.target.value)}
+          disabled={enviando}
+          data-cy="quantidade-carrinho"
+        />
+      </label>
+      <button
+        type="submit"
+        className="botao"
+        disabled={enviando}
+        data-cy="adicionar-carrinho"
+      >
+        {enviando ? "Adicionando…" : "Adicionar ao carrinho"}
+      </button>
+      {estado.tipo === "sucesso" && (
+        <p
+          className="aviso-compra"
+          role="status"
+          data-cy="confirmacao-carrinho"
+        >
+          Adicionado ao carrinho. Você tem {estado.quantidade}{" "}
+          {estado.quantidade === 1 ? "unidade" : "unidades"} deste jogo.
+        </p>
+      )}
+      {estado.tipo === "erro" && (
+        <p className="erro-formulario" role="alert" data-cy="erro-carrinho">
+          {estado.mensagem}
+        </p>
+      )}
+    </form>
+  );
+}
+
+function Detalhe({
+  id,
+  origem,
+  sessao,
+  aoExpirar,
+}: {
+  id: string;
+  origem: number;
+  sessao: SessaoLocal | null;
+  aoExpirar: () => void;
+}) {
   const { estado, tentarNovamente } = useConsulta<DetalheDoJogo>(
     `/jogos/${id}`,
   );
@@ -441,10 +551,28 @@ function Detalhe({ id, origem }: { id: string; origem: number }) {
                 ● {estado.dados.disponibilidade}
               </span>
             </div>
-            <p className="aviso-compra">
-              Explore os jogos disponíveis. As compras serão habilitadas em
-              breve.
-            </p>
+            <div className="acao-carrinho">
+              {estado.dados.disponibilidade === "Esgotado" ? (
+                <button className="botao" disabled data-cy="adicionar-carrinho">
+                  Esgotado
+                </button>
+              ) : sessao ? (
+                <FormularioCarrinho
+                  key={sessao.token}
+                  token={sessao.token}
+                  jogoId={estado.dados.id}
+                  aoExpirar={aoExpirar}
+                />
+              ) : (
+                <Link
+                  href="/login"
+                  className="botao"
+                  data-cy="entrar-para-comprar"
+                >
+                  Entre para adicionar ao carrinho
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -948,6 +1076,8 @@ export default function App() {
             key={detalhe[1]}
             id={detalhe[1]}
             origem={paginaValida(url.searchParams.get("origem"))}
+            sessao={sessao}
+            aoExpirar={expirarSessao}
           />
         ) : ehCatalogo ? (
           <Catalogo pagina={paginaValida(url.searchParams.get("pagina"))} />

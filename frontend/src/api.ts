@@ -24,6 +24,15 @@ export interface DetalheDoJogo extends Jogo {
   classificacao: string;
 }
 
+export interface ItemDoCarrinho {
+  carrinho_id: number;
+  jogo_id: number;
+  nome: string;
+  quantidade: number;
+  preco_unitario: string;
+  subtotal: string;
+}
+
 export interface DadosDeCadastro {
   nome: string;
   email: string;
@@ -148,6 +157,37 @@ export async function consultarUsuario(
       resposta.status,
     );
   return corpo as ClienteCadastrado;
+}
+
+export async function adicionarAoCarrinho(
+  token: string,
+  jogoId: number,
+  quantidade: number,
+): Promise<ItemDoCarrinho> {
+  let resposta: Response;
+  try {
+    resposta = await fetch(`${baseDaApi}/carrinho/itens`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ jogo_id: jogoId, quantidade }),
+    });
+  } catch {
+    throw new ErroDaApi(
+      "Não foi possível falar com o servidor. Tente novamente.",
+      0,
+    );
+  }
+  const corpo = (await resposta.json().catch(() => null)) as unknown;
+  if (!resposta.ok)
+    throw new ErroDaApi(
+      mensagemDaApi(corpo) ||
+        "Não foi possível adicionar ao carrinho. Tente novamente.",
+      resposta.status,
+    );
+  return corpo as ItemDoCarrinho;
 }
 
 export function guardarSessao(sessao: SessaoCriada): SessaoLocal {
