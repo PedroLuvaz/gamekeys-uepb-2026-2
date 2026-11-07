@@ -29,7 +29,6 @@ let autenticado = true;
 let modo = "sucesso";
 let quantidadeFinal = 0;
 let envios = 0;
-let liberarAdicao: (() => void) | null = null;
 const origem = "/jogos/101?origem=2";
 
 Before({ tags: "@US-11" }, () => {
@@ -45,7 +44,6 @@ Before({ tags: "@US-11" }, () => {
   modo = "sucesso";
   quantidadeFinal = 0;
   envios = 0;
-  liberarAdicao = null;
   cy.intercept("GET", "**/api/jogos/101", (pedido) => pedido.reply(jogo));
   cy.intercept("GET", "**/api/auth/me", (pedido) => pedido.reply(usuario));
   cy.intercept("POST", "**/api/auth/login", (pedido) => {
@@ -96,14 +94,9 @@ Before({ tags: "@US-11" }, () => {
           ? "214748364678525163.53"
           : (19.9 * quantidadeFinal).toFixed(2),
     };
-    if (modo === "demora")
-      return new Promise<void>((resolve) => {
-        liberarAdicao = () => {
-          pedido.reply({ body: resposta });
-          resolve();
-        };
-      });
-    pedido.reply({ body: resposta });
+    // Atraso nativo do Cypress: a resposta chega sozinha depois do tempo e a ficha
+    // fica em carregamento enquanto isso, sem liberar a resposta pelo teste.
+    pedido.reply({ body: resposta, delay: modo === "demora" ? 1500 : 0 });
   }).as("adicaoCarrinho");
 });
 
@@ -243,10 +236,6 @@ Then("a ficha informa que está adicionando e bloqueia novo envio", () => {
     .should("be.disabled")
     .and("contain.text", "Adicionando");
   cy.get('[data-cy="quantidade-carrinho"]').should("be.disabled");
-  // A resposta só é liberada após verificar o carregamento, sem espera fixa.
-  cy.wrap(null)
-    .should(() => expect(liberarAdicao).to.be.a("function"))
-    .then(() => liberarAdicao!());
   cy.wait("@adicaoCarrinho").its("response.statusCode").should("eq", 200);
 });
 Then("somente uma adição foi enviada", () =>
