@@ -36,7 +36,7 @@ export interface ClienteCadastrado {
   nome: string;
   email: string;
   data_nascimento: string;
-  perfil: "cliente";
+  perfil: "cliente" | "administrador";
 }
 
 export interface SessaoCriada {
@@ -50,6 +50,22 @@ export interface SessaoLocal {
   token: string;
   expiraEm: number;
   usuario: ClienteCadastrado;
+}
+
+export interface ItemDoCarrinho {
+  carrinho_id: number;
+  jogo_id: number;
+  nome: string;
+  quantidade: number;
+  preco_unitario: string;
+  subtotal: string;
+}
+
+export function destinoAposLogin(retorno: string | null) {
+  // Só permite voltar para fichas internas; nunca redirecionar para endereço externo.
+  return retorno && /^\/jogos\/\d+\/?(?:\?origem=\d+)?$/.test(retorno)
+    ? retorno
+    : "/conta";
 }
 
 const CHAVE_DA_SESSAO = "gamekeys.sessao";
@@ -150,6 +166,64 @@ export async function consultarUsuario(
   return corpo as ClienteCadastrado;
 }
 
+export async function adicionarAoCarrinho(
+  token: string,
+  jogoId: number,
+  quantidade: number,
+  signal?: AbortSignal,
+): Promise<ItemDoCarrinho> {
+  let resposta: Response;
+  try {
+    resposta = await fetch(`${baseDaApi}/carrinho/itens`, {
+      method: "POST",
+      signal,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ jogo_id: jogoId, quantidade }),
+    });
+  } catch {
+    throw new ErroDaApi(
+      "Não foi possível confirmar a adição. Evite repetir para não duplicar a quantidade.",
+      0,
+    );
+  }
+  const corpo = (await resposta.json().catch(() => null)) as unknown;
+  if (!resposta.ok)
+    throw new ErroDaApi(
+      mensagemDaApi(corpo) || "Não foi possível adicionar o jogo ao carrinho.",
+      resposta.status,
+    );
+  if (
+    !corpo ||
+    typeof corpo !== "object" ||
+    !("jogo_id" in corpo) ||
+    corpo.jogo_id !== jogoId ||
+    !("carrinho_id" in corpo) ||
+    typeof corpo.carrinho_id !== "number" ||
+    corpo.carrinho_id < 1 ||
+    !("nome" in corpo) ||
+    typeof corpo.nome !== "string" ||
+    !("quantidade" in corpo) ||
+    typeof corpo.quantidade !== "number" ||
+    !Number.isInteger(corpo.quantidade) ||
+    corpo.quantidade < 1 ||
+    !("preco_unitario" in corpo) ||
+    typeof corpo.preco_unitario !== "string" ||
+    !/^\d+\.\d{2}$/.test(corpo.preco_unitario) ||
+    !("subtotal" in corpo) ||
+    typeof corpo.subtotal !== "string" ||
+    !/^\d+\.\d{2}$/.test(corpo.subtotal)
+  ) {
+    throw new ErroDaApi(
+      "Não foi possível confirmar a adição. Evite repetir para não duplicar a quantidade.",
+      0,
+    );
+  }
+  return corpo as ItemDoCarrinho;
+}
+
 export function guardarSessao(sessao: SessaoCriada): SessaoLocal {
   const local = {
     token: sessao.access_token,
@@ -223,7 +297,14 @@ export function useConsulta<T>(caminho: string) {
   };
 }
 
-export const precoEmReais = (preco: string) =>
-  new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(
-    Number(preco),
-  );
+export function precoEmReais(preco: string) {
+  // A API devolve decimal com duas casas. BigInt mantém centavos em subtotais
+  // grandes, sem converter o valor monetário inteiro em ponto flutuante.
+  const [reais, centavos = "00"] = preco.split(".");
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" })
+    .formatToParts(BigInt(reais))
+    .map((parte) =>
+      parte.type === "fraction" ? centavos.padEnd(2, "0") : parte.value,
+    )
+    .join("");
+}
