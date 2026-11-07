@@ -98,6 +98,7 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByR
 | Papel | Documento | Repositório |
 |---|---|---|
 | PO | [Plano da Release 2](https://docs.google.com/document/d/1TBzpeiyrZG81ur2l_uoBKzavjskJAV71tsItetSN9JM/edit) (objetivo, papéis, escopo por sprint, capacidade e riscos) | cópia no fim da sprint |
+| QA | [Plano de Qualidade e Testes da Release 2](https://docs.google.com/document/d/1IFobma41GfA1SwybH1yJDNPN8vf76YyoLbZQ1Cg2DC4/edit) (metas, matriz de testes, riscos e DoD) | `docs/qualidade/Plano-de-Qualidade-e-Testes-Release-2.md` |
 | DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main e homologação) | `docs/releases/Relatorio-do-Pipeline-R2.docx` |
 | SM | [Ata da Planning - Sprint 2](https://docs.google.com/document/d/12tAuNdJ9sn_yyHmyuh9Re8GtH_yCdZkFoKyMBKi-_Os/edit) | `docs/sprints/Ata-Planning-Sprint-2.docx` |
 | SM | [Acompanhamento e Resultados - Sprint 2](https://docs.google.com/document/d/1DIxA-qxKtHKApLr_6_mDT_uOIiEZB6XLZDsJqB_MHRM/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/sprints/Acompanhamento-e-Resultados-Sprint-2.docx` |
