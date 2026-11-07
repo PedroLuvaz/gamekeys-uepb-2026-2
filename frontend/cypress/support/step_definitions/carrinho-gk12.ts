@@ -26,7 +26,6 @@ const itemBase = {
 let quantidade = 1;
 let modo = "sucesso";
 let removido = false;
-let liberarConsulta: (() => void) | null = null;
 
 function respostaCarrinho() {
   if (removido) return { itens: [], total: "0.00" };
@@ -41,7 +40,6 @@ Before({ tags: "@US-12" }, () => {
   quantidade = 1;
   modo = "sucesso";
   removido = false;
-  liberarConsulta = null;
   cy.intercept("GET", "**/api/carrinho", (pedido) => {
     expect(pedido.headers.authorization).to.eq("Bearer token-gk12");
     if (modo === "rede") {
@@ -55,14 +53,12 @@ Before({ tags: "@US-12" }, () => {
       });
       return;
     }
-    if (modo === "demora")
-      return new Promise<void>((resolve) => {
-        liberarConsulta = () => {
-          pedido.reply({ body: respostaCarrinho() });
-          resolve();
-        };
-      });
-    pedido.reply({ body: respostaCarrinho() });
+    // Atraso nativo do Cypress: a resposta chega sozinha depois do tempo e a página
+    // fica em carregamento enquanto isso, sem liberar a resposta pelo teste.
+    pedido.reply({
+      body: respostaCarrinho(),
+      delay: modo === "demora" ? 1500 : 0,
+    });
   }).as("consultarCarrinhoGk12");
   cy.intercept("PATCH", "**/api/carrinho/itens/101", (pedido) => {
     expect(pedido.headers.authorization).to.eq("Bearer token-gk12");
@@ -178,9 +174,6 @@ Then("vejo o carregamento do carrinho", () => {
     .and("contain.text", "Carregando seu carrinho");
 });
 Then("a consulta do carrinho pode terminar", () => {
-  cy.wrap(null)
-    .should(() => expect(liberarConsulta).to.be.a("function"))
-    .then(() => liberarConsulta!());
   cy.wait("@consultarCarrinhoGk12");
   cy.get('[data-cy="item-carrinho"]').should("be.visible");
 });
