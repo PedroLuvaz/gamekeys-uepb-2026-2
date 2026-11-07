@@ -100,6 +100,7 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByR
 | PO | [Plano da Release 2](https://docs.google.com/document/d/1TBzpeiyrZG81ur2l_uoBKzavjskJAV71tsItetSN9JM/edit) (objetivo, papéis, escopo por sprint, capacidade e riscos) | cópia no fim da sprint |
 | DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main e homologação) | `docs/releases/Relatorio-do-Pipeline-R2.docx` |
 | SM | [Ata da Planning - Sprint 2](https://docs.google.com/document/d/12tAuNdJ9sn_yyHmyuh9Re8GtH_yCdZkFoKyMBKi-_Os/edit) | `docs/sprints/Ata-Planning-Sprint-2.docx` |
+| SM | [Acompanhamento e Resultados - Sprint 2](https://docs.google.com/document/d/1DIxA-qxKtHKApLr_6_mDT_uOIiEZB6XLZDsJqB_MHRM/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/sprints/Acompanhamento-e-Resultados-Sprint-2.docx` |
 
 Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
 
