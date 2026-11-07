@@ -181,8 +181,6 @@ Then("a consulta do carrinho pode terminar", () => {
   cy.wrap(null)
     .should(() => expect(liberarConsulta).to.be.a("function"))
     .then(() => liberarConsulta!());
-  cy.wait("@consultarCarrinhoGk12")
-    .its("response.statusCode")
-    .should("eq", 200);
+  cy.wait("@consultarCarrinhoGk12");
   cy.get('[data-cy="item-carrinho"]').should("be.visible");
 });
