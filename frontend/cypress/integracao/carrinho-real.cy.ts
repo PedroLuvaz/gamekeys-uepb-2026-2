@@ -63,12 +63,12 @@ describe("GK-11/GK-120 — tela, login, carrinho e PostgreSQL reais", () => {
     cy.get('[data-cy="adicionar-carrinho"]').click();
     cy.get('[data-cy="resultado-carrinho"]').should(
       "contain.text",
-      "Quantidade no carrinho: 1",
+      "Você tem 1 unidade deste jogo.",
     );
     conferirBanco("adulto", 1);
     cy.get('[data-cy="adicionar-carrinho"]').click();
     cy.get('[data-cy="resultado-carrinho"]')
-      .should("contain.text", "Quantidade no carrinho: 2")
+      .should("contain.text", "Você tem 2 unidades deste jogo.")
       .and("contain.text", "39,80");
     conferirBanco("adulto", 2);
   });

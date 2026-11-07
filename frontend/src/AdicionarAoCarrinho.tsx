@@ -19,6 +19,65 @@ export default function AdicionarAoCarrinho({
   aoPedirLogin: () => void;
   aoExpirar: () => void;
 }) {
+  if (jogo.disponibilidade === "Esgotado")
+    return (
+      <div className="adicao-carrinho">
+        <button
+          className="botao botao-carrinho"
+          disabled
+          data-cy="adicionar-carrinho"
+        >
+          Esgotado
+        </button>
+        <p className="nota-carrinho">Este jogo está esgotado no momento.</p>
+      </div>
+    );
+
+  if (!sessao)
+    return (
+      <div className="adicao-carrinho">
+        <a
+          className="botao botao-carrinho"
+          href={`/login?retorno=${encodeURIComponent(`${location.pathname}${location.search}`)}`}
+          onClick={(evento) => {
+            evento.preventDefault();
+            aoPedirLogin();
+          }}
+          data-cy="entrar-para-adicionar"
+        >
+          Entrar para adicionar ao carrinho
+        </a>
+        <p className="nota-carrinho">
+          Entre na sua conta para escolher seus jogos.
+        </p>
+      </div>
+    );
+
+  if (sessao.usuario.perfil !== "cliente")
+    return (
+      <p className="nota-carrinho" data-cy="perfil-sem-carrinho">
+        O carrinho é exclusivo de contas de cliente.
+      </p>
+    );
+
+  return (
+    <FormularioCarrinho
+      jogo={jogo}
+      token={sessao.token}
+      aoExpirar={aoExpirar}
+    />
+  );
+}
+
+function FormularioCarrinho({
+  jogo,
+  token,
+  aoExpirar,
+}: {
+  jogo: DetalheDoJogo;
+  token: string;
+  aoExpirar: () => void;
+}) {
   const [quantidade, setQuantidade] = useState("1");
   const [estado, setEstado] = useState<Estado>({ tipo: "inicial" });
   const quantidadeId = useId();
@@ -38,7 +97,7 @@ export default function AdicionarAoCarrinho({
   async function adicionar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
     // O ref protege também dois envios no mesmo instante, antes do próximo render.
-    if (!sessao || enviando.current) return;
+    if (enviando.current) return;
     const unidades = Number(quantidade);
     if (!Number.isInteger(unidades) || unidades < 1 || unidades > 2147483647) {
       setEstado({
@@ -53,7 +112,7 @@ export default function AdicionarAoCarrinho({
     requisicao.current = controle;
     try {
       const item = await adicionarAoCarrinho(
-        sessao.token,
+        token,
         jogo.id,
         unidades,
         controle.signal,
@@ -77,46 +136,9 @@ export default function AdicionarAoCarrinho({
     }
   }
 
-  if (jogo.disponibilidade === "Esgotado")
-    return (
-      <div className="adicao-carrinho">
-        <button
-          className="botao botao-carrinho"
-          disabled
-          data-cy="adicionar-carrinho"
-        >
-          Esgotado
-        </button>
-        <p className="nota-carrinho">Este jogo está esgotado no momento.</p>
-      </div>
-    );
-
-  if (!sessao)
-    return (
-      <div className="adicao-carrinho">
-        <button
-          className="botao botao-carrinho"
-          onClick={aoPedirLogin}
-          data-cy="entrar-para-adicionar"
-        >
-          Entrar para adicionar ao carrinho
-        </button>
-        <p className="nota-carrinho">
-          Entre na sua conta para escolher seus jogos.
-        </p>
-      </div>
-    );
-
-  if (sessao.usuario.perfil !== "cliente")
-    return (
-      <p className="nota-carrinho" data-cy="perfil-sem-carrinho">
-        O carrinho é exclusivo de contas de cliente.
-      </p>
-    );
-
   return (
     <form
-      className="adicao-carrinho"
+      className="formulario-carrinho adicao-carrinho"
       onSubmit={adicionar}
       aria-label="Adicionar jogo ao carrinho"
       aria-busy={estado.tipo === "enviando"}
@@ -164,11 +186,11 @@ export default function AdicionarAoCarrinho({
           role="status"
           data-cy="resultado-carrinho"
         >
-          <strong>{estado.item.nome} adicionado ao carrinho.</strong>
-          <span>
-            Quantidade no carrinho: {estado.item.quantidade} · Subtotal do item:{" "}
-            {precoEmReais(estado.item.subtotal)}
-          </span>
+          <strong>
+            Adicionado ao carrinho. Você tem {estado.item.quantidade}{" "}
+            {estado.item.quantidade === 1 ? "unidade" : "unidades"} deste jogo.
+          </strong>
+          <span>Subtotal do item: {precoEmReais(estado.item.subtotal)}</span>
         </div>
       )}
       {estado.tipo === "erro" && (

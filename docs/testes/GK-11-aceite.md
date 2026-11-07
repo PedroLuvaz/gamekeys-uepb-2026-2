@@ -14,9 +14,12 @@ do carrinho pertencem à GK-12 e a reserva pertence à GK-15/GK-46.
 | Quantidade acima do disponível é recusada com aviso                    | QA-R2-003             | Pytest de estoque inicial/acumulado; cenário Gherkin; segundo teste real, confirmando nenhuma linha gravada             |
 | Classificação acima da idade é recusada com motivo                     | QA-R2-004             | Pytest de idade/aniversário; cenário Gherkin; terceiro teste real, autenticando uma conta menor de idade                |
 
-`frontend/cypress/e2e/carrinho.feature` tem 16 cenários com tags `@US-11`,
+A integração preserva os 18 cenários da GK-119 em
+`frontend/cypress/e2e/adicionar-carrinho.feature`, escritos pelo Pedro. A GK-120
+acrescenta 16 cenários em `frontend/cypress/e2e/carrinho.feature`, com tags `@US-11`,
 `@GK-11`, `@GK-119`, `@GK-120`, `@R2`, `@regressao`, `@smoke` e `@excecao`.
-Além dos critérios, cobrem quantidade escolhida, login com retorno interno,
+Os hooks de preparação são separados por `@GK-119-UI` e `@US-11`, para evitar
+que as duas fixtures interfiram entre si. Além dos critérios, cobrem quantidade escolhida, login com retorno interno,
 expiração da sessão, esgotado, indisponibilidade, falha de rede, envio duplicado,
 quantidade inválida, perfil de administrador e celular de 320 pixels.
 

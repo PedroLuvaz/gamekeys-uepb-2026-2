@@ -79,7 +79,7 @@ Funcionalidade: Adicionar um jogo ao carrinho pela ficha
 
   @excecao
   Cenário: Não confirmar sucesso quando a conexão falha
-    Dado que a conexão falha ao adicionar ao carrinho
+    Dado que a conexão da ficha falha ao adicionar ao carrinho
     Quando abro a ficha para adicionar ao carrinho
     E adiciono o jogo pela ficha
     Então sou informado de que não foi possível confirmar a adição

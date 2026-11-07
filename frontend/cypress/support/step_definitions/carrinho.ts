@@ -5,297 +5,252 @@ import {
   Then,
 } from "@badeball/cypress-cucumber-preprocessor";
 
-const ficha = {
-  id: 101,
-  slug: "caminhos-de-aurora",
-  nome: "Caminhos de Aurora",
-  capa_url: null,
-  descricao: "Explore novos mundos.",
-  genero: "Aventura",
-  plataforma: "PC",
-  classificacao: "18",
-  preco: "19.90",
-  disponibilidade: "Disponível",
-};
-let usuario: {
+interface JogoDoCarrinho {
   id: number;
   nome: string;
-  email: string;
-  data_nascimento: string;
-  perfil: string;
-};
-let jogo = { ...ficha };
-let autenticado = true;
-let modo = "sucesso";
-let quantidadeFinal = 0;
-let envios = 0;
-let liberarAdicao: (() => void) | null = null;
-const origem = "/jogos/101?origem=2";
+  preco: string;
+}
 
-Before({ tags: "@US-11" }, () => {
-  usuario = {
-    id: 7,
-    nome: "Cliente Carrinho",
-    email: "carrinho@example.com",
-    data_nascimento: "1990-01-01",
-    perfil: "cliente",
-  };
-  jogo = { ...ficha };
-  autenticado = true;
-  modo = "sucesso";
-  quantidadeFinal = 0;
-  envios = 0;
-  liberarAdicao = null;
-  cy.intercept("GET", "**/api/jogos/101", (pedido) => pedido.reply(jogo));
-  cy.intercept("GET", "**/api/auth/me", (pedido) => pedido.reply(usuario));
-  cy.intercept("POST", "**/api/auth/login", (pedido) => {
-    modo = "sucesso";
-    pedido.reply({
-      access_token: "token-carrinho",
-      token_type: "bearer",
-      expires_in: 3600,
-      usuario,
-    });
-  }).as("loginCarrinho");
+const usuario = {
+  id: 9,
+  nome: "Cliente Login",
+  email: "cliente@example.com",
+  data_nascimento: "2000-01-01",
+  perfil: "cliente",
+};
+const token = "token-valido";
+let jogos: { ativo: JogoDoCarrinho; esgotado: JogoDoCarrinho };
+let jogo: JogoDoCarrinho;
+let autenticado: boolean;
+let total: number;
+let demora: boolean;
+let liberarAdicao: (() => void) | null;
+let falhaDeRede: boolean;
+let recusa: { statusCode: number; body: unknown } | null;
+
+Before({ tags: "@GK-119-UI" }, () => {
+  cy.fixture("detalhe-jogo").then((fixture) => {
+    jogos = fixture;
+    jogo = jogos.ativo;
+    autenticado = false;
+    total = 0;
+    demora = false;
+    liberarAdicao = null;
+    falhaDeRede = false;
+    recusa = null;
+  });
+});
+
+Given("que há um jogo disponível para adicionar ao carrinho", () => {
+  cy.intercept("GET", "**/api/jogos/*", (pedido) => pedido.reply(jogo)).as(
+    "jogoDoCarrinho",
+  );
+  cy.intercept("GET", "**/api/auth/me", usuario);
   cy.intercept("POST", "**/api/carrinho/itens", (pedido) => {
-    envios++;
-    if (modo === "incompleta") {
-      pedido.reply({ quantidade: 1 });
+    if (recusa) {
+      pedido.reply(recusa);
       return;
     }
-    expect(pedido.headers.authorization).to.eq("Bearer token-carrinho");
-    expect(pedido.body).to.deep.equal({
-      jogo_id: 101,
-      quantidade: pedido.body.quantidade,
-    });
-    const erros: Record<string, [number, string]> = {
-      estoque: [409, "Estoque insuficiente para a quantidade solicitada."],
-      idade: [403, "Sua idade não permite adicionar este jogo ao carrinho."],
-      sessao: [401, "Não foi possível autenticar. Entre novamente."],
-      servico: [
-        503,
-        "Carrinho temporariamente indisponível. Tente novamente em instantes.",
-      ],
-    };
-    if (erros[modo]) {
-      pedido.reply({
-        statusCode: erros[modo][0],
-        body: { detail: erros[modo][1] },
-      });
-      return;
-    }
-    quantidadeFinal += pedido.body.quantidade;
+    total += pedido.body.quantidade;
     const resposta = {
-      carrinho_id: 4,
-      jogo_id: 101,
-      nome: jogo.nome,
-      quantidade: quantidadeFinal,
-      preco_unitario: jogo.preco,
-      subtotal:
-        modo === "valor-grande"
-          ? "214748364678525163.53"
-          : (19.9 * quantidadeFinal).toFixed(2),
+      body: {
+        carrinho_id: 4,
+        jogo_id: jogo.id,
+        nome: jogo.nome,
+        quantidade: total,
+        preco_unitario: jogo.preco,
+        subtotal: (Number(jogo.preco) * total).toFixed(2),
+      },
     };
-    if (modo === "demora")
+    if (demora)
       return new Promise<void>((resolve) => {
         liberarAdicao = () => {
-          pedido.reply({ body: resposta });
+          pedido.reply(resposta);
           resolve();
         };
       });
-    pedido.reply({ body: resposta });
+    pedido.reply(resposta);
   }).as("adicaoCarrinho");
 });
 
-Given("que estou autenticado para adicionar um jogo disponível", () => {});
-Given("que estou sem sessão ao escolher um jogo", () => {
-  autenticado = false;
-});
-Given("que a adição é recusada por estoque insuficiente", () => {
-  modo = "estoque";
-});
-Given("que a adição é recusada por classificação etária", () => {
-  modo = "idade";
-});
-Given("que a adição demora para ser confirmada", () => {
-  modo = "demora";
-});
-Given("que o servidor rejeita minha sessão ao adicionar", () => {
-  modo = "sessao";
-});
-Given("que o jogo escolhido está esgotado", () => {
-  jogo.disponibilidade = "Esgotado";
-});
-Given("que o serviço de carrinho está indisponível", () => {
-  modo = "servico";
-});
-Given("que a conexão falha ao adicionar ao carrinho", () => {
-  modo = "rede";
-});
-Given("que estou usando uma conta de administrador na ficha", () => {
-  usuario.perfil = "administrador";
+Given("que tenho uma sessão para adicionar ao carrinho", () => {
+  autenticado = true;
 });
 Given(
-  "que a adição retorna um subtotal acima do limite seguro de ponto flutuante",
-  () => {
-    modo = "valor-grande";
-    jogo.preco = "99999999.99";
+  "que o carrinho já contém {int} unidades deste jogo",
+  (quantidade: number) => {
+    total = quantidade;
   },
 );
-Given("que o carrinho retorna uma confirmação incompleta", () => {
-  modo = "incompleta";
+Given(
+  "que a adição ao carrinho é recusada com {int} e {string}",
+  (statusCode: number, detail: string) => {
+    recusa = { statusCode, body: { detail } };
+  },
+);
+Given(
+  "que a adição ao carrinho recebe um detalhe de validação estruturado",
+  () => {
+    recusa = {
+      statusCode: 422,
+      body: { detail: [{ msg: "Value error, Quantidade fora do limite." }] },
+    };
+  },
+);
+Given("que a adição ao carrinho recebe uma recusa sem detalhe", () => {
+  recusa = { statusCode: 503, body: {} };
+});
+Given("que o jogo para adicionar ao carrinho está esgotado", () => {
+  jogo = jogos.esgotado;
+});
+Given("que a API demora para adicionar ao carrinho", () => {
+  demora = true;
+});
+Given("que a conexão falha ao adicionar ao carrinho", () => {
+  falhaDeRede = true;
 });
 
-When("abro a ficha para adicionar ao carrinho", () => {
-  cy.visit(origem, {
+When("abro o detalhe para adicionar ao carrinho", () => {
+  cy.visit(`/jogos/${jogo.id}`, {
     onBeforeLoad(janela) {
       janela.sessionStorage.clear();
-      if (autenticado)
+      if (autenticado) {
         janela.sessionStorage.setItem(
           "gamekeys.sessao",
-          JSON.stringify({
-            token: "token-carrinho",
-            expiraEm: Date.now() + 3600000,
-            usuario,
-          }),
-        );
-      if (modo === "rede") {
-        const original = janela.fetch.bind(janela);
-        cy.stub(janela, "fetch").callsFake(
-          (entrada: RequestInfo | URL, opcoes?: RequestInit) => {
-            if (String(entrada).includes("/carrinho/itens")) {
-              envios++;
-              return Promise.reject(new TypeError("Falha simulada de rede"));
-            }
-            return original(entrada, opcoes);
-          },
+          JSON.stringify({ token, expiraEm: Date.now() + 3_600_000, usuario }),
         );
       }
+      if (!falhaDeRede) return;
+      const consultar = janela.fetch.bind(janela);
+      const falhar = cy
+        .stub()
+        .as("conexaoCarrinho")
+        .rejects(new TypeError("Falha de rede simulada"));
+      cy.stub(janela, "fetch").callsFake(
+        (entrada: RequestInfo | URL, opcoes?: RequestInit) => {
+          if (
+            String(entrada).endsWith("/api/carrinho/itens") &&
+            opcoes?.method === "POST"
+          ) {
+            return falhar();
+          }
+          return consultar(entrada, opcoes);
+        },
+      );
     },
   });
+  cy.wait("@jogoDoCarrinho");
+  cy.get('[data-cy="detalhe"]').should("have.attr", "aria-busy", "false");
 });
-When("adiciono o jogo pela ficha", () =>
-  cy.get('[data-cy="adicionar-carrinho"]').click(),
-);
-When("escolho {int} unidades na ficha", (quantidade: number) =>
-  cy.get('[data-cy="quantidade-carrinho"]').clear().type(String(quantidade)),
-);
-When("peço para entrar e adicionar ao carrinho", () =>
-  cy.get('[data-cy="entrar-para-adicionar"]').click(),
-);
-When("concluo o login para retornar à ficha", () => {
-  cy.get('input[name="email"]').type("carrinho@example.com");
-  cy.get('input[name="senha"]').type("senha-ficticia", { log: false });
-  cy.get('[data-cy="enviar-login"]').click();
-  cy.wait("@loginCarrinho");
+When("escolho {int} unidades para adicionar", (quantidade: number) => {
+  cy.get('[data-cy="quantidade-carrinho"]').clear().type(String(quantidade));
 });
-When("envio duas vezes o formulário imediatamente", () => {
-  // Os dois eventos precisam ocorrer no mesmo turno, sem esperas de actionability do Cypress.
-  cy.get('[data-cy="formulario-carrinho"]').then(($formulario) => {
-    $formulario[0].dispatchEvent(
-      new Event("submit", { bubbles: true, cancelable: true }),
-    );
-    $formulario[0].dispatchEvent(
-      new Event("submit", { bubbles: true, cancelable: true }),
-    );
+When("preencho a quantidade do carrinho com {string}", (quantidade: string) => {
+  cy.get('[data-cy="quantidade-carrinho"]').clear();
+  if (quantidade) cy.get('[data-cy="quantidade-carrinho"]').type(quantidade);
+});
+When("adiciono o jogo ao carrinho", () => {
+  cy.get('[data-cy="adicionar-carrinho"]').click();
+});
+When("tento repetir o envio pendente do carrinho", () => {
+  cy.get('[data-cy="adicionar-carrinho"]').dblclick({ force: true });
+  cy.get(".formulario-carrinho").then(([formulario]) => {
+    for (let tentativa = 0; tentativa < 2; tentativa++) {
+      formulario.dispatchEvent(
+        new Event("submit", { bubbles: true, cancelable: true }),
+      );
+    }
   });
-});
-When("abro o login com um retorno externo", () =>
-  cy.visit("/login?retorno=https%3A%2F%2Fexample.com"),
-);
-
-Then(
-  "a ficha confirma {int} unidade(s) no carrinho e subtotal de {word}",
-  (quantidade: number, subtotal: string) => {
-    cy.get('[data-cy="resultado-carrinho"]')
-      .should("contain.text", "Caminhos de Aurora adicionado ao carrinho.")
-      .and("contain.text", `Quantidade no carrinho: ${quantidade}`)
-      .and("contain.text", subtotal);
-    cy.get('[data-cy="erro-carrinho"]').should("not.exist");
-  },
-);
-Then("retorno ao mesmo jogo e à página de origem sem adição automática", () => {
-  cy.location("pathname").should("eq", "/jogos/101");
-  cy.location("search").should("eq", "?origem=2");
-  cy.get('[data-cy="adicionar-carrinho"]').should("be.visible");
-  cy.then(() => expect(envios).to.eq(0));
-});
-Then("vejo na ficha o motivo de estoque insuficiente", () =>
-  cy
-    .get('[data-cy="erro-carrinho"]')
-    .should("contain.text", "Estoque insuficiente"),
-);
-Then("vejo na ficha o motivo de classificação etária", () =>
-  cy
-    .get('[data-cy="erro-carrinho"]')
-    .should("contain.text", "Sua idade não permite"),
-);
-Then("a ficha informa que está adicionando e bloqueia novo envio", () => {
-  cy.get('[data-cy="formulario-carrinho"]').should(
-    "have.attr",
-    "aria-busy",
-    "true",
-  );
-  cy.get('[data-cy="adicionar-carrinho"]')
-    .should("be.disabled")
-    .and("contain.text", "Adicionando");
-  cy.get('[data-cy="quantidade-carrinho"]').should("be.disabled");
-  // A resposta só é liberada após verificar o carregamento, sem espera fixa.
   cy.wrap(null)
     .should(() => expect(liberarAdicao).to.be.a("function"))
     .then(() => liberarAdicao!());
   cy.wait("@adicaoCarrinho").its("response.statusCode").should("eq", 200);
 });
-Then("somente uma adição foi enviada", () =>
-  cy.then(() => expect(envios).to.eq(1)),
+
+Then(
+  "o pedido do carrinho envia {int} unidades do jogo com o token da sessão",
+  (quantidade: number) => {
+    cy.wait("@adicaoCarrinho").then(({ request }) => {
+      expect(request.body).to.deep.equal({ jogo_id: jogo.id, quantidade });
+      expect(request.headers.authorization).to.equal(`Bearer ${token}`);
+      expect(request.headers["content-type"]).to.equal("application/json");
+    });
+  },
 );
-Then("nenhuma adição foi enviada", () =>
-  cy.then(() => expect(envios).to.eq(0)),
+Then("a quantidade inicial do carrinho é 1", () => {
+  cy.get('[data-cy="quantidade-carrinho"]').should("have.value", "1");
+});
+Then(
+  "a confirmação do carrinho informa {int} unidade(s)",
+  (quantidade: number) => {
+    cy.get('[data-cy="resultado-carrinho"]')
+      .should("have.attr", "role", "status")
+      .and(
+        "contain.text",
+        `Adicionado ao carrinho. Você tem ${quantidade} ${quantidade === 1 ? "unidade" : "unidades"} deste jogo.`,
+      );
+    cy.get('[data-cy="erro-carrinho"]').should("not.exist");
+    cy.get('[data-cy="adicionar-carrinho"]').should("be.enabled");
+  },
 );
-Then("vou ao login do carrinho com sessão expirada e sem token local", () => {
+Then("o alerta do carrinho mostra {string}", (mensagem: string) => {
+  cy.get('[data-cy="erro-carrinho"]')
+    .should("have.attr", "role", "alert")
+    .and("have.text", mensagem);
+  cy.get('[data-cy="resultado-carrinho"]').should("not.exist");
+  cy.get('[data-cy="adicionar-carrinho"]').should("be.enabled");
+});
+Then(
+  "foram feitos {int} pedidos de adição ao carrinho",
+  (quantidade: number) => {
+    cy.get("@adicaoCarrinho.all").should("have.length", quantidade);
+  },
+);
+Then("vejo o link para entrar e adicionar ao carrinho", () => {
+  cy.get('[data-cy="entrar-para-adicionar"]')
+    .should("have.text", "Entrar para adicionar ao carrinho")
+    .and(
+      "have.attr",
+      "href",
+      `/login?retorno=${encodeURIComponent(`/jogos/${jogo.id}`)}`,
+    );
+  cy.get(
+    '[data-cy="quantidade-carrinho"], [data-cy="adicionar-carrinho"]',
+  ).should("not.exist");
+  cy.get('[data-cy="entrar-para-adicionar"]').click();
   cy.location("pathname").should("eq", "/login");
+});
+Then("a ação do carrinho está desabilitada como Esgotado", () => {
+  cy.get('[data-cy="adicionar-carrinho"]')
+    .should("be.disabled")
+    .and("have.text", "Esgotado")
+    .click({ force: true });
+  cy.get('[data-cy="quantidade-carrinho"]').should("not.exist");
+});
+Then("a adição redireciona ao login com a sessão expirada", () => {
+  cy.wait("@adicaoCarrinho");
+  cy.location("pathname").should("eq", "/login");
+  cy.location("search").should(
+    "eq",
+    `?expirada=1&retorno=${encodeURIComponent(`/jogos/${jogo.id}`)}`,
+  );
   cy.get('[data-cy="sessao-expirada"]').should("be.visible");
   cy.window()
     .its("sessionStorage")
     .invoke("getItem", "gamekeys.sessao")
     .should("be.null");
 });
-Then("a ação de adicionar está desabilitada por esgotamento", () =>
-  cy
-    .get('[data-cy="adicionar-carrinho"]')
+Then("a ação do carrinho informa progresso e impede novo envio", () => {
+  cy.get('[data-cy="adicionar-carrinho"]')
     .should("be.disabled")
-    .and("contain.text", "Esgotado"),
-);
-Then("vejo na ficha a mensagem de carrinho indisponível", () =>
-  cy
-    .get('[data-cy="erro-carrinho"]')
-    .should("contain.text", "Carrinho temporariamente indisponível"),
-);
-Then("sou informado de que não foi possível confirmar a adição", () => {
-  cy.get('[data-cy="erro-carrinho"]').should(
-    "contain.text",
-    "Não foi possível confirmar",
-  );
+    .and("have.text", "Adicionando…");
+  cy.get('[data-cy="quantidade-carrinho"]').should("be.disabled");
+  cy.get(".formulario-carrinho").should("have.attr", "aria-busy", "true");
+});
+Then("a conexão do carrinho foi tentada uma única vez", () => {
+  cy.get("@conexaoCarrinho").should("have.been.calledOnce");
+});
+Then("a quantidade do carrinho é inválida", () => {
+  cy.get('[data-cy="quantidade-carrinho"]').should("match", ":invalid");
   cy.get('[data-cy="resultado-carrinho"]').should("not.exist");
 });
-Then("vejo que o carrinho é exclusivo de clientes", () => {
-  cy.get('[data-cy="perfil-sem-carrinho"]').should(
-    "contain.text",
-    "exclusivo de contas de cliente",
-  );
-  cy.get('[data-cy="adicionar-carrinho"]').should("not.exist");
-});
-Then("a quantidade da ficha é inválida", () =>
-  cy
-    .get<HTMLInputElement>('[data-cy="quantidade-carrinho"]')
-    .then(($input) => expect($input[0].validity.valid).to.eq(false)),
-);
-Then("o login mantém a navegação dentro do GameKeys", () => {
-  cy.location("pathname").should("eq", "/conta");
-  cy.get('[data-cy="conta-protegida"]').should("be.visible");
-});
-Then("vejo todos os centavos do subtotal grande", () =>
-  cy
-    .get('[data-cy="resultado-carrinho"]')
-    .should("contain.text", "214.748.364.678.525.163,53"),
-);

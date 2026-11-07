@@ -209,7 +209,7 @@ O roteiro da GK-11 mostra como configurar a execução local. O proxy do Vite us
 `127.0.0.1:8000` por padrão; `GAMEKEYS_PROXY_API` permite apontar um servidor local
 de testes em outra porta, sem expor variáveis do banco ao navegador.
 
-Os 43 cenários em `cypress/e2e/` cobrem adição ao carrinho, estoque, classificação,
+Os 61 cenários em `cypress/e2e/` cobrem adição ao carrinho, estoque, classificação,
 cadastro, login, sessão, paginação, esgotado,
 navegação ao detalhe e retorno, lista vazia, falha e nova tentativa, carregamento, página
 além da última, celular, jogo não encontrado, histórico do navegador, recarga e capa
