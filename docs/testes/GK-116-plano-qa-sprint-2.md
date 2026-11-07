@@ -17,10 +17,10 @@ Legenda de estado:
 
 | ID | Cenário | Pré-condição | Resultado esperado | Evidência | Estado |
 | --- | --- | --- | --- | --- | --- |
-| QA-R2-001 | Adicionar jogo ao carrinho | cliente autenticado; jogo ativo com estoque | item entra com quantidade 1 | resposta da API + consulta a `itens_carrinho` | Preparado/aguarda GK-11 |
-| QA-R2-002 | Adicionar novamente o mesmo jogo | QA-R2-001 concluído | quantidade aumenta sem duplicar linha | resposta + consulta por carrinho/jogo | Preparado/aguarda GK-11 |
-| QA-R2-003 | Adicionar acima do estoque | estoque menor que quantidade pedida | operação recusada; carrinho não muda | HTTP/mensagem + antes/depois no banco | Preparado/aguarda GK-11 |
-| QA-R2-004 | Bloquear por classificação etária | idade do cliente abaixo da classificação | operação recusada com motivo; carrinho não muda | HTTP/mensagem + consulta | Preparado/aguarda GK-11 |
+| QA-R2-001 | Adicionar jogo ao carrinho | cliente autenticado; jogo ativo com estoque | item entra com quantidade 1 | resposta da API + consulta a `itens_carrinho` | Executado em 07/11: API, tela e banco local; conferência formal de QA pendente |
+| QA-R2-002 | Adicionar novamente o mesmo jogo | QA-R2-001 concluído | quantidade aumenta sem duplicar linha | resposta + consulta por carrinho/jogo | Executado em 07/11: API, tela e banco local; conferência formal de QA pendente |
+| QA-R2-003 | Adicionar acima do estoque | estoque menor que quantidade pedida | operação recusada; carrinho não muda | HTTP/mensagem + antes/depois no banco | Executado em 07/11: API, tela e banco local; conferência formal de QA pendente |
+| QA-R2-004 | Bloquear por classificação etária | idade do cliente abaixo da classificação | operação recusada com motivo; carrinho não muda | HTTP/mensagem + consulta | Executado em 07/11: API, tela e banco local; conferência formal de QA pendente |
 | QA-R2-005 | Aumentar quantidade | item existente e estoque suficiente | quantidade e total são recalculados | resposta + cálculo decimal no banco | Preparado/aguarda GK-12 |
 | QA-R2-006 | Diminuir quantidade | item com quantidade maior que 1 | quantidade e total diminuem corretamente | resposta + consulta | Preparado/aguarda GK-12 |
 | QA-R2-007 | Remover item | item existente | item some e total é recalculado | resposta + ausência no banco | Preparado/aguarda GK-12 |
@@ -98,3 +98,7 @@ Critério de relato: “passou” exige data, commit, comando e resultado. “Ag
 - [GK-15](https://pedrolucas0721.atlassian.net/browse/GK-15)
 - [GK-46](https://pedrolucas0721.atlassian.net/browse/GK-46)
 - [GK-72](https://pedrolucas0721.atlassian.net/browse/GK-72)
+
+## Atualização GK-11 em 07/11/2026
+
+A GK-118 entrega a API, a GK-119 integra a ficha e a GK-120 automatiza os casos QA-R2-001 a QA-R2-004. A suíte local passou com 151 testes de back-end, 16 novos cenários Gherkin do carrinho e os 3 testes reais do carrinho, além da regressão. O roteiro reproduzível e a rastreabilidade estão em [GK-11-aceite.md](GK-11-aceite.md). Os testes integrados confirmam a quantidade e a ausência de alteração nas recusas diretamente no PostgreSQL local gamekeys_teste. Nenhuma escrita foi feita no Neon. A conferência formal do QA, a revisão independente e a integração do PR continuam pendentes.

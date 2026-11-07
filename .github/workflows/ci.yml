@@ -114,13 +114,13 @@ jobs:
       - name: Identificar jogo inativo na carga local (GK-10)
         working-directory: .
         run: |
-          jogo_inativo_id=$(psql -tAc "select id from catalogo.jogos where not ativo order by id limit 1")
+          jogo_inativo_id=$(psql "$TEST_DATABASE_URL" -tAc "select id from catalogo.jogos where not ativo order by id limit 1")
           test -n "$jogo_inativo_id"
           echo "GAMEKEYS_JOGO_INATIVO_ID=$jogo_inativo_id" >> "$GITHUB_ENV"
       - name: Verificar tela, API e PostgreSQL integrados
         working-directory: frontend
         run: |
-          (cd ../backend && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/gamekeys-api.log 2>&1) &
+          (cd ../backend && DATABASE_URL="$TEST_DATABASE_URL" python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/gamekeys-api.log 2>&1) &
           pnpm dev > /tmp/gamekeys-vite.log 2>&1 &
           node scripts/aguardar-api.mjs
           pnpm test:integracao

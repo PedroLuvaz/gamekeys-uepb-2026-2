@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import type { FormEvent, MouseEvent, ReactNode } from "react";
 import ArteJogo from "./ArteJogo";
+import AdicionarAoCarrinho from "./AdicionarAoCarrinho";
 import {
   cadastrarCliente,
+  destinoAposLogin,
   consultarUsuario,
   encerrarSessao,
   entrar,
@@ -355,7 +357,17 @@ function Catalogo({ pagina }: { pagina: number }) {
   );
 }
 
-function Detalhe({ id, origem }: { id: string; origem: number }) {
+function Detalhe({
+  id,
+  origem,
+  sessao,
+  aoExpirar,
+}: {
+  id: string;
+  origem: number;
+  sessao: SessaoLocal | null;
+  aoExpirar: (retorno?: string) => void;
+}) {
   const { estado, tentarNovamente } = useConsulta<DetalheDoJogo>(
     `/jogos/${id}`,
   );
@@ -441,10 +453,19 @@ function Detalhe({ id, origem }: { id: string; origem: number }) {
                 ● {estado.dados.disponibilidade}
               </span>
             </div>
-            <p className="aviso-compra">
-              Explore os jogos disponíveis. As compras serão habilitadas em
-              breve.
-            </p>
+            <AdicionarAoCarrinho
+              key={sessao?.usuario.id ?? "visitante"}
+              jogo={estado.dados}
+              sessao={sessao}
+              aoPedirLogin={() =>
+                irPara(
+                  `/login?retorno=${encodeURIComponent(`${location.pathname}${location.search}`)}`,
+                )
+              }
+              aoExpirar={() =>
+                aoExpirar(`${location.pathname}${location.search}`)
+              }
+            />
           </div>
         </div>
       )}
@@ -771,7 +792,10 @@ function Conta({
         <div className="painel-conta">
           <span className="sobretitulo pequeno">ÁREA PROTEGIDA</span>
           <h1>Olá, {estado.usuario.nome}</h1>
-          <p>Sua sessão está autenticada como Cliente.</p>
+          <p>
+            Sua sessão está autenticada como{" "}
+            {estado.usuario.perfil === "cliente" ? "Cliente" : "Administrador"}.
+          </p>
           <dl>
             <div>
               <dt>E-mail</dt>
@@ -831,10 +855,13 @@ export default function App() {
   const ehLogin = url.pathname === "/login";
   const ehConta = url.pathname === "/conta";
 
-  const expirarSessao = useCallback(() => {
+  const expirarSessao = useCallback((retorno?: string) => {
     encerrarSessao();
     setSessao(null);
-    irPara("/login?expirada=1", true);
+    irPara(
+      `/login?expirada=1${retorno ? `&retorno=${encodeURIComponent(retorno)}` : ""}`,
+      true,
+    );
   }, []);
   const sair = useCallback(() => {
     encerrarSessao();
@@ -934,7 +961,7 @@ export default function App() {
           <Login
             aoEntrar={(novaSessao) => {
               setSessao(novaSessao);
-              irPara("/conta", true);
+              irPara(destinoAposLogin(url.searchParams.get("retorno")), true);
             }}
           />
         ) : ehConta ? (
@@ -948,6 +975,8 @@ export default function App() {
             key={detalhe[1]}
             id={detalhe[1]}
             origem={paginaValida(url.searchParams.get("origem"))}
+            sessao={sessao}
+            aoExpirar={expirarSessao}
           />
         ) : ehCatalogo ? (
           <Catalogo pagina={paginaValida(url.searchParams.get("pagina"))} />

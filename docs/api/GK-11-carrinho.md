@@ -4,6 +4,12 @@ Contrato para a ação de adicionar da GK-119 e para a continuação do carrinho
 GK-12. A API exige a sessão da GK-8 e usa o cliente autenticado para identificar o
 carrinho. O corpo não aceita identificador do cliente/carrinho, preço nem idade.
 
+A GK-119 está implementada na ficha: quantidade, carregamento, confirmação da
+quantidade acumulada e mensagens do servidor. Quem está sem sessão entra e volta
+à mesma ficha; o login não dispara a compra/adição sozinho. Sessão recusada é
+removida e pede novo login. Envios duplicados ficam bloqueados durante a operação.
+Veja o [roteiro de aceite da GK-11](../testes/GK-11-aceite.md) para os cenários da GK-120.
+
 ## Endpoint
 
 `POST /carrinho/itens`

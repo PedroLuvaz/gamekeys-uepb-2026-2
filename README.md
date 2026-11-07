@@ -143,9 +143,14 @@ Retorna HTTP 200 com o item e sua quantidade final, preço unitário e subtotal
 decimais. Adicionar ao carrinho não reserva chaves nem consome estoque.
 
 Requer a migração `backend/migracoes/0003_carrinho.sql`, aplicada pelo responsável
-pelo banco antes da publicação. A interface de adicionar é uma entrega separada
-da GK-119. Consulte o [contrato e o guia de integração com a GK-12](docs/api/GK-11-carrinho.md)
+pelo banco antes da publicação. A ficha do jogo permite escolher a quantidade,
+adicionar e conferir o resultado confirmado pela API. Visitantes entram no login
+e retornam à ficha, sem adição automática. A ação informa carregamento, sucesso,
+estoque insuficiente e restrição etária; esgotados ficam desabilitados.
+Consulte o [contrato e o guia de integração com a GK-12](docs/api/GK-11-carrinho.md)
 para exemplos, erros, concorrência, testes e orientações para alterar/remover itens.
+O [roteiro de aceite da GK-11](docs/testes/GK-11-aceite.md) cobre as subtarefas
+GK-118, GK-119 e GK-120. A listagem/alteração/remoção do carrinho continua na GK-12.
 
 ## Tela do catálogo e detalhe de jogos
 
@@ -195,7 +200,17 @@ pnpm test:integracao  # tela + API + PostgreSQL locais, com dados fictícios iso
 pnpm test:abrir       # opcional: interface do Cypress
 ```
 
-Os 27 cenários em `cypress/e2e/` cobrem cadastro, login, sessão, paginação, esgotado,
+A suíte completa `test:integracao` exige API e `TEST_DATABASE_URL` apontando para
+PostgreSQL **local isolado**, banco `gamekeys_teste`. Ela cria contas fictícias e
+valida adições ao carrinho, além das consultas do catálogo. Um hook verifica o
+banco da API antes dos cenários; as fixtures do carrinho recusam hosts remotos e
+removem somente seus próprios dados. Nunca execute essa suíte contra o Neon.
+O roteiro da GK-11 mostra como configurar a execução local. O proxy do Vite usa
+`127.0.0.1:8000` por padrão; `GAMEKEYS_PROXY_API` permite apontar um servidor local
+de testes em outra porta, sem expor variáveis do banco ao navegador.
+
+Os 43 cenários em `cypress/e2e/` cobrem adição ao carrinho, estoque, classificação,
+cadastro, login, sessão, paginação, esgotado,
 navegação ao detalhe e retorno, lista vazia, falha e nova tentativa, carregamento, página
 além da última, celular, jogo não encontrado, histórico do navegador, recarga e capa
 indisponível. Usam respostas simuladas na rede: não
@@ -203,9 +218,10 @@ acessam nem recriam o banco do Neon. A base pode ser reaproveitada nos testes de
 e login. Relatórios JUnit e Cucumber ficam em `frontend/cypress/reports/`; capturas de
 falhas ficam em `frontend/cypress/screenshots/`. Esses arquivos são ignorados pelo Git.
 
-Os nove testes em `cypress/integracao/` usam a API em execução e o PostgreSQL local isolado sem simular
+Os 12 testes em `cypress/integracao/` usam a API em execução e o PostgreSQL local isolado sem simular
 respostas. Os testes de cadastro e login criam contas fictícias com e-mail único para provar
-persistência, autenticação e mensagens seguras; os demais consultam a carga de demonstração.
+persistência, autenticação e mensagens seguras. Os de carrinho conferem a gravação ou
+recusa diretamente no banco; os de catálogo e detalhe consultam a carga de demonstração.
 Execute esta suíte somente com o banco `gamekeys_teste` criado por
 `docker-compose.test.yml`. No CI, ela usa o PostgreSQL efêmero do próprio job, com API e
 interface iniciadas nele. A proteção da GK-106 recusa o Neon e qualquer outro host remoto.
