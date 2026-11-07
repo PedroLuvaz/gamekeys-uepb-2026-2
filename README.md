@@ -134,6 +134,19 @@ O front-end em `http://localhost:5173` já pode chamar a API; outras origens ent
 
 O código fica em `backend/app/`: `rotas/` (endpoints), `esquemas/` (validação com Pydantic), `servicos/` (regras de negócio), `db.py` (acesso ao banco) e `config.py` (variáveis de ambiente).
 
+## Adicionar ao carrinho (GK-11 / GK-118)
+
+`POST /carrinho/itens`, com Bearer token do login, recebe `jogo_id` e
+`quantidade` (padrão 1). Adiciona ao carrinho do cliente autenticado ou soma ao
+item existente, recusando estoque insuficiente e classificação acima da idade.
+Retorna HTTP 200 com o item e sua quantidade final, preço unitário e subtotal
+decimais. Adicionar ao carrinho não reserva chaves nem consome estoque.
+
+Requer a migração `backend/migracoes/0003_carrinho.sql`, aplicada pelo responsável
+pelo banco antes da publicação. A interface de adicionar é uma entrega separada
+da GK-119. Consulte o [contrato e o guia de integração com a GK-12](docs/api/GK-11-carrinho.md)
+para exemplos, erros, concorrência, testes e orientações para alterar/remover itens.
+
 ## Tela do catálogo e detalhe de jogos
 
 O front-end fica em `frontend/`, com React, TypeScript e Vite. Use Node.js 24 e pnpm

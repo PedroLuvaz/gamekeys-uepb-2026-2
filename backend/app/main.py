@@ -16,7 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import Configuracoes, carregar
 from app.db import fechar_pool
-from app.rotas import autenticacao, catalogo, clientes, saude
+from app.rotas import autenticacao, carrinho, catalogo, clientes, saude
 
 
 @asynccontextmanager
@@ -46,6 +46,7 @@ def criar_app(config: Configuracoes | None = None) -> FastAPI:
     app.include_router(catalogo.router)
     app.include_router(clientes.router)
     app.include_router(autenticacao.router)
+    app.include_router(carrinho.router)
     return app
 
 
