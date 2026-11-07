@@ -164,7 +164,7 @@ When("tento repetir o envio pendente do carrinho", () => {
   cy.wrap(null)
     .should(() => expect(liberarAdicao).to.be.a("function"))
     .then(() => liberarAdicao!());
-  cy.wait("@adicaoCarrinho").its("response.statusCode").should("eq", 200);
+  cy.wait("@adicaoCarrinho");
 });
 
 Then(

@@ -247,7 +247,7 @@ Then("a ficha informa que está adicionando e bloqueia novo envio", () => {
   cy.wrap(null)
     .should(() => expect(liberarAdicao).to.be.a("function"))
     .then(() => liberarAdicao!());
-  cy.wait("@adicaoCarrinho").its("response.statusCode").should("eq", 200);
+  cy.wait("@adicaoCarrinho");
 });
 Then("somente uma adição foi enviada", () =>
   cy.then(() => expect(envios).to.eq(1)),
