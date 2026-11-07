@@ -1,4 +1,4 @@
-# Adicionar jogo ao carrinho — GK-11 e GK-118
+# Carrinho — GK-11, GK-12 e subtarefas
 
 Contrato para a ação de adicionar da GK-119 e para a continuação do carrinho na
 GK-12. A API exige a sessão da GK-8 e usa o cliente autenticado para identificar o
@@ -62,6 +62,65 @@ A idade é calculada em anos completos na data UTC do servidor. Classificação
 `L` não impõe idade mínima; nascidos em 29/02 completam anos em 01/03 nos anos
 não bissextos. O jogo esgotado não é adicionável. Jogo inativo não expõe dados.
 
+## Consulta e manutenção — GK-12
+
+As três rotas abaixo exigem `Authorization: Bearer <token da sessão>` e usam
+exclusivamente o cliente autenticado. O navegador não envia `usuario_id` nem
+`carrinho_id`.
+
+### `GET /carrinho`
+
+Retorna os itens do próprio cliente em uma consulta conjunta, sem N+1. Um cliente
+sem carrinho recebe HTTP 200 com `itens` vazio; a consulta não cria registro vazio.
+
+```json
+{
+  "itens": [
+    {
+      "jogo_id": 19,
+      "slug": "jogo-de-demonstracao",
+      "nome": "Jogo de demonstração",
+      "capa_url": null,
+      "quantidade": 2,
+      "estoque_disponivel": 5,
+      "preco_unitario": "19.90",
+      "subtotal": "39.80"
+    }
+  ],
+  "total": "39.80"
+}
+```
+
+`preco_unitario`, `subtotal` e `total` são strings decimais. O cálculo usa
+`numeric` do PostgreSQL e `Decimal` no Python, preservando os centavos.
+
+### `PATCH /carrinho/itens/{jogo_id}`
+
+Substitui a quantidade atual; não soma como o `POST`. Corpo:
+
+```json
+{ "quantidade": 3 }
+```
+
+`quantidade` aceita somente inteiro de 1 a 2.147.483.647. Booleanos, strings,
+decimais, zero, negativos, campos adicionais e identificadores enviados no corpo
+recebem HTTP 422. O sucesso retorna o carrinho completo com subtotais e total já
+recalculados.
+
+### `DELETE /carrinho/itens/{jogo_id}`
+
+Remove o item do próprio carrinho e retorna HTTP 200 com o carrinho restante. Se
+era o último item, retorna `{"itens": [], "total": "0.00"}`.
+
+| HTTP | `detail` | Situação |
+| --- | --- | --- |
+| 401 | Não foi possível autenticar. Entre novamente. | Token ausente, inválido, expirado ou usuário inativo. |
+| 403 | O carrinho é exclusivo de clientes. | Conta autenticada não é cliente. |
+| 404 | Item não encontrado no carrinho. | O jogo não pertence ao carrinho autenticado; não revela carrinho de terceiro. |
+| 409 | Estoque insuficiente para a quantidade solicitada. | O `PATCH` preserva integralmente a quantidade anterior. |
+| 422 | Erro de validação do FastAPI | Quantidade ou identificador de rota inválido; nenhuma alteração é executada. |
+| 503 | Carrinho temporariamente indisponível. Tente novamente em instantes. | Falha de banco ou tempo limite; a transação sofre rollback. |
+
 ## Persistência e concorrência
 
 A migração `0003_carrinho.sql` implementa a parte do DER v1.0 referente a:
@@ -104,24 +163,25 @@ commit, repetir a requisição pode somar novamente. Desabilite cliques repetido
 enquanto houver uma requisição pendente e evite retentativa automática. Uma
 chave de idempotência é uma evolução possível, fora deste contrato inicial.
 
-## Continuação da GK-12 pelo Rodrigo
+## Transações da GK-12
 
-1. Usar o cliente autenticado em todas as consultas, sem aceitar `usuario_id` do
-   navegador. A chave do item é **carrinho + jogo**, sem ID artificial adicional.
-2. Reutilizar `app.servicos.carrinho.bloquear_carrinho(conexao, usuario_id)`
-   **dentro de uma transação externa** ao alterar/remover itens. O bloqueio só é
-   útil enquanto essa transação estiver aberta.
-3. Manter a mesma ordem de bloqueios em todas as operações: carrinho, jogos por
-   ID e, quando houver reserva, chaves. Evitar ordens inversas entre operações.
-4. Revalidar o estoque e calcular dinheiro com `Decimal`/`numeric`. Para a futura
-   consulta do carrinho, buscar itens e preços em conjunto, evitando N+1.
-5. Não reaproveitar cegamente a soma incremental para o endpoint de alterar:
-   nessa operação a quantidade solicitada substitui a atual.
+Alteração e remoção reutilizam
+`app.servicos.carrinho.bloquear_carrinho(conexao, usuario_id)` dentro da mesma
+transação que modifica o item. Todas as operações seguem a ordem documentada:
+carrinho, jogos por ID e, futuramente, chaves. O `PATCH` bloqueia o carrinho,
+consulta o jogo com `FOR SHARE`, revalida o estoque e só então substitui a
+quantidade. O `DELETE` precisa apenas do bloqueio do carrinho antes de apagar o
+item; não adquire bloqueios em ordem inversa.
 
-Consulta, alteração e remoção do carrinho serão implementadas pela GK-12. Rotas
-como `GET /carrinho`, `PATCH /carrinho/itens/{jogo_id}` e
-`DELETE /carrinho/itens/{jogo_id}` são propostas para alinhamento, não endpoints
-entregues nesta subtarefa.
+Mudanças simultâneas do mesmo carrinho ficam serializadas. Falhas, timeouts,
+estoque insuficiente e item inexistente levantam erro antes do commit e desfazem
+inclusive a criação transitória de um carrinho vazio. Clientes diferentes não
+bloqueiam o carrinho uns dos outros.
+
+A interface `/carrinho` atualiza quantidades, subtotais e total somente com a
+resposta confirmada pela API. Ela trata carregamento, vazio, falha de conexão,
+estoque insuficiente e sessão expirada. A finalização permanece desabilitada:
+esta entrega não reserva chaves, não reduz estoque e não cria pedidos.
 
 ## Migração e testes
 
@@ -132,10 +192,10 @@ cd backend
 .venv\Scripts\python.exe -m app.migrar
 ```
 
-No Neon, isso precisa da conexão direta e das permissões de migração. A API não
-cria tabelas ao receber uma requisição e o usuário da equipe não tem DDL. O código
-deve ser publicado com a migração aplicada no ambiente antes de usar a nova rota.
-Esta implementação prepara a migração; sua validação não a executa no Neon.
+A GK-12 reutiliza a migração `0003_carrinho.sql` já entregue pela GK-11 e não
+adiciona DDL. A API não cria tabelas ao receber uma requisição. A validação desta
+história usa exclusivamente o PostgreSQL local `gamekeys_teste`; nenhuma migração
+ou escrita destrutiva é executada no Neon.
 
 Com `TEST_DATABASE_URL` apontando para um PostgreSQL **local isolado** chamado
 `gamekeys_teste`, execute:

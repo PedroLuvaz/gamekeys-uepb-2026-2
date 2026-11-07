@@ -103,6 +103,7 @@ p {
 }
 .nav-cadastro,
 .nav-acesso,
+.nav-carrinho,
 .nav-sair {
   padding: 10px 14px;
   border: 1px solid #ffffff30;
@@ -115,6 +116,8 @@ p {
 .nav-cadastro[aria-current="page"],
 .nav-acesso:hover,
 .nav-acesso[aria-current="page"],
+.nav-carrinho:hover,
+.nav-carrinho[aria-current="page"],
 .nav-sair:hover {
   border-color: var(--lima);
   color: var(--lima);
@@ -700,6 +703,253 @@ p {
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
+
+.carrinho-pagina {
+  min-height: calc(100vh - 206px);
+  padding: 54px 0 76px;
+}
+.carrinho-cabecalho {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+.carrinho-cabecalho h1 {
+  margin: 8px 0 7px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(34px, 5vw, 52px);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.carrinho-cabecalho p,
+.continuar-comprando {
+  color: var(--muted);
+}
+.continuar-comprando {
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.continuar-comprando:hover {
+  color: var(--roxo);
+}
+.carrinho-grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 28px;
+  align-items: start;
+}
+.lista-carrinho {
+  display: grid;
+  gap: 14px;
+}
+.item-carrinho {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: center;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid var(--linha);
+  border-radius: 14px;
+  box-shadow: 0 10px 28px #29223c0a;
+}
+.item-carrinho-arte {
+  display: block;
+  min-width: 0;
+}
+.item-carrinho-arte .arte-jogo {
+  height: 112px;
+  border-radius: 9px;
+  overflow: hidden;
+}
+.item-carrinho-dados > span,
+.resumo-carrinho > span {
+  color: var(--roxo);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.item-carrinho-dados h2 {
+  margin: 5px 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 21px;
+}
+.item-carrinho-dados > p {
+  color: var(--muted);
+  font-size: 13px;
+}
+.seletor-quantidade {
+  display: inline-grid;
+  grid-template-columns: 36px 42px 36px;
+  align-items: center;
+  margin-top: 15px;
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fafafd;
+}
+.seletor-quantidade button {
+  height: 34px;
+  border: 0;
+  background: transparent;
+  color: var(--roxo);
+  font-size: 20px;
+}
+.seletor-quantidade button:hover:not(:disabled) {
+  background: #eeeafb;
+}
+.seletor-quantidade output {
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+.remover-item {
+  margin-left: 14px;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  color: #9a3b48;
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.subtotal-item {
+  min-width: 130px;
+  text-align: right;
+}
+.subtotal-item span,
+.subtotal-item small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+}
+.subtotal-item strong {
+  display: block;
+  margin-top: 5px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 21px;
+}
+.subtotal-item small {
+  margin-top: 9px;
+  color: var(--roxo);
+}
+.resumo-carrinho {
+  position: sticky;
+  top: 24px;
+  display: grid;
+  gap: 19px;
+  padding: 25px;
+  border-radius: 14px;
+  background: #201b38;
+  color: white;
+}
+.resumo-carrinho > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 18px 0;
+  border-top: 1px solid #ffffff1c;
+  border-bottom: 1px solid #ffffff1c;
+}
+.resumo-carrinho strong {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 25px;
+  color: var(--lima);
+}
+.resumo-carrinho > p,
+.resumo-carrinho small {
+  color: #c8c4d8;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.resumo-carrinho .botao:disabled {
+  cursor: not-allowed;
+}
+.mensagem-carrinho {
+  margin-bottom: 18px;
+  padding: 13px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+}
+.mensagem-carrinho.sucesso {
+  border: 1px solid #c8dfb6;
+  background: #eef6e8;
+  color: #31571d;
+}
+.mensagem-carrinho.erro {
+  border: 1px solid #ecc8ce;
+  background: #fff1f3;
+  color: #7c2532;
+}
+.carrinho-carregando {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  gap: 12px;
+  color: var(--muted);
+}
+.carrinho-carregando span {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--linha);
+  border-top-color: var(--roxo);
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+.carrinho-vazio {
+  min-height: 360px;
+}
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .carrinho-grade {
+    grid-template-columns: 1fr;
+  }
+  .resumo-carrinho {
+    position: static;
+  }
+}
+
+@media (max-width: 650px) {
+  .carrinho-pagina {
+    padding-top: 34px;
+  }
+  .carrinho-cabecalho {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .item-carrinho {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 14px;
+  }
+  .item-carrinho-arte .arte-jogo {
+    height: 96px;
+  }
+  .subtotal-item {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    min-width: 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--linha);
+    text-align: left;
+  }
+  .subtotal-item strong {
+    margin: 0;
+  }
+  .remover-item {
+    display: block;
+    margin: 8px 0 0;
+  }
+}
 @media (max-width: 400px) {
   .controles-carrinho {
     flex-direction: column;
@@ -1005,6 +1255,7 @@ p {
   }
   .nav-cadastro,
   .nav-acesso,
+  .nav-carrinho,
   .nav-sair {
     padding: 8px 10px;
     font-size: 11px;
@@ -1180,9 +1431,32 @@ p {
   }
 }
 @media (max-width: 430px) {
+  .cabecalho {
+    height: auto;
+    min-height: 72px;
+  }
   .cabecalho-conteudo {
+    flex-wrap: wrap;
     padding-left: 14px;
     padding-right: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .navegacao-principal {
+    order: 2;
+    width: 100%;
+    gap: 6px;
+    justify-content: space-between;
+  }
+  .nav-catalogo {
+    height: auto;
+  }
+  .nav-cadastro,
+  .nav-acesso,
+  .nav-carrinho,
+  .nav-sair {
+    padding: 6px;
+    font-size: 10px;
   }
   .marca > span:last-child {
     position: absolute;

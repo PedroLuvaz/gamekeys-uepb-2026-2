@@ -95,6 +95,20 @@ def adicionar(ambiente, headers, jogo_id, quantidade=1):
     )
 
 
+def consultar(ambiente, headers):
+    return ambiente.api.get("/carrinho", headers=headers)
+
+
+def alterar(ambiente, headers, jogo_id, quantidade):
+    return ambiente.api.patch(
+        f"/carrinho/itens/{jogo_id}", headers=headers, json={"quantidade": quantidade}
+    )
+
+
+def remover(ambiente, headers, jogo_id):
+    return ambiente.api.delete(f"/carrinho/itens/{jogo_id}", headers=headers)
+
+
 def test_login_real_cria_item_persistente_e_nao_consume_estoque(ambiente):
     usuario, _ = ambiente.conta(senha_hash=clientes.gerar_hash("senha-local-teste"))
     login = ambiente.api.post(
@@ -354,3 +368,124 @@ def test_falha_apos_insert_do_item_desfaz_toda_a_transacao(ambiente):
             conexao.execute("drop trigger falha_controlada_gk118 on vendas.itens_carrinho")
             conexao.execute("drop function vendas.falha_controlada_gk118()")
     assert adicionar(ambiente, headers, jogo).status_code == 200
+
+
+def test_consulta_carrinho_vazio_sem_criar_registro(ambiente):
+    usuario, headers = ambiente.conta()
+
+    resposta = consultar(ambiente, headers)
+
+    assert resposta.status_code == 200
+    assert resposta.json() == {"itens": [], "total": "0.00"}
+    assert ambiente.estado(usuario.id) == []
+
+
+def test_alteracao_substitui_quantidade_e_recalcula_subtotal_total_com_decimal(ambiente):
+    usuario, headers = ambiente.conta()
+    jogo_a = ambiente.jogo(estoque=10, preco=Decimal("0.10"))
+    jogo_b = ambiente.jogo(estoque=10, preco=Decimal("0.20"))
+    assert adicionar(ambiente, headers, jogo_a, 1).status_code == 200
+    assert adicionar(ambiente, headers, jogo_b, 1).status_code == 200
+
+    resposta = alterar(ambiente, headers, jogo_a, 3)
+
+    assert resposta.status_code == 200
+    dados = resposta.json()
+    assert dados["total"] == "0.50"
+    itens = {item["jogo_id"]: item for item in dados["itens"]}
+    assert itens[jogo_a]["quantidade"] == 3
+    assert itens[jogo_a]["subtotal"] == "0.30"
+    assert itens[jogo_b]["subtotal"] == "0.20"
+    assert {linha[2]: linha[3] for linha in ambiente.estado(usuario.id)} == {
+        jogo_a: 3,
+        jogo_b: 1,
+    }
+
+
+def test_alteracao_acima_do_estoque_e_recusada_sem_mudanca_parcial(ambiente):
+    usuario, headers = ambiente.conta()
+    jogo = ambiente.jogo(estoque=3)
+    assert adicionar(ambiente, headers, jogo, 2).status_code == 200
+    antes = ambiente.estado(usuario.id)
+
+    resposta = alterar(ambiente, headers, jogo, 4)
+
+    assert resposta.status_code == 409
+    assert resposta.json() == {"detail": "Estoque insuficiente para a quantidade solicitada."}
+    assert ambiente.estado(usuario.id) == antes
+
+
+def test_remocao_exclui_item_e_recalcula_total(ambiente):
+    usuario, headers = ambiente.conta()
+    jogo_a = ambiente.jogo(preco=Decimal("19.90"))
+    jogo_b = ambiente.jogo(preco=Decimal("10.05"))
+    assert adicionar(ambiente, headers, jogo_a, 2).status_code == 200
+    assert adicionar(ambiente, headers, jogo_b).status_code == 200
+
+    resposta = remover(ambiente, headers, jogo_a)
+
+    assert resposta.status_code == 200
+    assert resposta.json()["total"] == "10.05"
+    assert [item["jogo_id"] for item in resposta.json()["itens"]] == [jogo_b]
+    assert [(linha[2], linha[3]) for linha in ambiente.estado(usuario.id)] == [(jogo_b, 1)]
+
+
+def test_cliente_nao_altera_nem_remove_item_do_outro(ambiente):
+    a, headers_a = ambiente.conta()
+    b, headers_b = ambiente.conta()
+    jogo = ambiente.jogo()
+    assert adicionar(ambiente, headers_b, jogo, 2).status_code == 200
+    estado_b = ambiente.estado(b.id)
+
+    assert alterar(ambiente, headers_a, jogo, 3).status_code == 404
+    assert remover(ambiente, headers_a, jogo).status_code == 404
+    assert ambiente.estado(a.id) == []
+    assert ambiente.estado(b.id) == estado_b
+    assert consultar(ambiente, headers_a).json() == {"itens": [], "total": "0.00"}
+    assert consultar(ambiente, headers_b).json()["itens"][0]["quantidade"] == 2
+
+
+def test_falha_depois_do_update_desfaz_quantidade_e_total(ambiente):
+    usuario, headers = ambiente.conta()
+    jogo = ambiente.jogo()
+    assert adicionar(ambiente, headers, jogo, 2).status_code == 200
+    antes = ambiente.estado(usuario.id)
+    with ambiente.pool.connection() as conexao:
+        conexao.execute(
+            "create function vendas.falha_controlada_gk12() returns trigger language plpgsql"
+            " as $$ begin raise exception 'falha local controlada gk12'; end; $$;"
+            " create trigger falha_controlada_gk12 after update on vendas.itens_carrinho"
+            " for each row execute function vendas.falha_controlada_gk12()"
+        )
+    try:
+        resposta = alterar(ambiente, headers, jogo, 3)
+        assert resposta.status_code == 503
+        assert "falha local controlada" not in resposta.text
+        assert ambiente.estado(usuario.id) == antes
+        assert consultar(ambiente, headers).json()["total"] == "39.80"
+    finally:
+        with ambiente.pool.connection() as conexao:
+            conexao.execute("drop trigger falha_controlada_gk12 on vendas.itens_carrinho")
+            conexao.execute("drop function vendas.falha_controlada_gk12()")
+
+
+@pytest.mark.concorrencia
+def test_alteracoes_concorrentes_ficam_serializadas_e_consistentes(ambiente):
+    usuario, headers = ambiente.conta()
+    jogo = ambiente.jogo(estoque=10, preco=Decimal("7.25"))
+    assert adicionar(ambiente, headers, jogo).status_code == 200
+    barreira = Barrier(2)
+
+    def requisitar(quantidade):
+        barreira.wait(timeout=10)
+        return alterar(ambiente, headers, jogo, quantidade)
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        respostas = list(executor.map(requisitar, [4, 7]))
+
+    assert [resposta.status_code for resposta in respostas] == [200, 200]
+    final = consultar(ambiente, headers).json()
+    assert final["itens"][0]["quantidade"] in {4, 7}
+    assert final["total"] in {"29.00", "50.75"}
+    assert final["total"] == final["itens"][0]["subtotal"]
+    assert ambiente.estado(usuario.id)[0][3] == final["itens"][0]["quantidade"]
