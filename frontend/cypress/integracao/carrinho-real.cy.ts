@@ -93,4 +93,38 @@ describe("GK-11/GK-120 — tela, login, carrinho e PostgreSQL reais", () => {
     );
     conferirBanco("menor", 0);
   });
+
+  it("GK-12 altera, recalcula e remove o item no PostgreSQL real", () => {
+    entrarComo("adulto");
+    cy.get('[data-cy="adicionar-carrinho"]').click();
+    cy.get('[data-cy="resultado-carrinho"]').should("be.visible");
+    cy.visit("/carrinho");
+    cy.get('[data-cy="quantidade-item"]').should("have.text", "1");
+    cy.get('[data-cy="aumentar-item"]').click();
+    cy.get('[data-cy="quantidade-item"]').should("have.text", "2");
+    cy.get('[data-cy="subtotal-item"]').should("contain.text", "39,80");
+    cy.get('[data-cy="total-carrinho"]').should("contain.text", "39,80");
+    conferirBanco("adulto", 2);
+    cy.get('[data-cy="diminuir-item"]').click();
+    cy.get('[data-cy="quantidade-item"]').should("have.text", "1");
+    conferirBanco("adulto", 1);
+    cy.get('[data-cy="remover-item"]').click();
+    cy.get('[data-cy="carrinho-vazio"]').should("be.visible");
+    conferirBanco("adulto", 0);
+  });
+
+  it("GK-12 recusa alteração acima do estoque sem mudar o banco", () => {
+    entrarComo("adulto");
+    cy.get('[data-cy="quantidade-carrinho"]').clear().type("3");
+    cy.get('[data-cy="adicionar-carrinho"]').click();
+    cy.get('[data-cy="resultado-carrinho"]').should("be.visible");
+    cy.visit("/carrinho");
+    cy.get('[data-cy="aumentar-item"]').click();
+    cy.get('[data-cy="mensagem-carrinho-erro"]').should(
+      "contain.text",
+      "Estoque insuficiente",
+    );
+    cy.get('[data-cy="quantidade-item"]').should("have.text", "3");
+    conferirBanco("adulto", 3);
+  });
 });

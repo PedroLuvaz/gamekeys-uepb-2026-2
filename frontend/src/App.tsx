@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import type { FormEvent, MouseEvent, ReactNode } from "react";
 import ArteJogo from "./ArteJogo";
 import AdicionarAoCarrinho from "./AdicionarAoCarrinho";
+import Carrinho from "./Carrinho";
 import {
   cadastrarCliente,
   destinoAposLogin,
@@ -828,10 +829,13 @@ function Conta({
   );
 }
 
-function RedirecionarParaLogin() {
+function RedirecionarParaLogin({ retorno }: { retorno?: string }) {
   useEffect(() => {
-    irPara("/login", true);
-  }, []);
+    irPara(
+      `/login${retorno ? `?retorno=${encodeURIComponent(retorno)}` : ""}`,
+      true,
+    );
+  }, [retorno]);
   return <div className="detalhe-carregando">Redirecionando para o login…</div>;
 }
 
@@ -854,6 +858,7 @@ export default function App() {
   const ehCadastro = url.pathname === "/cadastro";
   const ehLogin = url.pathname === "/login";
   const ehConta = url.pathname === "/conta";
+  const ehCarrinho = url.pathname === "/carrinho";
 
   const expirarSessao = useCallback((retorno?: string) => {
     encerrarSessao();
@@ -873,7 +878,10 @@ export default function App() {
     if (!sessao) return;
     const restante = sessao.expiraEm - Date.now();
     if (restante <= 0) {
-      if (location.pathname === "/conta") expirarSessao();
+      if (["/conta", "/carrinho"].includes(location.pathname))
+        expirarSessao(
+          location.pathname === "/carrinho" ? "/carrinho" : undefined,
+        );
       else {
         encerrarSessao();
         setSessao(null);
@@ -881,7 +889,10 @@ export default function App() {
       return;
     }
     const temporizador = window.setTimeout(() => {
-      if (location.pathname === "/conta") expirarSessao();
+      if (["/conta", "/carrinho"].includes(location.pathname))
+        expirarSessao(
+          location.pathname === "/carrinho" ? "/carrinho" : undefined,
+        );
       else {
         encerrarSessao();
         setSessao(null);
@@ -928,6 +939,15 @@ export default function App() {
             )}
             {sessao ? (
               <>
+                {sessao.usuario.perfil === "cliente" && (
+                  <Link
+                    href="/carrinho"
+                    className="nav-carrinho"
+                    aria-current={ehCarrinho ? "page" : undefined}
+                  >
+                    Carrinho
+                  </Link>
+                )}
                 <Link
                   href="/conta"
                   className="nav-acesso"
@@ -969,6 +989,15 @@ export default function App() {
             <Conta sessao={sessao} aoExpirar={expirarSessao} aoSair={sair} />
           ) : (
             <RedirecionarParaLogin />
+          )
+        ) : ehCarrinho ? (
+          sessao ? (
+            <Carrinho
+              sessao={sessao}
+              aoExpirar={() => expirarSessao("/carrinho")}
+            />
+          ) : (
+            <RedirecionarParaLogin retorno="/carrinho" />
           )
         ) : detalhe ? (
           <Detalhe

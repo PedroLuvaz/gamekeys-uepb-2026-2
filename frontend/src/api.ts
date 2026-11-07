@@ -61,9 +61,27 @@ export interface ItemDoCarrinho {
   subtotal: string;
 }
 
+export interface ItemListadoNoCarrinho {
+  jogo_id: number;
+  slug: string;
+  nome: string;
+  capa_url: string | null;
+  quantidade: number;
+  estoque_disponivel: number;
+  preco_unitario: string;
+  subtotal: string;
+}
+
+export interface CarrinhoConsultado {
+  itens: ItemListadoNoCarrinho[];
+  total: string;
+}
+
 export function destinoAposLogin(retorno: string | null) {
-  // Só permite voltar para fichas internas; nunca redirecionar para endereço externo.
-  return retorno && /^\/jogos\/\d+\/?(?:\?origem=\d+)?$/.test(retorno)
+  // Só permite voltar para rotas internas conhecidas; nunca para endereço externo.
+  return retorno &&
+    (retorno === "/carrinho" ||
+      /^\/jogos\/\d+\/?(?:\?origem=\d+)?$/.test(retorno))
     ? retorno
     : "/conta";
 }
@@ -222,6 +240,102 @@ export async function adicionarAoCarrinho(
     );
   }
   return corpo as ItemDoCarrinho;
+}
+
+function carrinhoValido(corpo: unknown): corpo is CarrinhoConsultado {
+  if (
+    !corpo ||
+    typeof corpo !== "object" ||
+    !("itens" in corpo) ||
+    !Array.isArray(corpo.itens) ||
+    !("total" in corpo) ||
+    typeof corpo.total !== "string" ||
+    !/^\d+\.\d{2}$/.test(corpo.total)
+  )
+    return false;
+  return corpo.itens.every(
+    (item) =>
+      item &&
+      typeof item === "object" &&
+      "jogo_id" in item &&
+      typeof item.jogo_id === "number" &&
+      Number.isInteger(item.jogo_id) &&
+      item.jogo_id > 0 &&
+      "slug" in item &&
+      typeof item.slug === "string" &&
+      "nome" in item &&
+      typeof item.nome === "string" &&
+      "capa_url" in item &&
+      (item.capa_url === null || typeof item.capa_url === "string") &&
+      "quantidade" in item &&
+      typeof item.quantidade === "number" &&
+      Number.isInteger(item.quantidade) &&
+      item.quantidade > 0 &&
+      "estoque_disponivel" in item &&
+      typeof item.estoque_disponivel === "number" &&
+      Number.isInteger(item.estoque_disponivel) &&
+      item.estoque_disponivel >= 0 &&
+      "preco_unitario" in item &&
+      typeof item.preco_unitario === "string" &&
+      /^\d+\.\d{2}$/.test(item.preco_unitario) &&
+      "subtotal" in item &&
+      typeof item.subtotal === "string" &&
+      /^\d+\.\d{2}$/.test(item.subtotal),
+  );
+}
+
+async function requisicaoDoCarrinho(
+  token: string,
+  caminho = "",
+  opcoes: RequestInit = {},
+): Promise<CarrinhoConsultado> {
+  let resposta: Response;
+  try {
+    resposta = await fetch(`${baseDaApi}/carrinho${caminho}`, {
+      ...opcoes,
+      headers: {
+        ...(opcoes.body ? { "Content-Type": "application/json" } : {}),
+        Authorization: `Bearer ${token}`,
+        ...opcoes.headers,
+      },
+    });
+  } catch {
+    throw new ErroDaApi(
+      "Não foi possível conectar ao carrinho. Verifique sua conexão e tente novamente.",
+      0,
+    );
+  }
+  const corpo = (await resposta.json().catch(() => null)) as unknown;
+  if (!resposta.ok)
+    throw new ErroDaApi(
+      mensagemDaApi(corpo) || "Não foi possível atualizar o carrinho.",
+      resposta.status,
+    );
+  if (!carrinhoValido(corpo))
+    throw new ErroDaApi(
+      "O servidor retornou um carrinho inválido. Tente novamente.",
+      0,
+    );
+  return corpo;
+}
+
+export function consultarCarrinho(token: string, signal?: AbortSignal) {
+  return requisicaoDoCarrinho(token, "", { signal });
+}
+
+export function alterarQuantidadeDoCarrinho(
+  token: string,
+  jogoId: number,
+  quantidade: number,
+) {
+  return requisicaoDoCarrinho(token, `/itens/${jogoId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ quantidade }),
+  });
+}
+
+export function removerDoCarrinho(token: string, jogoId: number) {
+  return requisicaoDoCarrinho(token, `/itens/${jogoId}`, { method: "DELETE" });
 }
 
 export function guardarSessao(sessao: SessaoCriada): SessaoLocal {
