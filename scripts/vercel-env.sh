@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # vercel-env.sh - envia ao Vercel as variáveis que a API precisa, lidas do .env.local.
-# Precisa do login (npx vercel login) e do vínculo (npx vercel link) feitos antes.
+# Precisa do login (vercel login) e do vínculo (vercel link) feitos antes.
 # Uso: scripts/vercel-env.sh [ORIGENS_DO_FRONT]
 #   ORIGENS_DO_FRONT: endereços do front-end separados por vírgula (vira CORS_ORIGENS).
 #   Sem ele, o CORS fica com o padrão de desenvolvimento até o front ter endereço.
@@ -11,7 +11,7 @@ die() { echo "erro: $*" >&2; exit 1; }
 RAIZ=$(git rev-parse --show-toplevel 2>/dev/null) || die "rode dentro do repositório"
 cd "$RAIZ"
 [[ -f .env.local ]] || die "crie o .env.local a partir do .env.example"
-[[ -f .vercel/project.json ]] || die "projeto não vinculado. Rode: npx vercel link"
+[[ -f .vercel/project.json ]] || die "projeto não vinculado. Rode: vercel link --project gamekeys-api"
 
 set -a
 # shellcheck disable=SC1091
@@ -23,14 +23,23 @@ set +a
 [[ "$JWT_SECRET" != gere-uma-chave* ]] || die "JWT_SECRET ainda é o valor de exemplo do .env.example"
 (( ${#JWT_SECRET} >= 32 )) || die "JWT_SECRET precisa de pelo menos 32 caracteres"
 
-VERCEL=(npx -y vercel@65.2.0)
+# Usa o CLI do Vercel já instalado (é onde está o login). Versões diferentes guardam o login em
+# pastas diferentes: um "npx vercel@X" pode não achar o login do CLI instalado. VERCEL_CLI força outro.
+if [[ -n "${VERCEL_CLI:-}" ]]; then
+  read -r -a VERCEL <<<"$VERCEL_CLI"
+elif command -v vercel >/dev/null 2>&1; then
+  VERCEL=(vercel)
+else
+  VERCEL=(npx -y vercel@65.2.0)
+fi
+"${VERCEL[@]}" whoami >/dev/null 2>&1 || die "Vercel sem login. Rode: ${VERCEL[*]} login"
 
 # Valor pelo stdin para não aparecer na lista de processos. --force sobrescreve o que já existe.
 enviar() {
   local nome=$1 valor=$2 ambiente=$3 tipo=$4 saida
   # A CLI escreve tudo no stderr: só mostra a saída dela quando falha.
   if ! saida=$(printf '%s' "$valor" | "${VERCEL[@]}" env add "$nome" \
-      --environment "$ambiente" "--$tipo" --force --yes 2>&1); then
+      "$ambiente" "--$tipo" --force --yes 2>&1); then
     echo "$saida" >&2
     die "não consegui enviar $nome ($ambiente)"
   fi
@@ -52,4 +61,4 @@ for ambiente in production preview; do
   fi
 done
 
-echo "Pronto. Confira com: npx vercel env ls"
+echo "Pronto. Confira com: ${VERCEL[*]} env ls"
