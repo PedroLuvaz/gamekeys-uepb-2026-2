@@ -306,8 +306,8 @@ A API roda no Vercel como uma função Python, sem configuração extra: o Verce
 Preparação (uma vez, na raiz do repositório):
 
 ```bash
-npx vercel login
-npx vercel link                 # crie o projeto e responda "backend" como diretório do código
+vercel login                    # o script usa o CLI instalado, que é onde fica o login
+vercel link --project gamekeys-api
 scripts/vercel-env.sh           # envia DATABASE_URL, JWT_SECRET, AMBIENTE, BANCO_TIMEOUT_SEGUNDOS e JWT_DURACAO_MINUTOS
 ```
 
