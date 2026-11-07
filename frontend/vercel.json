@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/api/:caminho*", "destination": "https://gamekeys-api.vercel.app/:caminho*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
