@@ -103,8 +103,8 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByR
 | DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main, homologação e deploy automático) | `docs/releases/Relatorio-do-Pipeline-R2.docx` |
 | SM | [Ata da Planning - Sprint 2](https://docs.google.com/document/d/12tAuNdJ9sn_yyHmyuh9Re8GtH_yCdZkFoKyMBKi-_Os/edit) | `docs/sprints/Ata-Planning-Sprint-2.docx` |
 | SM | [Acompanhamento e Resultados - Sprint 2](https://docs.google.com/document/d/1DIxA-qxKtHKApLr_6_mDT_uOIiEZB6XLZDsJqB_MHRM/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/sprints/Acompanhamento-e-Resultados-Sprint-2.docx` |
-| SM | [Ata da Review - Sprint 2](https://docs.google.com/document/d/1gyfrCYCxlZWo0QXTiQoJCjdM14S0L2QC86thOHos050/edit) (preparada; fecha em 12/11) | `docs/sprints/Ata-Review-Sprint-2.docx` |
-| SM | [Ata da Retrospectiva - Sprint 2](https://docs.google.com/document/d/1ua2jBNA6pN14VCUleeQQtx-I4qR6f38pqwLZd4B6Enk/edit) (preparada; fecha em 12/11) | `docs/sprints/Ata-Retrospectiva-Sprint-2.docx` |
+| SM | [Ata da Review - Sprint 2](https://docs.google.com/document/d/1gyfrCYCxlZWo0QXTiQoJCjdM14S0L2QC86thOHos050/edit) (preparada; fecha em 11/11) | `docs/sprints/Ata-Review-Sprint-2.docx` |
+| SM | [Ata da Retrospectiva - Sprint 2](https://docs.google.com/document/d/1ua2jBNA6pN14VCUleeQQtx-I4qR6f38pqwLZd4B6Enk/edit) (preparada; fecha em 11/11) | `docs/sprints/Ata-Retrospectiva-Sprint-2.docx` |
 | SM | [Roteiro da Review - Sprint 2](https://docs.google.com/document/d/1zOg6w2A7CTPVeKA4-dJuWBJACM0FmHPrrR8MTqMzJgI/edit) (checklist da véspera, ordem da demonstração e plano B) | `docs/sprints/Roteiro-Review-Sprint-2.docx` |
 
 As cópias do repositório foram sincronizadas com o Drive em 08/11/2026. Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
