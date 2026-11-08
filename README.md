@@ -440,9 +440,30 @@ Sempre escreva o schema no SQL (`catalogo.jogos`, não só `jogos`): pelo pool d
 
 ```bash
 python -m app.migrar            # aplica migrações pendentes
-python -m app.migrar --carga    # migrações + jogos de demonstração (pode repetir, não duplica)
+python -m app.migrar --carga    # migrações + jogos e chaves fictícias de demonstração (não duplica)
 pytest                          # inclui os testes de estrutura, contra gamekeys_teste
 ```
+
+## Reserva de chaves (GK-15 / GK-124)
+
+`POST /pedidos/reservas`, autenticado, recebe somente `chave_idempotencia` (UUID).
+Reserva todo o carrinho, grava o pedido aguardando pagamento e limpa o carrinho
+em uma transação. Repetir o UUID recupera o mesmo pedido. Preços são persistidos;
+códigos de ativação ficam ocultos até a entrega da GK-16. O checkout visual segue
+na GK-14. Há limites de 100 jogos, 1.000 unidades e R$ 99.999.999,99 por pedido.
+
+A migração `0004_reserva_chaves.sql` cria chaves/pedidos/itens e **zera o estoque
+legado**, que ainda não representa códigos físicos. O responsável do banco precisa
+planejar a carga de chaves válidas antes de publicar. A aplicação mantém o contador
+por trigger conforme o estado das chaves; não altere o contador diretamente.
+`--carga` gera apenas códigos fictícios `GK-DEMO-SEM-VALOR-...` e conta técnica
+inativa. Repetir a carga não libera códigos já reservados ou vendidos. Nenhuma
+alteração no Neon foi executada no desenvolvimento desta entrega.
+
+Veja o [contrato e integração com GK-126/GK-14](docs/api/GK-15-reserva.md), o
+[roteiro de testes locais](docs/testes/GK-124-reserva.md) e o
+[DER v1.1](docs/banco/DER-GameKeys-v1.1.dbml). Testes e migrações destrutivas de QA
+usam exclusivamente PostgreSQL local isolado `gamekeys_teste`.
 
 ## Commits e branches
 

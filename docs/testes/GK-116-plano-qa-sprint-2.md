@@ -127,3 +127,23 @@ A reserva de chave e a finalização do pedido não fazem parte da GK-12. Os cas
 QA-R2-010 e QA-R2-014 a QA-R2-016 continuam aguardando GK-15/GK-46; as partes de reserva e
 pedido de QA-R2-017 a QA-R2-019 também permanecem pendentes. A revisão independente, o merge e
 a conclusão da DoD não foram realizados.
+
+## Implementação da reserva GK-124 em 08/11/2026
+
+A rota `POST /pedidos/reservas` agora usa carrinho, JWT e as tabelas reais
+`catalogo.chaves`, `vendas.pedidos` e `vendas.itens_pedido`. A automação da GK-124
+cobre QA-R2-009/010 (reserva e segunda tentativa), 014/015/016 (integridade,
+estoque e rollback) e autenticação/isolamento da reserva em 017/018/019.
+As provas são `backend/tests/test_reservas.py` e `test_reservas_banco.py`;
+o roteiro está em [GK-124-reserva.md](GK-124-reserva.md).
+
+O teste real de 20 clientes da GK-124 exige 1 reserva e 19 recusas, conferindo
+pedido único, quantidade e nenhuma chave duplicada no PostgreSQL local isolado.
+O teste de falha injeta erro depois de gravar itens e limpar o carrinho e exige
+rollback integral. Essa evidência complementa o experimento da GK-110; não o
+renomeia nem declara aprovado o teste de 100 rodadas do checkout final da GK-72.
+
+A execução automatizada da implementação não encerra a conferência independente
+nas GK-125/GK-127, o registro final na GK-116 ou a aprovação das histórias.
+Os estados históricos da tabela acima refletem as execuções anteriores; esta
+seção registra a nova cobertura, sem atribuir aceite formal ao QA.
