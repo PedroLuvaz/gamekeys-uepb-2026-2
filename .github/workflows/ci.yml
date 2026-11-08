@@ -105,13 +105,12 @@ jobs:
         run: pytest -v --junitxml=relatorios/pytest.xml
 
       # GK-129: 20 compras simultâneas da última chave em 100 rodadas, com o relatório em JSON
-      # guardado como evidência (GK-130). Hoje roda o experimento da GK-110; passa a usar a
-      # reserva real quando a GK-126 estiver na main. Falha se alguma rodada vender a chave duas vezes.
+      # guardado como evidência (GK-130), usando o serviço real de reserva da GK-15.
       - name: Concorrência - 20 compras simultâneas em 100 rodadas (GK-129)
         run: |
           set -o pipefail
           mkdir -p relatorios
-          python -m qa.gk110_concorrencia --rodadas 100 --concorrentes 20 \
+          python -m qa.gk129_reserva_concorrente --rodadas 100 --concorrentes 20 \
             | tee relatorios/concorrencia-gk129.json
 
       - uses: actions/setup-node@v4

@@ -325,6 +325,7 @@ mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da c
 
 ### Testes e CI
 
+- Em `backend/`, com `TEST_DATABASE_URL` local (`gamekeys_teste`) e migrações aplicadas: `psql "$TEST_DATABASE_URL" -f qa/sql/chave_em_mais_de_um_pedido.sql` consulta duplicidades (GK-128); `python -m qa.gk129_reserva_concorrente --rodadas 100 --concorrentes 20` testa a reserva real e imprime o relatório JSON (GK-129).
 - `pytest` roda tudo (é a regressão). `pytest -m smoke` roda só a verificação rápida: API no ar, banco alcançável e front-end liberado pelo CORS. Os testes de banco usam só `TEST_DATABASE_URL` (banco local `gamekeys_teste`) e são pulados quando ela não está definida. Por segurança, a suíte interrompe a execução antes da primeira conexão se o host não for `localhost`, `127.0.0.1` ou `::1`.
 - A cada push e pull request, o GitHub Actions sobe um PostgreSQL próprio do job (serviço `postgres`), aplica migrações e carga, roda ruff, o smoke e depois a suíte completa, e confere que os dados continuam no banco depois de reiniciá-lo.
 - O job de interface compila o front-end e executa os 27 cenários com API simulada. O job de back-end também executa os nove testes reais da tela integrada à API e ao PostgreSQL local. Relatórios e capturas de falhas são guardados como artefatos separados.
