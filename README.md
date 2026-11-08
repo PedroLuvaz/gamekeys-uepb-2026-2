@@ -97,13 +97,16 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByR
 
 | Papel | Documento | Repositório |
 |---|---|---|
-| PO | [Plano da Release 2](https://docs.google.com/document/d/1TBzpeiyrZG81ur2l_uoBKzavjskJAV71tsItetSN9JM/edit) (objetivo, papéis, escopo por sprint, capacidade e riscos) | cópia no fim da sprint |
+| PO | [Plano da Release 2](https://docs.google.com/document/d/1TBzpeiyrZG81ur2l_uoBKzavjskJAV71tsItetSN9JM/edit) (objetivo, papéis, escopo por sprint, capacidade e riscos) | `docs/releases/Plano-da-Release-2.docx` |
 | QA | [Plano de Qualidade e Testes da Release 2](https://docs.google.com/document/d/1IFobma41GfA1SwybH1yJDNPN8vf76YyoLbZQ1Cg2DC4/edit) (metas, matriz de testes, riscos e DoD) | `docs/qualidade/Plano-de-Qualidade-e-Testes-Release-2.md` |
-| DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main e homologação) | `docs/releases/Relatorio-do-Pipeline-R2.docx` |
+| QA | [Acompanhamento QA R2](https://docs.google.com/spreadsheets/d/1ZJsomiV2_mLoEhCEVhpdOIKnlsPTkwyq43jIpFViLOQ/edit) (planilha de métricas, testes e riscos) | só no Drive |
+| DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main, homologação e deploy automático) | `docs/releases/Relatorio-do-Pipeline-R2.docx` |
 | SM | [Ata da Planning - Sprint 2](https://docs.google.com/document/d/12tAuNdJ9sn_yyHmyuh9Re8GtH_yCdZkFoKyMBKi-_Os/edit) | `docs/sprints/Ata-Planning-Sprint-2.docx` |
 | SM | [Acompanhamento e Resultados - Sprint 2](https://docs.google.com/document/d/1DIxA-qxKtHKApLr_6_mDT_uOIiEZB6XLZDsJqB_MHRM/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/sprints/Acompanhamento-e-Resultados-Sprint-2.docx` |
+| SM | [Ata da Review - Sprint 2](https://docs.google.com/document/d/1gyfrCYCxlZWo0QXTiQoJCjdM14S0L2QC86thOHos050/edit) (preparada; fecha em 12/11) | `docs/sprints/Ata-Review-Sprint-2.docx` |
+| SM | [Ata da Retrospectiva - Sprint 2](https://docs.google.com/document/d/1ua2jBNA6pN14VCUleeQQtx-I4qR6f38pqwLZd4B6Enk/edit) (preparada; fecha em 12/11) | `docs/sprints/Ata-Retrospectiva-Sprint-2.docx` |
 
-Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
+As cópias do repositório foram sincronizadas com o Drive em 08/11/2026. Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
 
 ## Tecnologias
 
