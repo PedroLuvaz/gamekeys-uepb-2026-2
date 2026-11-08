@@ -56,3 +56,30 @@ on conflict (slug) do update set
     classificacao = excluded.classificacao,
     chaves_disponiveis = excluded.chaves_disponiveis,
     ativo = excluded.ativo;
+
+-- GK-124: códigos explicitamente fictícios, somente pela carga de demonstração.
+-- Conta técnica inativa: não há senha utilizável nem acesso administrativo pela API.
+insert into core.usuarios (nome, email, senha_hash, data_nascimento, perfil, ativo)
+values ('Carga de demonstração', 'chaves-demo@example.invalid',
+        '$2b$12$' || repeat('x', 53), date '1990-01-01', 'administrador', false)
+on conflict (lower(email)) do nothing;
+
+insert into catalogo.chaves (jogo_id, codigo, cadastrada_por)
+select j.id, 'GK-DEMO-SEM-VALOR-' || j.slug || '-' || n,
+       (select id from core.usuarios where lower(email) = 'chaves-demo@example.invalid')
+from catalogo.jogos j
+cross join lateral generate_series(1, j.chaves_disponiveis) as n
+where j.slug in (
+    'lamina-do-sertao', 'cidade-de-neon', 'esquadrao-zero', 'ilha-do-farol',
+    'trilhas-da-serra', 'reliquia-perdida', 'cronicas-de-borborema', 'reino-de-cristal',
+    'herdeiros-do-vento', 'imperio-de-areia', 'colonia-orbital', 'general-de-bolso',
+    'gol-de-placa', 'quadra-livre', 'onda-perfeita', 'asfalto-quente', 'rali-do-cariri',
+    'casa-14', 'hospital-abandonado', 'pixel-e-cafe', 'jardim-silencioso', 'robo-saudade',
+    'tempestade-de-aco', 'lenda-esquecida'
+)
+on conflict (codigo) do nothing;
+
+-- Rerodar a carga não libera chaves já reservadas/vendidas nem repõe códigos consumidos.
+update catalogo.jogos j set chaves_disponiveis = (
+    select count(*) from catalogo.chaves c where c.jogo_id = j.id and c.status = 'disponivel'
+);
