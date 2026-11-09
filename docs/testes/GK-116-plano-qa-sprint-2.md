@@ -97,6 +97,7 @@ apresentado como checkout aprovado.
 | Regressão consolidada após PRs #30, #33 e #35 | `pytest -v` | GitHub Actions da `main`, PostgreSQL 18 local do CI, 09/11/2026 | 233/233 passaram em 21,56 s; 1 aviso não bloqueante do `TestClient` | executado |
 | Reserva real concorrente GK-128/GK-129 | `python -m qa.gk129_reserva_concorrente --rodadas 100 --concorrentes 20` | GitHub Actions da `main`, PostgreSQL `gamekeys_teste`, isolamento `read committed`, 09/11/2026 | 2.000 tentativas; 100 reservas; 1.900 recusas; 0 rodadas com falha; 0 duplicidades; 9,04 s | executado com a reserva real da GK-15; não é checkout completo |
 | Smoke publicado GK-140 | somente navegação e requisições GET | `https://gamekeys-web.vercel.app/`, 09/11/2026 | frontend, saúde, banco, catálogo, detalhe, login/cadastro e proteção do carrinho observados; sem erro no console | executado sem escrita; detalhes em [GK-140-smoke-homologacao.md](GK-140-smoke-homologacao.md) |
+| Continuidade GK-140 | login inválido pela interface; saúde e proteção das rotas publicadas | Vercel publicado, proxy `/api` e API `gamekeys-api`, 09/11/2026 | acesso e roteamento HTTP 200; login inválido com mensagem uniforme; carrinho e reserva sem sessão responderam HTTP 401; nenhum erro no console | executado sem persistência; fluxos autenticados não executados por falta de conta ativa e regra de limpeza |
 
 Critério de relato: “passou” exige data, commit, comando e resultado. “Aguarda implementação” não
 é aprovação, falha mascarada ou conclusão da DoD.
