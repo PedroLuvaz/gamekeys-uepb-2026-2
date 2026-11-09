@@ -47,6 +47,8 @@ Ambiente: Vercel publicado, navegador em sessão anônima e requisições GET pe
 Ambiente: frontend `https://gamekeys-web.vercel.app/`, proxy `/api` do frontend e API
 `https://gamekeys-api.vercel.app/`. O arquivo `frontend/vercel.json` direciona `/api/:caminho*`
 para essa API; `GET /api/saude/banco` e `GET /saude/banco` responderam com o mesmo conteúdo.
+Esta tabela preserva a primeira tentativa; as pré-condições superadas e o estado atual estão na
+seção de finalização abaixo.
 
 | Data | Ambiente | Caso | Resultado esperado | Resultado obtido | Evidência | Estado |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -69,6 +71,30 @@ Nenhum cliente, carrinho, item, pedido ou reserva foi criado nesta continuidade.
 inexistente usado no teste negativo não foi cadastrado. A chamada anônima de reserva foi recusada
 na autenticação e não persistiu o UUID.
 
+## Finalização do carrinho autenticado em 09/11/2026
+
+Ambiente: interface publicada no Vercel, API pelo proxy `/api` e PostgreSQL Neon de homologação.
+Versão funcional: a `main` `29922ab` difere da referência homologada `51dc797` somente nos
+documentos de QA. A estratégia de identificação e limpeza seguiu a
+[evidência do Wagner na GK-15](https://pedrolucas0721.atlassian.net/browse/GK-15?focusedCommentId=10248):
+namespace exclusivo, consultas restritas e exclusão somente pelos identificadores exatos.
+
+| Data | Caso | Resultado esperado | Resultado obtido | Evidência | Estado |
+| --- | --- | --- | --- | --- | --- |
+| 09/11/2026 | GK140-AUTH-04 — cadastro e login válido | conta fictícia ativa, login e área protegida | conta exclusiva criada; login levou à área protegida como Cliente | nome `QA GK-140 1794233356537`; e-mail `qa.gk140.1794233356537.1a72dfb8@example.com`; senha e JWT omitidos | passou |
+| 09/11/2026 | GK140-AUTH-05 — carrinho vazio autenticado | nenhum item e total `0.00` | a interface exibiu `Seu carrinho está vazio`; o total literal não é renderizado no estado vazio | observação visual da rota `/carrinho` | parcial: vazio comprovado; total não observável pela interface |
+| 09/11/2026 | GK140-AUTH-06 — adicionar jogo | item com preço, quantidade e subtotal corretos | `Reino de Cristal`, 1 unidade, preço unitário e subtotal de R$ 129,90 | confirmação na ficha e listagem no carrinho | passou |
+| 09/11/2026 | GK140-AUTH-07 — aumentar quantidade | quantidade 2 e valores recalculados | quantidade 2; subtotal e total R$ 259,80 | resposta confirmada pela interface | passou |
+| 09/11/2026 | GK140-AUTH-08 — diminuir quantidade | voltar à quantidade 1 e aos valores iniciais | quantidade 1; subtotal e total R$ 129,90 | resposta confirmada pela interface | passou |
+| 09/11/2026 | GK140-AUTH-09 — acima do estoque | recusa e preservação do valor anterior | após chegar sequencialmente a 12, a tentativa de 13 mostrou `Estoque insuficiente para a quantidade solicitada.`; quantidade permaneceu 12 e subtotal/total permaneceram R$ 1.558,80 | mensagem e valores visíveis após a recusa | passou |
+| 09/11/2026 | GK140-AUTH-10 — remover último item | carrinho vazio e total `0.00` | a interface confirmou a remoção e exibiu o estado vazio; o resumo com o total deixa de ser renderizado | mensagem `Reino de Cristal foi removido do carrinho.` e estado vazio | parcial: remoção/vazio comprovados; total não observável pela interface |
+| 09/11/2026 | GK140-AUTH-14 — recarregar o carrinho | estado vazio persiste no servidor | após recarregar `/carrinho`, a interface continuou vazia | nova carga autenticada da rota | passou |
+| 09/11/2026 | GK140-AUTH-15 — logout e proteção | encerrar sessão e exigir novo login | `Sair` levou a `/login`; acessar `/carrinho` redirecionou para `/login?retorno=%2Fcarrinho` | URL e menu anônimo observados | passou |
+| 09/11/2026 | GK140-AUTH-16 — limpeza restrita | remover somente os registros desta execução | pré-consulta encontrou usuário `12`, 1 carrinho vazio, 0 itens, 0 pedidos, 0 itens de pedido e 0 chaves; a transação removeu exatamente o carrinho e o usuário; verificação posterior retornou 0 resíduos | contagens sanitizadas antes/depois, sem URL, senha, JWT ou código de ativação | passou |
+
+Não foram executados reserva, repetição de UUID, pagamento ou entrega de chave. A reserva
+autenticada publicada já está coberta pelo comentário 10248 da GK-15 e não foi repetida.
+
 Consultas GET reproduzíveis:
 
 ```powershell
@@ -79,28 +105,19 @@ Invoke-RestMethod -Method Get -Uri 'https://gamekeys-web.vercel.app/api/jogos?pa
 Invoke-RestMethod -Method Get -Uri 'https://gamekeys-web.vercel.app/api/jogos/19'
 ```
 
-## Pré-condições para concluir os fluxos autenticados
+## Pendências após a finalização
 
-Antes de repetir GK140-AUTH-04 a GK140-AUTH-13, é necessário:
-
-- fornecer por canal seguro uma conta fictícia **ativa** já destinada à homologação;
-- identificar o jogo e as chaves de demonstração que podem ser consumidos, com estoque suficiente
-  para aumentar/diminuir e uma quantidade que permita provocar a recusa por estoque;
-- definir quem e como removerá ou invalidará o pedido, os itens e a reserva ao final, pois a GK-15
-  ainda não implementa cancelamento ou expiração;
-- confirmar se o registro poderá permanecer no Neon caso a limpeza não seja desejada.
-
-O botão `Finalizar compra` do frontend permanece desabilitado conforme o escopo atual. Assim, a
-reserva publicada deve ser testada diretamente pela API quando as pré-condições forem atendidas;
-isso não equivale a checkout completo, pagamento ou entrega de chave. A prova concorrente da
-GK-129 usa PostgreSQL local isolado e não substitui esses fluxos publicados de ponta a ponta.
+- O estado vazio não mostra o resumo, portanto o total literal `R$ 0,00` não foi observável pela
+  interface. O carrinho vazio e sua persistência após recarga foram comprovados.
+- GK140-AUTH-11 a GK140-AUTH-13 não foram repetidos nesta execução. A reserva autenticada foi
+  executada por Wagner na GK-15; checkout visual, pagamento e entrega continuam fora do escopo.
+- DoD e aceite de negócio não são inferidos deste roteiro.
 
 ## Problemas encontrados
 
-Nenhum defeito foi reproduzido nas verificações efetivamente executadas. A ausência de conta ativa,
-de dados explicitamente designados e de uma regra de limpeza é uma dependência de homologação, não
-uma falha atribuída à aplicação. O botão de finalização desabilitado também corresponde ao escopo
-documentado do frontend atual.
+Nenhum defeito dos critérios de aceite da GK-12 foi reproduzido. A ausência do total visível no
+estado vazio limita a evidência solicitada, mas não contradiz os critérios registrados na GK-12,
+que exigem recálculo ao alterar quantidade e recusa acima do estoque. Nenhum Bug foi aberto.
 
 ## Ligações
 
