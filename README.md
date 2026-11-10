@@ -351,7 +351,7 @@ scripts/vercel-env.sh           # envia DATABASE_URL, JWT_SECRET, AMBIENTE, BANC
 - No projeto do Vercel, o diretório raiz é `backend` e o preset de framework é **FastAPI**. Sem o preset o build termina vazio e todas as rotas respondem 404.
 - O `JWT_SECRET` do `.env.local` precisa ter pelo menos 32 caracteres (`openssl rand -hex 32`); o script recusa o valor de exemplo.
 - Produção usa `AMBIENTE=producao` (sem `/docs`); preview usa `desenvolvimento`.
-- Quando o front-end tiver endereço, rode de novo com as origens dele: `scripts/vercel-env.sh https://gamekeys.vercel.app`.
+- Para liberar as origens do front-end publicado, rode de novo com o endereço dele: `scripts/vercel-env.sh https://gamekeys-web.vercel.app`.
 - Migrações não rodam no deploy: aplique com `python -m app.migrar` antes de publicar uma versão que mude o banco.
 - Depois do deploy, `/saude/banco` confirma que a API alcança o Neon.
 
