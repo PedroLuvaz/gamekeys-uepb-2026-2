@@ -58,9 +58,9 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1m_lYvzaFOp2JcKruR
 - [Plano da Sprint 1](https://docs.google.com/document/d/1e_3jWniPo1ayAMduJLj30WU7ZRu9x5FYl6XWfpK0WSM/edit)
 - [Registro de Riscos](https://docs.google.com/document/d/1oSEonzAulY87ssaz6TzGdNFTCswyxCbSTtn1_LtVj8g/edit)
 - [Drivers Arquiteturais](https://docs.google.com/document/d/10U9jLK5_RB2MYaO2PXomXmlro3rJidd3Zxs0wIVX7TE/edit)
-- DER do banco de dados (v1.0, 21/10/2026): fonte editável em `docs/banco/DER-GameKeys-v1.0.dbml` (abre no [dbdiagram.io](https://dbdiagram.io)); a imagem vigente fica anexada na GK-103
+- DER do banco de dados (v1.0, 21/10/2026): fonte editável em `docs/tecnico/banco/DER-GameKeys-v1.0.dbml` (abre no [dbdiagram.io](https://dbdiagram.io)); a imagem vigente fica anexada na GK-103
 
-Uma cópia em .docx de cada um fica na pasta `docs/`.
+Uma cópia em .docx de cada um fica na pasta `docs/`, organizada por release e sprint (veja o [índice da pasta](docs/README.md)).
 
 Documentos nos templates da disciplina (no Drive, em `docs/` e anexados no Jira):
 
@@ -77,17 +77,17 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1-i4Zd4ZaVWxmGvYyZ
 
 | Papel | Documento | Repositório |
 |---|---|---|
-| PO | [Priorização do Backlog](https://docs.google.com/document/d/1-9X8xE_vmyZ47UAf6DgMhwGcjfvX8AQvYJW3GNoyOS4/edit) | `docs/Priorizacao-do-Backlog.docx` |
-| PO | [Release Notes R1](https://docs.google.com/document/d/1fcYhN3Gz5_ouf-Y2WeDExkwL5hiK4jlDpD2BKmWn540/edit) | `docs/releases/Release-Notes-R1.docx` |
-| SM | [Acordos de Trabalho](https://docs.google.com/document/d/1CO2iIvXooNwmv-CcWwO7DyfjftbdqBhwOOCTPrOlC5E/edit) | `docs/Acordos-de-Trabalho.docx` |
-| SM | [Calendário de Cerimônias](https://docs.google.com/document/d/15UhShju2BnJhqKQdNeibDtrFzNYf21lOQsWoyZ11Fxk/edit) | `docs/Calendario-de-Cerimonias.docx` |
-| SM | [Ata da Planning - Sprint 1](https://docs.google.com/document/d/1hwVokPlaJRHPcZ4we1T5Tba_V03W7w-JIe5R7KzRTzs/edit) | `docs/sprints/Ata-Planning-Sprint-1.docx` |
-| SM | [Ata da Review - Sprint 1](https://docs.google.com/document/d/14WsdO6MioIEIuydI2a04Q3-Ks5UtHVC-GCf9q-Mp8tI/edit) | `docs/sprints/Ata-Review-Sprint-1.docx` |
-| SM | [Ata da Retrospectiva - Sprint 1](https://docs.google.com/document/d/1ULUe4oHA-BC-EaJZ31KRAFLJCQisLzr0dLJJMXIGi0w/edit) | `docs/sprints/Ata-Retrospectiva-Sprint-1.docx` |
-| DevOps | [Ambiente de Desenvolvimento](https://docs.google.com/document/d/1OaaMgqvrrhDVbRpNBJA_hqpPTlLmJIo1WBjJm8YpTtM/edit) | `docs/Ambiente-de-Desenvolvimento.docx` |
-| QA | [Relatório de Qualidade R1](https://docs.google.com/document/d/1Q_8t9bU_Arh-kA1wIgAJGgsuEEVXl4R-o76b3t-cHr8/edit) | `docs/releases/Relatorio-de-Qualidade-R1.docx` |
-| SM | [Relatório de Métricas R1](https://drive.google.com/file/d/14o1IOR7zsJshv1nD8OGk2PereJsrKMon/view) (velocity, burndown e impedimentos) | `docs/releases/Relatorio-de-Metricas-R1.docx` |
-| DevOps | [Relatório do Pipeline R1](https://drive.google.com/file/d/182Bwdq4Eo_4UzFWKuPhSx3FgqF18Cww5/view) | `docs/releases/Relatorio-do-Pipeline-R1.docx` |
+| PO | [Priorização do Backlog](https://docs.google.com/document/d/1-9X8xE_vmyZ47UAf6DgMhwGcjfvX8AQvYJW3GNoyOS4/edit) | `docs/projeto/Priorizacao-do-Backlog.docx` |
+| PO | [Release Notes R1](https://docs.google.com/document/d/1fcYhN3Gz5_ouf-Y2WeDExkwL5hiK4jlDpD2BKmWn540/edit) | `docs/release-1/Release-Notes-R1.docx` |
+| SM | [Acordos de Trabalho](https://docs.google.com/document/d/1CO2iIvXooNwmv-CcWwO7DyfjftbdqBhwOOCTPrOlC5E/edit) | `docs/projeto/Acordos-de-Trabalho.docx` |
+| SM | [Calendário de Cerimônias](https://docs.google.com/document/d/15UhShju2BnJhqKQdNeibDtrFzNYf21lOQsWoyZ11Fxk/edit) | `docs/projeto/Calendario-de-Cerimonias.docx` |
+| SM | [Ata da Planning - Sprint 1](https://docs.google.com/document/d/1hwVokPlaJRHPcZ4we1T5Tba_V03W7w-JIe5R7KzRTzs/edit) | `docs/release-1/sprint-1/Ata-Planning-Sprint-1.docx` |
+| SM | [Ata da Review - Sprint 1](https://docs.google.com/document/d/14WsdO6MioIEIuydI2a04Q3-Ks5UtHVC-GCf9q-Mp8tI/edit) | `docs/release-1/sprint-1/Ata-Review-Sprint-1.docx` |
+| SM | [Ata da Retrospectiva - Sprint 1](https://docs.google.com/document/d/1ULUe4oHA-BC-EaJZ31KRAFLJCQisLzr0dLJJMXIGi0w/edit) | `docs/release-1/sprint-1/Ata-Retrospectiva-Sprint-1.docx` |
+| DevOps | [Ambiente de Desenvolvimento](https://docs.google.com/document/d/1OaaMgqvrrhDVbRpNBJA_hqpPTlLmJIo1WBjJm8YpTtM/edit) | `docs/projeto/Ambiente-de-Desenvolvimento.docx` |
+| QA | [Relatório de Qualidade R1](https://docs.google.com/document/d/1Q_8t9bU_Arh-kA1wIgAJGgsuEEVXl4R-o76b3t-cHr8/edit) | `docs/release-1/Relatorio-de-Qualidade-R1.docx` |
+| SM | [Relatório de Métricas R1](https://drive.google.com/file/d/14o1IOR7zsJshv1nD8OGk2PereJsrKMon/view) (velocity, burndown e impedimentos) | `docs/release-1/Relatorio-de-Metricas-R1.docx` |
+| DevOps | [Relatório do Pipeline R1](https://drive.google.com/file/d/182Bwdq4Eo_4UzFWKuPhSx3FgqF18Cww5/view) | `docs/release-1/Relatorio-do-Pipeline-R1.docx` |
 
 O que vale é a versão do Drive, onde a equipe preenche. A cópia em `docs/` é atualizada no fim da sprint.
 
@@ -97,15 +97,15 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByR
 
 | Papel | Documento | Repositório |
 |---|---|---|
-| PO | [Plano da Release 2](https://docs.google.com/document/d/1TBzpeiyrZG81ur2l_uoBKzavjskJAV71tsItetSN9JM/edit) (objetivo, papéis, escopo por sprint, capacidade e riscos) | `docs/releases/Plano-da-Release-2.docx` |
-| QA | [Plano de Qualidade e Testes da Release 2](https://docs.google.com/document/d/1IFobma41GfA1SwybH1yJDNPN8vf76YyoLbZQ1Cg2DC4/edit) (metas, matriz de testes, riscos e DoD) | `docs/qualidade/Plano-de-Qualidade-e-Testes-Release-2.md` |
+| PO | [Plano da Release 2](https://docs.google.com/document/d/1TBzpeiyrZG81ur2l_uoBKzavjskJAV71tsItetSN9JM/edit) (objetivo, papéis, escopo por sprint, capacidade e riscos) | `docs/release-2/Plano-da-Release-2.docx` |
+| QA | [Plano de Qualidade e Testes da Release 2](https://docs.google.com/document/d/1IFobma41GfA1SwybH1yJDNPN8vf76YyoLbZQ1Cg2DC4/edit) (metas, matriz de testes, riscos e DoD) | `docs/release-2/Plano-de-Qualidade-e-Testes-Release-2.md` |
 | QA | [Acompanhamento QA R2](https://docs.google.com/spreadsheets/d/1ZJsomiV2_mLoEhCEVhpdOIKnlsPTkwyq43jIpFViLOQ/edit) (planilha de métricas, testes e riscos) | só no Drive |
-| DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main, homologação e deploy automático) | `docs/releases/Relatorio-do-Pipeline-R2.docx` |
-| SM | [Ata da Planning - Sprint 2](https://docs.google.com/document/d/12tAuNdJ9sn_yyHmyuh9Re8GtH_yCdZkFoKyMBKi-_Os/edit) | `docs/sprints/Ata-Planning-Sprint-2.docx` |
-| SM | [Acompanhamento e Resultados - Sprint 2](https://docs.google.com/document/d/1DIxA-qxKtHKApLr_6_mDT_uOIiEZB6XLZDsJqB_MHRM/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/sprints/Acompanhamento-e-Resultados-Sprint-2.docx` |
-| SM | [Ata da Review - Sprint 2](https://docs.google.com/document/d/1gyfrCYCxlZWo0QXTiQoJCjdM14S0L2QC86thOHos050/edit) (preparada; fecha em 11/11) | `docs/sprints/Ata-Review-Sprint-2.docx` |
-| SM | [Ata da Retrospectiva - Sprint 2](https://docs.google.com/document/d/1ua2jBNA6pN14VCUleeQQtx-I4qR6f38pqwLZd4B6Enk/edit) (preparada; fecha em 11/11) | `docs/sprints/Ata-Retrospectiva-Sprint-2.docx` |
-| SM | [Roteiro da Review - Sprint 2](https://docs.google.com/document/d/1zOg6w2A7CTPVeKA4-dJuWBJACM0FmHPrrR8MTqMzJgI/edit) (checklist da véspera, ordem da demonstração e plano B) | `docs/sprints/Roteiro-Review-Sprint-2.docx` |
+| DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main, homologação e deploy automático) | `docs/release-2/Relatorio-do-Pipeline-R2.docx` |
+| SM | [Ata da Planning - Sprint 2](https://docs.google.com/document/d/12tAuNdJ9sn_yyHmyuh9Re8GtH_yCdZkFoKyMBKi-_Os/edit) | `docs/release-2/sprint-2/Ata-Planning-Sprint-2.docx` |
+| SM | [Acompanhamento e Resultados - Sprint 2](https://docs.google.com/document/d/1DIxA-qxKtHKApLr_6_mDT_uOIiEZB6XLZDsJqB_MHRM/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/release-2/sprint-2/Acompanhamento-e-Resultados-Sprint-2.docx` |
+| SM | [Ata da Review - Sprint 2](https://docs.google.com/document/d/1gyfrCYCxlZWo0QXTiQoJCjdM14S0L2QC86thOHos050/edit) (preparada; fecha em 11/11) | `docs/release-2/sprint-2/Ata-Review-Sprint-2.docx` |
+| SM | [Ata da Retrospectiva - Sprint 2](https://docs.google.com/document/d/1ua2jBNA6pN14VCUleeQQtx-I4qR6f38pqwLZd4B6Enk/edit) (preparada; fecha em 11/11) | `docs/release-2/sprint-2/Ata-Retrospectiva-Sprint-2.docx` |
+| SM | [Roteiro da Review - Sprint 2](https://docs.google.com/document/d/1zOg6w2A7CTPVeKA4-dJuWBJACM0FmHPrrR8MTqMzJgI/edit) (checklist da véspera, ordem da demonstração e plano B) | `docs/release-2/sprint-2/Roteiro-Review-Sprint-2.docx` |
 
 As cópias do repositório foram sincronizadas com o Drive em 08/11/2026. Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
 
@@ -154,9 +154,9 @@ pelo banco antes da publicação. A ficha do jogo permite escolher a quantidade,
 adicionar e conferir o resultado confirmado pela API. Visitantes entram no login
 e retornam à ficha, sem adição automática. A ação informa carregamento, sucesso,
 estoque insuficiente e restrição etária; esgotados ficam desabilitados.
-Consulte o [contrato e o guia de integração com a GK-12](docs/api/GK-11-carrinho.md)
+Consulte o [contrato e o guia de integração com a GK-12](docs/tecnico/api/GK-11-carrinho.md)
 para exemplos, erros, concorrência, testes e orientações para alterar/remover itens.
-O [roteiro de aceite da GK-11](docs/testes/GK-11-aceite.md) cobre as subtarefas
+O [roteiro de aceite da GK-11](docs/release-2/sprint-2/testes/GK-11-aceite.md) cobre as subtarefas
 GK-118, GK-119 e GK-120. A listagem/alteração/remoção do carrinho continua na GK-12.
 
 ## Tela do catálogo e detalhe de jogos
@@ -284,7 +284,7 @@ um inativo cujo ID é consultado previamente no banco local. Ela exige
 `GAMEKEYS_JOGO_INATIVO_ID` no terminal que executa `pnpm test:integracao`; o CI
 prepara esse valor automaticamente, sem expor credenciais no navegador.
 
-Consulte [o roteiro da US-10](docs/testes/US-10-detalhe-do-jogo.md) para executar
+Consulte [o roteiro da US-10](docs/release-1/sprint-1/testes/US-10-detalhe-do-jogo.md) para executar
 as verificações com PostgreSQL local e conferir a cobertura de cada subtask.
 
 ### Consulta pública do catálogo (GK-84)
@@ -465,9 +465,9 @@ por trigger conforme o estado das chaves; não altere o contador diretamente.
 inativa. Repetir a carga não libera códigos já reservados ou vendidos. Nenhuma
 alteração no Neon foi executada no desenvolvimento desta entrega.
 
-Veja o [contrato e integração com GK-126/GK-14](docs/api/GK-15-reserva.md), o
-[roteiro de testes locais](docs/testes/GK-124-reserva.md) e o
-[DER v1.1](docs/banco/DER-GameKeys-v1.1.dbml). Testes e migrações destrutivas de QA
+Veja o [contrato e integração com GK-126/GK-14](docs/tecnico/api/GK-15-reserva.md), o
+[roteiro de testes locais](docs/release-2/sprint-2/testes/GK-124-reserva.md) e o
+[DER v1.1](docs/tecnico/banco/DER-GameKeys-v1.1.dbml). Testes e migrações destrutivas de QA
 usam exclusivamente PostgreSQL local isolado `gamekeys_teste`.
 
 ## Commits e branches

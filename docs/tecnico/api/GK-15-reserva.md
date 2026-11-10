@@ -129,7 +129,7 @@ durante o desenvolvimento desta entrega.
 
 ## Validação
 
-O [roteiro local](../testes/GK-124-reserva.md) relaciona as evidências automatizadas.
+O [roteiro local](../../release-2/sprint-2/testes/GK-124-reserva.md) relaciona as evidências automatizadas.
 Os testes não substituem a validação independente da GK-125, da GK-127 ou do QA.
 A GK-72 ainda deve ser verificada no fluxo final de compra ao integrar GK-14/GK-16.
 
