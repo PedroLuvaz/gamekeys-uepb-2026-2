@@ -25,3 +25,13 @@ A versão que vale é a do Google Drive, onde a equipe preenche. As cópias dest
 - Ata, acompanhamento, roteiro ou evidência de uma sprint: `release-N/sprint-N/`.
 
 Para a Release 3, crie `release-3/` com `sprint-4/` e `sprint-5/` dentro, seguindo o mesmo padrão. Os nomes dos arquivos seguem o padrão `Tipo-do-Documento-Sprint-N.docx` ou `Tipo-do-Documento-RN.docx`.
+
+## No Drive
+
+A pasta `GameKeys - Documentos` segue a mesma ideia:
+
+- `Projeto` e `Qualidade`, com os documentos que valem para todas as releases.
+- `GameKeys - Release 1` e `GameKeys - Release 2`, cada uma com uma subpasta `Sprint 1` ou `Sprint 2` (atas, plano, acompanhamento e roteiros).
+- `GameKeys - Sprint 0`, com o material que sobrou da preparação do projeto.
+
+Mover um arquivo no Drive não muda o link dele, então os links do [README da raiz](../README.md) continuam valendo.
