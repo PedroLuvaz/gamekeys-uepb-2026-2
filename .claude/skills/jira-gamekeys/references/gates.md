@@ -1,6 +1,6 @@
 # Gates: DoR e DoD
 
-Fontes: `.github/ISSUE_TEMPLATE/user-story.yml` (DoR e DoD de US, iguais ao modelo de US do Jira), `.github/pull_request_template.md` e `docs/DoD-Sprint-e-Release.xlsx` (DoD de sprint e de release).
+Fontes: `.github/ISSUE_TEMPLATE/user-story.yml` (DoR e DoD de US, iguais ao modelo de US do Jira), `.github/pull_request_template.md` e `docs/qualidade/DoD-Sprint-e-Release.xlsx` (DoD de sprint e de release).
 
 Cada item vira uma linha com **OK**, **FALTA** ou **NÃO VERIFICÁVEL**, mais a evidência. Nunca marque OK sem evidência.
 
@@ -45,7 +45,7 @@ Depois de Concluído, ofereça marcar os checkboxes do DoR/DoD na descrição (`
 
 ## DoD de sprint e de release (opcional)
 
-Se o usuário pedir ("dod da sprint"), leia `docs/DoD-Sprint-e-Release.xlsx` e liste os critérios com quem verifica (QA, PO, SM, DevOps). Critérios que dá para conferir no Jira: board atualizado (todas as issues da sprint em status coerente), bugs críticos/altos sem plano, itens não concluídos de volta ao backlog, versão marcada como lançada. Os demais, pergunte.
+Se o usuário pedir ("dod da sprint"), leia `docs/qualidade/DoD-Sprint-e-Release.xlsx` e liste os critérios com quem verifica (QA, PO, SM, DevOps). Critérios que dá para conferir no Jira: board atualizado (todas as issues da sprint em status coerente), bugs críticos/altos sem plano, itens não concluídos de volta ao backlog, versão marcada como lançada. Os demais, pergunte.
 
 ## Modelos de comentário
 
