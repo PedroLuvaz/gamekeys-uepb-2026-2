@@ -79,26 +79,43 @@ def test_entrada_invalida_nao_chega_ao_banco(api_reserva, monkeypatch, corpo):
 
 
 @pytest.mark.parametrize(
-    "erro,status",
+    "erro,status,mensagem",
     [
-        (carrinho.ClienteNaoPermitido(), 403),
-        (carrinho.ClassificacaoNaoPermitida(), 403),
-        (carrinho.JogoNaoEncontrado(), 404),
-        (carrinho.EstoqueInsuficiente(), 409),
-        (reservas.CarrinhoVazio(), 409),
-        (reservas.LimiteDoPedido(), 422),
-        (BancoNaoConfigurado("senha-privada"), 503),
-        (psycopg.OperationalError("senha-privada"), 503),
-        (PoolTimeout("senha-privada"), 503),
+        (carrinho.ClienteNaoPermitido(), 403, "A reserva é exclusiva de clientes."),
+        (
+            carrinho.ClassificacaoNaoPermitida(),
+            403,
+            "Sua idade não permite reservar um dos jogos.",
+        ),
+        (carrinho.JogoNaoEncontrado(), 404, "Um dos jogos não está disponível."),
+        (
+            carrinho.EstoqueInsuficiente(),
+            409,
+            "Estoque insuficiente para reservar todos os jogos.",
+        ),
+        (reservas.CarrinhoVazio(), 409, "O carrinho está vazio."),
+        (
+            reservas.LimiteDoPedido(),
+            422,
+            "O pedido excede o limite de itens, unidades ou valor.",
+        ),
+        (BancoNaoConfigurado("senha-privada"), 503, "Reserva temporariamente indisponível."),
+        (
+            psycopg.OperationalError("senha-privada"),
+            503,
+            "Reserva temporariamente indisponível.",
+        ),
+        (PoolTimeout("senha-privada"), 503, "Reserva temporariamente indisponível."),
     ],
 )
-def test_erros_publicos_sanitizados(api_reserva, monkeypatch, erro, status):
+def test_erros_publicos_sanitizados(api_reserva, monkeypatch, erro, status, mensagem):
     def falhar(*_):
         raise erro
 
     monkeypatch.setattr(reservas, "reservar_carrinho", falhar)
     resposta = api_reserva.post("/pedidos/reservas", json={"chave_idempotencia": str(uuid4())})
     assert resposta.status_code == status
+    assert resposta.json() == {"detail": mensagem}
     assert "senha-privada" not in resposta.text
 
 

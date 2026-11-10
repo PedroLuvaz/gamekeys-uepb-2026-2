@@ -140,6 +140,7 @@ function FormularioCarrinho({
     <form
       className="formulario-carrinho adicao-carrinho"
       onSubmit={adicionar}
+      noValidate
       aria-label="Adicionar jogo ao carrinho"
       aria-busy={estado.tipo === "enviando"}
       data-cy="formulario-carrinho"

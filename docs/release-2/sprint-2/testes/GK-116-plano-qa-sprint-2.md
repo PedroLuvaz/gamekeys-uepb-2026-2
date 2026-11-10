@@ -87,6 +87,7 @@ apresentado como checkout aprovado.
 | Regressão backend | `pytest -v` | mesmo ambiente, 04/11/2026 | 92/92 passaram em 25,62 s; aviso de depreciação não bloqueante | executado |
 | Build frontend | `pnpm build` | Node/pnpm local, 04/11/2026 | passou | executado |
 | Regressão frontend | `pnpm test:e2e` | CI da `main`, API simulada, 09/11/2026 | 67/67 passaram em 34 s | executado; não substitui integração real |
+| Auditoria Q-06 | `pytest -q`, `pnpm build` e `pnpm test:e2e` | Windows, Python 3.12.14, PostgreSQL 18 local `gamekeys_teste`, Node 24 e Cypress 16.2.0, 10/11/2026 | 243/243 backend e 96/96 interface passaram; matriz 44/44 | executado; 35 casos de UI e 9 contratos de reserva sem tela |
 | Integração R2 | `pnpm test:integracao` | CI da `main`, API + PostgreSQL local, 09/11/2026 | 14/14 passaram em 28 s | executado; checkout completo não coberto |
 | Lint/formatação GK-12 | `ruff check .` e `ruff format --check .` | Python local, 07/11/2026 | passou; 43 arquivos formatados | executado |
 | Backend GK-12 | `pytest tests/test_carrinho.py tests/test_carrinho_banco.py -v` | PostgreSQL 18 local `gamekeys_teste`, 07/11/2026 | 76/76 passaram em 6,65 s | executado |
