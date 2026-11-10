@@ -104,12 +104,51 @@ type Estado<T> =
 
 const baseDaApi = (import.meta.env.VITE_API_URL || "/api").replace(/\/$/, "");
 
+type ErroDeValidacao = {
+  type?: unknown;
+  loc?: unknown;
+  msg?: unknown;
+};
+
+const mensagensDeValidacaoPorCampo: Record<string, string> = {
+  nome: "Informe um nome entre 2 e 120 caracteres.",
+  email: "Informe um e-mail válido.",
+  data_nascimento: "Informe uma data de nascimento válida.",
+  senha: "Informe sua senha.",
+  jogo_id: "Informe um jogo válido.",
+  quantidade: "Informe uma quantidade inteira maior que zero.",
+  chave_idempotencia: "Informe um identificador de reserva válido.",
+};
+
+function traduzirErroDeValidacao(erro: ErroDeValidacao) {
+  const mensagem = typeof erro.msg === "string" ? erro.msg : "";
+  if (mensagem.startsWith("Value error, "))
+    return mensagem.replace(/^Value error, /, "");
+
+  const tipo = typeof erro.type === "string" ? erro.type : "";
+  if (tipo === "extra_forbidden") return "Este campo não é aceito.";
+
+  const localizacao = Array.isArray(erro.loc) ? erro.loc : [];
+  const campo = [...localizacao]
+    .reverse()
+    .find((parte): parte is string => typeof parte === "string");
+  if (campo && mensagensDeValidacaoPorCampo[campo])
+    return mensagensDeValidacaoPorCampo[campo];
+  if (tipo === "missing") return "Preencha os campos obrigatórios.";
+  return "Revise os dados informados.";
+}
+
 function mensagemDaApi(corpo: unknown) {
   if (!corpo || typeof corpo !== "object" || !("detail" in corpo)) return null;
   const detalhe = corpo.detail;
   if (typeof detalhe === "string") return detalhe;
-  if (Array.isArray(detalhe) && typeof detalhe[0]?.msg === "string")
-    return detalhe[0].msg.replace(/^Value error, /, "");
+  if (
+    Array.isArray(detalhe) &&
+    detalhe.length > 0 &&
+    detalhe[0] &&
+    typeof detalhe[0] === "object"
+  )
+    return traduzirErroDeValidacao(detalhe[0]);
   return null;
 }
 

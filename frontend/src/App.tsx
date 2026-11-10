@@ -480,6 +480,36 @@ type EstadoCadastro =
   | { tipo: "sucesso"; nome: string }
   | { tipo: "erro"; mensagem: string };
 
+const FORMATO_EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+function erroNoCadastro(dados: {
+  nome: string;
+  email: string;
+  data_nascimento: string;
+  senha: string;
+}) {
+  const nome = dados.nome.trim();
+  if (nome.length < 2 || nome.length > 120)
+    return "Informe um nome entre 2 e 120 caracteres.";
+  const email = dados.email.trim();
+  if (email.length > 254 || !FORMATO_EMAIL.test(email))
+    return "Informe um e-mail válido.";
+  const data = new Date(`${dados.data_nascimento}T00:00:00Z`);
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(dados.data_nascimento) ||
+    Number.isNaN(data.getTime()) ||
+    data.toISOString().slice(0, 10) !== dados.data_nascimento ||
+    dados.data_nascimento < "1900-01-01" ||
+    dados.data_nascimento > new Date().toISOString().slice(0, 10)
+  )
+    return "Informe uma data de nascimento válida.";
+  if (dados.senha.length < 8)
+    return "A senha deve ter pelo menos 8 caracteres.";
+  if (new TextEncoder().encode(dados.senha).length > 72)
+    return "A senha deve ter no máximo 72 bytes.";
+  return null;
+}
+
 function Cadastro() {
   const [estado, setEstado] = useState<EstadoCadastro>({ tipo: "inicial" });
   const [dados, setDados] = useState({
@@ -494,10 +524,11 @@ function Cadastro() {
 
   async function enviar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
-    if (dados.senha.length < 8) {
+    const mensagem = erroNoCadastro(dados);
+    if (mensagem) {
       setEstado({
         tipo: "erro",
-        mensagem: "A senha deve ter pelo menos 8 caracteres.",
+        mensagem,
       });
       return;
     }
@@ -556,7 +587,7 @@ function Cadastro() {
             </Link>
           </div>
         ) : (
-          <form onSubmit={enviar} data-cy="formulario-cadastro">
+          <form onSubmit={enviar} noValidate data-cy="formulario-cadastro">
             <label>
               Nome
               <input
@@ -646,6 +677,14 @@ function Login({ aoEntrar }: { aoEntrar: (sessao: SessaoLocal) => void }) {
 
   async function enviar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
+    if (!FORMATO_EMAIL.test(email.trim()) || email.trim().length > 254) {
+      setEstado({ tipo: "erro", mensagem: "Informe um e-mail válido." });
+      return;
+    }
+    if (!senha) {
+      setEstado({ tipo: "erro", mensagem: "Informe sua senha." });
+      return;
+    }
     setEstado({ tipo: "enviando" });
     try {
       const criada = await entrar(email, senha);
@@ -683,7 +722,7 @@ function Login({ aoEntrar }: { aoEntrar: (sessao: SessaoLocal) => void }) {
             Sua sessão expirou. Entre novamente para continuar.
           </p>
         )}
-        <form onSubmit={enviar} data-cy="formulario-login">
+        <form onSubmit={enviar} noValidate data-cy="formulario-login">
           <label>
             E-mail
             <input

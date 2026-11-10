@@ -12,11 +12,15 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 from app.config import Configuracoes, carregar
 from app.db import fechar_pool
 from app.rotas import autenticacao, carrinho, catalogo, clientes, reservas, saude
+from app.validacao import traduzir_erro
 
 
 @asynccontextmanager
@@ -42,6 +46,12 @@ def criar_app(config: Configuracoes | None = None) -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    @app.exception_handler(RequestValidationError)
+    async def entrada_invalida(_, erro: RequestValidationError) -> JSONResponse:
+        detalhes = [traduzir_erro(item) for item in erro.errors()]
+        return JSONResponse(status_code=422, content=jsonable_encoder({"detail": detalhes}))
+
     app.include_router(saude.router)
     app.include_router(catalogo.router)
     app.include_router(clientes.router)
