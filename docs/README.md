@@ -15,6 +15,7 @@ A versão que vale é a do Google Drive, onde a equipe preenche. As cópias dest
 | `release-2/` | Plano da Release 2, Plano de Qualidade e Testes da R2 e Relatório do Pipeline R2 |
 | `release-2/sprint-2/` | Atas, acompanhamento e roteiro da Review da Sprint 2 |
 | `release-2/sprint-2/testes/` | Roteiros, evidências e experimentos de teste da Sprint 2 (GK-11, GK-110, GK-116, GK-124 e GK-140) |
+| `release-2/sprint-3/` | Ata da Planning (pauta de 17/11), Acompanhamento e atas da Review e da Retrospectiva da Sprint 3, preparados antes das reuniões |
 
 ## Onde colocar um documento novo
 
