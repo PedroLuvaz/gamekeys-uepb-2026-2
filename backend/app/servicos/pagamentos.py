@@ -6,8 +6,7 @@ from psycopg import Connection
 
 from app.db import obter_pool
 from app.esquemas.clientes import ClienteCadastrado
-from app.esquemas.pedidos import ChaveEntregue, PedidoDetalhado
-from app.esquemas.reservas import ItemReservado
+from app.esquemas.pedidos import ChaveEntregue, ItemDoPedido, PedidoDetalhado
 from app.servicos.carrinho import ClienteNaoPermitido
 
 
@@ -23,9 +22,10 @@ def _detalhar(
     conexao: Connection, pedido_id: int, status: str, valor_total: Decimal
 ) -> PedidoDetalhado:
     itens = conexao.execute(
-        "select jogo_id, count(*), preco_unitario, sum(preco_unitario)"
-        " from vendas.itens_pedido where pedido_id = %s"
-        " group by jogo_id, preco_unitario order by jogo_id",
+        "select i.jogo_id, j.nome, count(*), i.preco_unitario, sum(i.preco_unitario)"
+        " from vendas.itens_pedido i join catalogo.jogos j on j.id = i.jogo_id"
+        " where i.pedido_id = %s"
+        " group by i.jogo_id, j.nome, i.preco_unitario order by i.jogo_id",
         (pedido_id,),
     ).fetchall()
     chaves = []
@@ -43,8 +43,8 @@ def _detalhar(
         status=status,
         valor_total=valor_total,
         itens=[
-            ItemReservado(jogo_id=j, quantidade=q, preco_unitario=p, subtotal=s)
-            for j, q, p, s in itens
+            ItemDoPedido(jogo_id=j, nome=n, quantidade=q, preco_unitario=p, subtotal=s)
+            for j, n, q, p, s in itens
         ],
         chaves=[ChaveEntregue(jogo_id=j, nome=n, codigo=c) for j, n, c in chaves],
     )

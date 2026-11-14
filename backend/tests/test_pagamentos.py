@@ -10,8 +10,7 @@ from psycopg_pool import PoolTimeout
 
 from app.db import BancoNaoConfigurado
 from app.esquemas.clientes import ClienteCadastrado
-from app.esquemas.pedidos import ChaveEntregue, PedidoDetalhado
-from app.esquemas.reservas import ItemReservado
+from app.esquemas.pedidos import ChaveEntregue, ItemDoPedido, PedidoDetalhado
 from app.main import criar_app
 from app.rotas.autenticacao import usuario_atual
 from app.servicos import carrinho, pagamentos
@@ -23,8 +22,12 @@ def pedido(status="entregue", chaves=True):
         status=status,
         valor_total=Decimal("19.90"),
         itens=[
-            ItemReservado(
-                jogo_id=3, quantidade=1, preco_unitario=Decimal("19.90"), subtotal=Decimal("19.90")
+            ItemDoPedido(
+                jogo_id=3,
+                nome="Jogo",
+                quantidade=1,
+                preco_unitario=Decimal("19.90"),
+                subtotal=Decimal("19.90"),
             )
         ],
         chaves=[ChaveEntregue(jogo_id=3, nome="Jogo", codigo="AAAA-BBBB")] if chaves else [],
@@ -58,7 +61,15 @@ def test_pagamento_devolve_pedido_entregue_com_chaves_do_cliente_da_sessao(api_p
         "pedido_id": 7,
         "status": "entregue",
         "valor_total": "19.90",
-        "itens": [{"jogo_id": 3, "quantidade": 1, "preco_unitario": "19.90", "subtotal": "19.90"}],
+        "itens": [
+            {
+                "jogo_id": 3,
+                "nome": "Jogo",
+                "quantidade": 1,
+                "preco_unitario": "19.90",
+                "subtotal": "19.90",
+            }
+        ],
         "chaves": [{"jogo_id": 3, "nome": "Jogo", "codigo": "AAAA-BBBB"}],
     }
 

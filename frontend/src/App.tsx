@@ -3,6 +3,7 @@ import type { FormEvent, MouseEvent, ReactNode } from "react";
 import ArteJogo from "./ArteJogo";
 import AdicionarAoCarrinho from "./AdicionarAoCarrinho";
 import Carrinho from "./Carrinho";
+import Pedido from "./Pedido";
 import {
   cadastrarCliente,
   destinoAposLogin,
@@ -868,6 +869,12 @@ function Conta({
   );
 }
 
+const ROTA_DE_PEDIDO = /^[/]pedidos[/][0-9]+$/;
+const rotaProtegida = (caminho: string) =>
+  ["/conta", "/carrinho"].includes(caminho) || ROTA_DE_PEDIDO.test(caminho);
+const retornoDaRota = (caminho: string) =>
+  caminho === "/carrinho" || ROTA_DE_PEDIDO.test(caminho) ? caminho : undefined;
+
 function RedirecionarParaLogin({ retorno }: { retorno?: string }) {
   useEffect(() => {
     irPara(
@@ -898,6 +905,7 @@ export default function App() {
   const ehLogin = url.pathname === "/login";
   const ehConta = url.pathname === "/conta";
   const ehCarrinho = url.pathname === "/carrinho";
+  const pedido = url.pathname.match(/^[/]pedidos[/]([1-9][0-9]{0,15})$/);
 
   const expirarSessao = useCallback((retorno?: string) => {
     encerrarSessao();
@@ -917,10 +925,8 @@ export default function App() {
     if (!sessao) return;
     const restante = sessao.expiraEm - Date.now();
     if (restante <= 0) {
-      if (["/conta", "/carrinho"].includes(location.pathname))
-        expirarSessao(
-          location.pathname === "/carrinho" ? "/carrinho" : undefined,
-        );
+      if (rotaProtegida(location.pathname))
+        expirarSessao(retornoDaRota(location.pathname));
       else {
         encerrarSessao();
         setSessao(null);
@@ -928,10 +934,8 @@ export default function App() {
       return;
     }
     const temporizador = window.setTimeout(() => {
-      if (["/conta", "/carrinho"].includes(location.pathname))
-        expirarSessao(
-          location.pathname === "/carrinho" ? "/carrinho" : undefined,
-        );
+      if (rotaProtegida(location.pathname))
+        expirarSessao(retornoDaRota(location.pathname));
       else {
         encerrarSessao();
         setSessao(null);
@@ -1037,6 +1041,17 @@ export default function App() {
             />
           ) : (
             <RedirecionarParaLogin retorno="/carrinho" />
+          )
+        ) : pedido ? (
+          sessao ? (
+            <Pedido
+              key={pedido[1]}
+              id={Number(pedido[1])}
+              sessao={sessao}
+              aoExpirar={() => expirarSessao(url.pathname)}
+            />
+          ) : (
+            <RedirecionarParaLogin retorno={url.pathname} />
           )
         ) : detalhe ? (
           <Detalhe

@@ -5,8 +5,6 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-from app.esquemas.reservas import ItemReservado
-
 StatusDoPedido = Literal["aguardando_pagamento", "pago", "entregue", "cancelado"]
 
 
@@ -14,6 +12,14 @@ class SolicitacaoPagamento(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     metodo: Literal["cartao", "pix", "boleto"]
+
+
+class ItemDoPedido(BaseModel):
+    jogo_id: int
+    nome: str
+    quantidade: int
+    preco_unitario: Decimal
+    subtotal: Decimal
 
 
 class ChaveEntregue(BaseModel):
@@ -28,5 +34,5 @@ class PedidoDetalhado(BaseModel):
     pedido_id: int
     status: StatusDoPedido
     valor_total: Decimal
-    itens: list[ItemReservado]
+    itens: list[ItemDoPedido]
     chaves: list[ChaveEntregue]

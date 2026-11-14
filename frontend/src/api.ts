@@ -77,10 +77,38 @@ export interface CarrinhoConsultado {
   total: string;
 }
 
+export type StatusDoPedido =
+  "aguardando_pagamento" | "pago" | "entregue" | "cancelado";
+
+export type MetodoDePagamento = "cartao" | "pix" | "boleto";
+
+export interface ItemDoPedido {
+  jogo_id: number;
+  nome: string;
+  quantidade: number;
+  preco_unitario: string;
+  subtotal: string;
+}
+
+export interface ChaveEntregue {
+  jogo_id: number;
+  nome: string;
+  codigo: string;
+}
+
+export interface PedidoDetalhado {
+  pedido_id: number;
+  status: StatusDoPedido;
+  valor_total: string;
+  itens: ItemDoPedido[];
+  chaves: ChaveEntregue[];
+}
+
 export function destinoAposLogin(retorno: string | null) {
   // Só permite voltar para rotas internas conhecidas; nunca para endereço externo.
   return retorno &&
     (retorno === "/carrinho" ||
+      /^\/pedidos\/\d+$/.test(retorno) ||
       /^\/jogos\/\d+\/?(?:\?origem=\d+)?$/.test(retorno))
     ? retorno
     : "/conta";
@@ -118,6 +146,8 @@ const mensagensDeValidacaoPorCampo: Record<string, string> = {
   jogo_id: "Informe um jogo válido.",
   quantidade: "Informe uma quantidade inteira maior que zero.",
   chave_idempotencia: "Informe um identificador de reserva válido.",
+  metodo: "Escolha cartão, Pix ou boleto.",
+  pedido_id: "Informe um pedido válido.",
 };
 
 function traduzirErroDeValidacao(erro: ErroDeValidacao) {
@@ -375,6 +405,123 @@ export function alterarQuantidadeDoCarrinho(
 
 export function removerDoCarrinho(token: string, jogoId: number) {
   return requisicaoDoCarrinho(token, `/itens/${jogoId}`, { method: "DELETE" });
+}
+
+const ehValor = (valor: unknown): valor is string =>
+  typeof valor === "string" && /^\d+\.\d{2}$/.test(valor);
+const ehIdentificador = (valor: unknown): valor is number =>
+  typeof valor === "number" && Number.isInteger(valor) && valor > 0;
+
+function pedidoValido(corpo: unknown): corpo is PedidoDetalhado {
+  if (
+    !corpo ||
+    typeof corpo !== "object" ||
+    !("pedido_id" in corpo) ||
+    !ehIdentificador(corpo.pedido_id) ||
+    !("status" in corpo) ||
+    typeof corpo.status !== "string" ||
+    !["aguardando_pagamento", "pago", "entregue", "cancelado"].includes(
+      corpo.status,
+    ) ||
+    !("valor_total" in corpo) ||
+    !ehValor(corpo.valor_total) ||
+    !("itens" in corpo) ||
+    !Array.isArray(corpo.itens) ||
+    !("chaves" in corpo) ||
+    !Array.isArray(corpo.chaves)
+  )
+    return false;
+  const itensValidos = corpo.itens.every(
+    (item) =>
+      item &&
+      typeof item === "object" &&
+      "jogo_id" in item &&
+      ehIdentificador(item.jogo_id) &&
+      "nome" in item &&
+      typeof item.nome === "string" &&
+      "quantidade" in item &&
+      ehIdentificador(item.quantidade) &&
+      "preco_unitario" in item &&
+      ehValor(item.preco_unitario) &&
+      "subtotal" in item &&
+      ehValor(item.subtotal),
+  );
+  const chavesValidas = corpo.chaves.every(
+    (chave) =>
+      chave &&
+      typeof chave === "object" &&
+      "jogo_id" in chave &&
+      ehIdentificador(chave.jogo_id) &&
+      "nome" in chave &&
+      typeof chave.nome === "string" &&
+      "codigo" in chave &&
+      typeof chave.codigo === "string" &&
+      chave.codigo.trim() !== "",
+  );
+  // Pedido entregue sem chave, ou chave antes da entrega, não é mostrado como válido.
+  const coerente =
+    corpo.status === "entregue"
+      ? corpo.chaves.length > 0
+      : corpo.chaves.length === 0;
+  return itensValidos && chavesValidas && coerente;
+}
+
+async function requisicaoDoPedido(
+  token: string,
+  caminho: string,
+  falha: string,
+  opcoes: RequestInit = {},
+): Promise<PedidoDetalhado> {
+  let resposta: Response;
+  try {
+    resposta = await fetch(`${baseDaApi}/pedidos/${caminho}`, {
+      ...opcoes,
+      headers: {
+        ...(opcoes.body ? { "Content-Type": "application/json" } : {}),
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch {
+    throw new ErroDaApi(
+      "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.",
+      0,
+    );
+  }
+  const corpo = (await resposta.json().catch(() => null)) as unknown;
+  if (!resposta.ok)
+    throw new ErroDaApi(mensagemDaApi(corpo) || falha, resposta.status);
+  if (!pedidoValido(corpo))
+    throw new ErroDaApi(
+      "O servidor retornou um pedido inválido. Tente novamente.",
+      0,
+    );
+  return corpo;
+}
+
+export function consultarPedido(
+  token: string,
+  pedidoId: number,
+  signal?: AbortSignal,
+) {
+  return requisicaoDoPedido(
+    token,
+    String(pedidoId),
+    "Não foi possível carregar o pedido.",
+    { signal },
+  );
+}
+
+export function pagarPedido(
+  token: string,
+  pedidoId: number,
+  metodo: MetodoDePagamento,
+) {
+  return requisicaoDoPedido(
+    token,
+    `${pedidoId}/pagamento`,
+    "Não foi possível confirmar o pagamento.",
+    { method: "POST", body: JSON.stringify({ metodo }) },
+  );
 }
 
 export function guardarSessao(sessao: SessaoCriada): SessaoLocal {
