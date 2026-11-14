@@ -52,7 +52,20 @@ O backlog, as sprints e as releases ficam no Jira.
 
 ## Documentos
 
-Pasta no Google Drive: https://drive.google.com/drive/folders/1m_lYvzaFOp2JcKruRJZfTtRMfyEVXKPt
+Pasta completa no Google Drive: [GameKeys - Documentos](https://drive.google.com/drive/folders/1pbRMCUucJ_8y1VKreh51SlERl2sVnt4h)
+
+| Pasta | O que guarda |
+| --- | --- |
+| [Projeto](https://drive.google.com/drive/folders/1BD1sS0TqcWOr1v0-mSy0Qj77ei0LxBrR) | Proposta, Drivers Arquiteturais, Priorização do Backlog, Acordos de Trabalho, Calendário de Cerimônias, Ambiente de Desenvolvimento e Registro de Riscos |
+| [Qualidade](https://drive.google.com/drive/folders/1WW2MPQRI4d0BwnB7PYg7jXhz7TkVgzov) | DoD de Sprint e Release, Análise de Riscos Baseada em Defeitos, Plano de Qualidade, Plano de Teste e os documentos de qualidade da Release 2 |
+| [GameKeys - Release 1](https://drive.google.com/drive/folders/1-i4Zd4ZaVWxmGvYyZZ6l0CUkpCabpcS_) | Release Notes e relatórios de Qualidade, Métricas e Pipeline da R1 |
+| [Release 1 / Sprint 1](https://drive.google.com/drive/folders/1so-swB6IeGST4f6FZK4zqiPbN_IdrwBB) | Plano da Sprint 1 e atas da Planning, da Review e da Retrospectiva |
+| [GameKeys - Release 2](https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByRFdmTL7EWpluAjH_) | Plano da Release 2, Plano de Qualidade e Testes da R2, Acompanhamento QA R2 e Relatório do Pipeline R2 |
+| [Release 2 / Sprint 2](https://drive.google.com/drive/folders/13pCFFYBqXzE6Sc9S3WbEhvxRCst0LO4r) | Atas, Acompanhamento e Resultados e Roteiro da Review da Sprint 2 |
+| [Release 2 / Sprint 3](https://drive.google.com/drive/folders/1m-mQLWk3zyOvlXAEGuHvT5fMs7K6AGjH) | Ata da Planning, Acompanhamento e Resultados e atas da Review e da Retrospectiva da Sprint 3 |
+| [GameKeys - Sprint 0](https://drive.google.com/drive/folders/1m_lYvzaFOp2JcKruRJZfTtRMfyEVXKPt) | Material da preparação do projeto; os documentos em uso foram para as pastas acima |
+
+Acesso: a pasta e os documentos abrem com a conta institucional da UEPB de quem foi incluído (os três integrantes e a professora). Não são públicos: sem login, o Google pede autenticação. Links conferidos em 14/11/2026.
 
 - [Proposta](https://docs.google.com/document/d/1cvCfppfFUyMrlR5vKW8kzUz7ld3SvadsuaLUz4l3nRc/edit)
 - [Plano da Sprint 1](https://docs.google.com/document/d/1e_3jWniPo1ayAMduJLj30WU7ZRu9x5FYl6XWfpK0WSM/edit)
@@ -68,12 +81,14 @@ Documentos nos templates da disciplina (no Drive, em `docs/` e anexados no Jira)
 - [Análise de Riscos Baseada em Defeitos](https://drive.google.com/file/d/1-V-hE9YR3ZEPaU3jr15yCcHHMzlV64ej/view): 9 riscos, 3 atributos de qualidade × 3 integrantes (anexo do épico GK-64)
 - [Plano de Qualidade (planilha)](https://drive.google.com/file/d/1oFIoArPRYugK9tnwQFsLC75rlv7r4TiK/view): itens de qualidade com métrica, meta, forma de medição e responsável (anexo da GK-36)
 - [Plano de Teste](https://drive.google.com/file/d/1qXmh7E59SYTYdfxeKzZtY5n8A1jDZK6s/view): escopo, estratégia, casos de teste ligados às US e cronograma (anexo da GK-36)
+- [Plano de Qualidade - Release 2 (planilha)](https://drive.google.com/file/d/1rFm1g-ChEqIb2EN7ZYeFRgqFhmVg8RSE/view): planilha de qualidade da R2, do QA
+- [Protocolo do Teste de Usabilidade R2 (Q-05)](https://drive.google.com/file/d/178amBRRsfMGTgtJUXilBpZetpAb-lGB8/view): roteiro do teste com 5 colegas
 
 A DoR e a DoD de cada história ficam no modelo de US, dentro de cada história no Jira.
 
 ### Release 1
 
-Pasta no Google Drive: https://drive.google.com/drive/folders/1-i4Zd4ZaVWxmGvYyZZ6l0CUkpCabpcS_
+Pasta no Google Drive: [GameKeys - Release 1](https://drive.google.com/drive/folders/1-i4Zd4ZaVWxmGvYyZZ6l0CUkpCabpcS_), com a subpasta [Sprint 1](https://drive.google.com/drive/folders/1so-swB6IeGST4f6FZK4zqiPbN_IdrwBB)
 
 | Papel | Documento | Repositório |
 |---|---|---|
@@ -93,7 +108,7 @@ O que vale é a versão do Drive, onde a equipe preenche. A cópia em `docs/` é
 
 ### Release 2
 
-Pasta no Google Drive: https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByRFdmTL7EWpluAjH_
+Pasta no Google Drive: [GameKeys - Release 2](https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByRFdmTL7EWpluAjH_), com as subpastas [Sprint 2](https://drive.google.com/drive/folders/13pCFFYBqXzE6Sc9S3WbEhvxRCst0LO4r) e [Sprint 3](https://drive.google.com/drive/folders/1m-mQLWk3zyOvlXAEGuHvT5fMs7K6AGjH)
 
 | Papel | Documento | Repositório |
 |---|---|---|
@@ -111,7 +126,7 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByR
 | SM | [Ata da Review - Sprint 3](https://docs.google.com/document/d/1XMyS5UIxRc5ZUx4lp36kWLxwnIF3v-alP_lwutjP-4k/edit) (preparada; fecha em 26/11 com a Release 2) | `docs/release-2/sprint-3/Ata-Review-Sprint-3.docx` |
 | SM | [Ata da Retrospectiva - Sprint 3](https://docs.google.com/document/d/1bb2QoZqK2gICaA3sgv0O6bkjFgrjSicQrlgVzDwDs8M/edit) (preparada; fecha em 26/11 com a Release 2) | `docs/release-2/sprint-3/Ata-Retrospectiva-Sprint-3.docx` |
 
-As cópias do repositório foram sincronizadas com o Drive em 08/11/2026. Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
+As cópias do repositório foram sincronizadas com o Drive em 08/11/2026; as da Sprint 3 e o Plano da Release 2, em 13/11/2026. Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
 
 ## Tecnologias
 
