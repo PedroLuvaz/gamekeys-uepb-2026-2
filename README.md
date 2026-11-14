@@ -103,9 +103,13 @@ Pasta no Google Drive: https://drive.google.com/drive/folders/1qQqakLyFIfm1JvByR
 | DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main, homologação e deploy automático) | `docs/release-2/Relatorio-do-Pipeline-R2.docx` |
 | SM | [Ata da Planning - Sprint 2](https://docs.google.com/document/d/12tAuNdJ9sn_yyHmyuh9Re8GtH_yCdZkFoKyMBKi-_Os/edit) | `docs/release-2/sprint-2/Ata-Planning-Sprint-2.docx` |
 | SM | [Acompanhamento e Resultados - Sprint 2](https://docs.google.com/document/d/1DIxA-qxKtHKApLr_6_mDT_uOIiEZB6XLZDsJqB_MHRM/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/release-2/sprint-2/Acompanhamento-e-Resultados-Sprint-2.docx` |
-| SM | [Ata da Review - Sprint 2](https://docs.google.com/document/d/1gyfrCYCxlZWo0QXTiQoJCjdM14S0L2QC86thOHos050/edit) (preparada; fecha em 11/11) | `docs/release-2/sprint-2/Ata-Review-Sprint-2.docx` |
-| SM | [Ata da Retrospectiva - Sprint 2](https://docs.google.com/document/d/1ua2jBNA6pN14VCUleeQQtx-I4qR6f38pqwLZd4B6Enk/edit) (preparada; fecha em 11/11) | `docs/release-2/sprint-2/Ata-Retrospectiva-Sprint-2.docx` |
+| SM | [Ata da Review - Sprint 2](https://docs.google.com/document/d/1gyfrCYCxlZWo0QXTiQoJCjdM14S0L2QC86thOHos050/edit) (fechada em 11/11) | `docs/release-2/sprint-2/Ata-Review-Sprint-2.docx` |
+| SM | [Ata da Retrospectiva - Sprint 2](https://docs.google.com/document/d/1ua2jBNA6pN14VCUleeQQtx-I4qR6f38pqwLZd4B6Enk/edit) (fechada em 11/11) | `docs/release-2/sprint-2/Ata-Retrospectiva-Sprint-2.docx` |
 | SM | [Roteiro da Review - Sprint 2](https://docs.google.com/document/d/1zOg6w2A7CTPVeKA4-dJuWBJACM0FmHPrrR8MTqMzJgI/edit) (checklist da véspera, ordem da demonstração e plano B) | `docs/release-2/sprint-2/Roteiro-Review-Sprint-2.docx` |
+| SM | [Ata da Planning - Sprint 3](https://docs.google.com/document/d/138YLvywoY2VsDsh4ILc8HddrOjphJnpN5sYQk1F8xnQ/edit) (pauta da Planning de 17/11) | `docs/release-2/sprint-3/Ata-Planning-Sprint-3.docx` |
+| SM | [Acompanhamento e Resultados - Sprint 3](https://docs.google.com/document/d/1whd2f6HFlZUfOG_1D6iozZtAJcmGTjUKn-_iZsxDC7I/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/release-2/sprint-3/Acompanhamento-e-Resultados-Sprint-3.docx` |
+| SM | [Ata da Review - Sprint 3](https://docs.google.com/document/d/1XMyS5UIxRc5ZUx4lp36kWLxwnIF3v-alP_lwutjP-4k/edit) (preparada; fecha em 26/11 com a Release 2) | `docs/release-2/sprint-3/Ata-Review-Sprint-3.docx` |
+| SM | [Ata da Retrospectiva - Sprint 3](https://docs.google.com/document/d/1bb2QoZqK2gICaA3sgv0O6bkjFgrjSicQrlgVzDwDs8M/edit) (preparada; fecha em 26/11 com a Release 2) | `docs/release-2/sprint-3/Ata-Retrospectiva-Sprint-3.docx` |
 
 As cópias do repositório foram sincronizadas com o Drive em 08/11/2026. Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
 
