@@ -1476,3 +1476,121 @@ p {
     scroll-behavior: auto !important;
   }
 }
+
+/* GK-16: pedido, pagamento simulado e chaves entregues */
+.status-pedido {
+  color: var(--roxo);
+}
+.status-pedido.entregue {
+  color: #31571d;
+}
+.status-pedido.cancelado {
+  color: #7c2532;
+}
+.pedido-conteudo {
+  display: grid;
+  gap: 22px;
+  align-content: start;
+  min-width: 0;
+}
+.chaves-entregues {
+  padding: 24px;
+  border: 1px solid #c8dfb6;
+  border-radius: 14px;
+  background: #eef6e8;
+}
+.chaves-entregues h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+}
+.chaves-entregues p {
+  margin: 6px 0 16px;
+  color: #31571d;
+  font-size: 13px;
+}
+.chaves-entregues ul {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+.chaves-entregues li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: white;
+  font-size: 13px;
+}
+.chaves-entregues code {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.itens-pedido {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border: 1px solid var(--linha);
+  border-radius: 14px;
+  font-size: 13px;
+}
+.itens-pedido caption {
+  padding: 0 0 10px;
+  text-align: left;
+  font-weight: 600;
+}
+.itens-pedido th,
+.itens-pedido td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--linha);
+}
+.itens-pedido tr:last-child td {
+  border-bottom: 0;
+}
+.pagamento {
+  display: grid;
+  gap: 14px;
+}
+.pagamento fieldset {
+  display: grid;
+  gap: 8px;
+  border: 0;
+  padding: 0;
+}
+.pagamento legend {
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #c8c4d8;
+}
+.pagamento label {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  font-size: 14px;
+}
+.pagamento .botao {
+  background: var(--lima);
+  color: #201b38;
+}
+.pagamento .botao:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+@media (max-width: 640px) {
+  .itens-pedido {
+    table-layout: fixed;
+    font-size: 12px;
+  }
+  .itens-pedido th,
+  .itens-pedido td {
+    padding: 10px 6px;
+    overflow-wrap: anywhere;
+  }
+}

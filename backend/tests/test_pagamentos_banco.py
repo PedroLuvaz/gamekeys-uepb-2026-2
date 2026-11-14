@@ -68,6 +68,15 @@ def test_pagamento_entrega_as_chaves_e_registra_o_pagamento(loja):
     dados = resposta.json()
     assert dados["status"] == "entregue"
     assert dados["valor_total"] == "39.80"
+    assert dados["itens"] == [
+        {
+            "jogo_id": jogo,
+            "nome": "Jogo Carrinho",
+            "quantidade": 2,
+            "preco_unitario": "19.90",
+            "subtotal": "39.80",
+        }
+    ]
     assert len(dados["chaves"]) == 2
     assert len({chave["codigo"] for chave in dados["chaves"]}) == 2
     assert all(chave["codigo"].startswith("QA-SEM-VALOR-") for chave in dados["chaves"])

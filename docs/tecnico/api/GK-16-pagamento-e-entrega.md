@@ -42,7 +42,7 @@ Resposta HTTP 200:
   "status": "entregue",
   "valor_total": "39.80",
   "itens": [
-    {"jogo_id": 3, "quantidade": 2, "preco_unitario": "19.90", "subtotal": "39.80"}
+    {"jogo_id": 3, "nome": "Lenda Esquecida", "quantidade": 2, "preco_unitario": "19.90", "subtotal": "39.80"}
   ],
   "chaves": [
     {"jogo_id": 3, "nome": "Lenda Esquecida", "codigo": "XXXX-XXXX-XXXX"},
@@ -71,6 +71,15 @@ vazia e o código nem é lido do banco.
 | 422 | Método de pagamento ou identificador de pedido inválido |
 | 503 | Banco indisponível, pool esgotado ou tempo limite de bloqueio/consulta |
 
+## Tela
+
+`/pedidos/{pedido_id}` no front-end (`frontend/src/Pedido.tsx`) mostra a situação, os itens
+com o preço da compra e o total. Com o pedido aguardando pagamento, oferece a forma de
+pagamento e o botão de confirmar; depois da entrega, lista as chaves. A tela sempre mostra
+carregando, pedido não encontrado ou erro com "tentar novamente" (GK-48), bloqueia o envio
+duplicado e volta ao login com retorno quando a sessão expira. A GK-14 leva o cliente a essa
+rota depois de finalizar a compra. Cenários em `frontend/cypress/e2e/pagamento-pedido.feature`.
+
 ## Critérios de aceite e testes
 
 | Cenário da GK-16 | Teste |
@@ -86,8 +95,6 @@ estão em `backend/tests/test_pagamentos.py`.
 
 ## Pendências para fechar a história
 
-- Tela de pagamento e de chaves entregues no front-end, com os estados de carregando,
-  vazio e erro da GK-48.
 - Integrar a mudança de status com o histórico da GK-13 quando ela existir.
 - Aplicar a migração 0005 no banco de homologação depois do merge.
 - Evidência do QA nos dois cenários e aceite do PO registrado no Jira.
