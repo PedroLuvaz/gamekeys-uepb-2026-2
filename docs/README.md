@@ -29,10 +29,10 @@ Para a Release 3, crie `release-3/` com `sprint-4/` e `sprint-5/` dentro, seguin
 
 ## No Drive
 
-A pasta `GameKeys - Documentos` segue a mesma ideia:
+A pasta [GameKeys - Documentos](https://drive.google.com/drive/folders/1pbRMCUucJ_8y1VKreh51SlERl2sVnt4h) segue a mesma ideia:
 
 - `Projeto` e `Qualidade`, com os documentos que valem para todas as releases.
-- `GameKeys - Release 1` e `GameKeys - Release 2`, cada uma com uma subpasta `Sprint 1` ou `Sprint 2` (atas, plano, acompanhamento e roteiros).
+- `GameKeys - Release 1` e `GameKeys - Release 2`, com as subpastas `Sprint 1` (na Release 1) e `Sprint 2` e `Sprint 3` (na Release 2), onde ficam atas, plano, acompanhamento e roteiros.
 - `GameKeys - Sprint 0`, com o material que sobrou da preparação do projeto.
 
 Mover um arquivo no Drive não muda o link dele, então os links do [README da raiz](../README.md) continuam valendo.
