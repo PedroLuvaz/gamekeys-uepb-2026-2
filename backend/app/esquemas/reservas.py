@@ -22,6 +22,6 @@ class ItemReservado(BaseModel):
 
 class PedidoReservado(BaseModel):
     pedido_id: int
-    status: Literal["aguardando_pagamento", "pago", "cancelado"]
+    status: Literal["aguardando_pagamento", "pago", "entregue", "cancelado"]
     valor_total: Decimal
     itens: list[ItemReservado]

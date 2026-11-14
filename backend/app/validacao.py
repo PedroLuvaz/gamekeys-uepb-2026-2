@@ -10,6 +10,8 @@ MENSAGENS_POR_CAMPO = {
     "jogo_id": "Informe um jogo válido.",
     "quantidade": "Informe uma quantidade inteira maior que zero.",
     "chave_idempotencia": "Informe um identificador de reserva válido.",
+    "metodo": "Escolha cartão, Pix ou boleto.",
+    "pedido_id": "Informe um pedido válido.",
 }
 
 

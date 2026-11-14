@@ -19,7 +19,7 @@ from fastapi.responses import JSONResponse
 
 from app.config import Configuracoes, carregar
 from app.db import fechar_pool
-from app.rotas import autenticacao, carrinho, catalogo, clientes, reservas, saude
+from app.rotas import autenticacao, carrinho, catalogo, clientes, pedidos, reservas, saude
 from app.validacao import traduzir_erro
 
 
@@ -58,6 +58,7 @@ def criar_app(config: Configuracoes | None = None) -> FastAPI:
     app.include_router(autenticacao.router)
     app.include_router(carrinho.router)
     app.include_router(reservas.router)
+    app.include_router(pedidos.router)
     return app
 
 
