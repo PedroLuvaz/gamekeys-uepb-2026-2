@@ -104,14 +104,52 @@ def test_consulta_antes_da_entrega_nao_mostra_codigos(loja):
 def test_valor_pago_e_o_gravado_no_pedido_mesmo_com_preco_novo_no_catalogo(loja):
     """GK-47 / DA-CON-I2-02: o preço do pedido não acompanha o catálogo."""
     _, headers = loja.cliente()
-    jogo = loja.jogo_fisico(1, preco=Decimal("50.00"))
-    pedido_id = loja.pedido_reservado(headers, jogo)
+    jogo_a = loja.jogo_fisico(3, preco=Decimal("50.00"))
+    jogo_b = loja.jogo_fisico(4, preco=Decimal("7.25"))
+    assert adicionar(loja, headers, jogo_b, 3).status_code == 200
+    pedido_id = loja.pedido_reservado(headers, jogo_a, 2)
     with loja.pool.connection() as c:
-        c.execute("update catalogo.jogos set preco=70.00 where id=%s", (jogo,))
-    dados = pagar(loja, headers, pedido_id).json()
-    assert dados["valor_total"] == "50.00"
-    assert dados["itens"][0]["preco_unitario"] == "50.00"
-    assert situacao(loja, pedido_id)["pagamentos"] == [("pix", "aprovado", Decimal("50.00"))]
+        c.execute(
+            "update catalogo.jogos set preco = case id when %s then 70.00 else 11.00 end"
+            " where id in (%s, %s)",
+            (jogo_a, jogo_a, jogo_b),
+        )
+
+    pedido_antigo = loja.api.get(f"/pedidos/{pedido_id}", headers=headers).json()
+    assert pedido_antigo == {
+        "pedido_id": pedido_id,
+        "status": "aguardando_pagamento",
+        "valor_total": "121.75",
+        "itens": [
+            {
+                "jogo_id": jogo_a,
+                "nome": "Jogo Carrinho",
+                "quantidade": 2,
+                "preco_unitario": "50.00",
+                "subtotal": "100.00",
+            },
+            {
+                "jogo_id": jogo_b,
+                "nome": "Jogo Carrinho",
+                "quantidade": 3,
+                "preco_unitario": "7.25",
+                "subtotal": "21.75",
+            },
+        ],
+        "chaves": [],
+    }
+
+    resposta = pagar(loja, headers, pedido_id)
+    assert resposta.status_code == 200
+    pago = resposta.json()
+    assert pago["status"] == "entregue"
+    assert pago["valor_total"] == pedido_antigo["valor_total"]
+    assert pago["itens"] == pedido_antigo["itens"]
+    assert len(pago["chaves"]) == 5
+    assert situacao(loja, pedido_id)["pagamentos"] == [
+        ("pix", "aprovado", Decimal("121.75"))
+    ]
+    assert loja.api.get(f"/pedidos/{pedido_id}", headers=headers).json() == pago
 
 
 def test_repetir_o_pagamento_devolve_o_mesmo_pedido_sem_cobrar_de_novo(loja):
