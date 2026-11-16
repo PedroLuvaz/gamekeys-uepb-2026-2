@@ -146,9 +146,7 @@ def test_valor_pago_e_o_gravado_no_pedido_mesmo_com_preco_novo_no_catalogo(loja)
     assert pago["valor_total"] == pedido_antigo["valor_total"]
     assert pago["itens"] == pedido_antigo["itens"]
     assert len(pago["chaves"]) == 5
-    assert situacao(loja, pedido_id)["pagamentos"] == [
-        ("pix", "aprovado", Decimal("121.75"))
-    ]
+    assert situacao(loja, pedido_id)["pagamentos"] == [("pix", "aprovado", Decimal("121.75"))]
     assert loja.api.get(f"/pedidos/{pedido_id}", headers=headers).json() == pago
 
 
