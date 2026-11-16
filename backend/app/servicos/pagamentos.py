@@ -8,6 +8,7 @@ from app.db import obter_pool
 from app.esquemas.clientes import ClienteCadastrado
 from app.esquemas.pedidos import ChaveEntregue, ItemDoPedido, PedidoDetalhado
 from app.servicos.carrinho import ClienteNaoPermitido
+from app.servicos.status_pedidos import alterar_status
 
 
 class PedidoNaoEncontrado(LookupError):
@@ -102,9 +103,9 @@ def pagar_pedido(cliente: ClienteCadastrado, pedido_id: int, metodo: str) -> Ped
         if vendidas != esperadas:
             # Chave do pedido fora do estado "reservada": não entregar nada pela metade.
             raise RuntimeError("Chaves do pedido em estado inconsistente")
+        alterar_status(conexao, pedido_id, status, "entregue", cliente.id)
         conexao.execute(
-            "update vendas.pedidos set status = 'entregue', pago_em = now(), entregue_em = now()"
-            " where id = %s",
+            "update vendas.pedidos set pago_em = now(), entregue_em = now() where id = %s",
             (pedido_id,),
         )
         return _detalhar(conexao, pedido_id, "entregue", valor_total)

@@ -39,6 +39,21 @@ def test_repetir_migracao_e_carga_nao_duplica(banco, conexao):
     assert conexao.execute("select count(*) from catalogo.jogos").fetchone()[0] == antes
 
 
+def test_historico_status_e_append_only_para_equipe(conexao):
+    privilegios = conexao.execute(
+        "select has_table_privilege('gamekeys_equipe',"
+        " 'vendas.historico_status_pedido', 'SELECT'),"
+        " has_table_privilege('gamekeys_equipe',"
+        " 'vendas.historico_status_pedido', 'INSERT'),"
+        " has_table_privilege('gamekeys_equipe',"
+        " 'vendas.historico_status_pedido', 'UPDATE'),"
+        " has_table_privilege('gamekeys_equipe',"
+        " 'vendas.historico_status_pedido', 'DELETE')"
+    ).fetchone()
+
+    assert privilegios == (True, True, False, False)
+
+
 def test_cadastro_usa_perfil_cliente_por_padrao(conexao):
     _, perfil = inserir_usuario(conexao, "perfil@teste.com")
 
