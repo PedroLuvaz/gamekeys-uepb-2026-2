@@ -20,6 +20,7 @@ from app.servicos.carrinho import (
     idade_em_anos,
 )
 from app.servicos.reserva_chaves import reservar_chaves
+from app.servicos.status_pedidos import registrar_status_inicial
 
 MAX_ITENS = 100
 MAX_UNIDADES = 1000
@@ -117,6 +118,7 @@ def _reservar_na_transacao(
         " values (%s, %s, %s) returning id",
         (cliente.id, chave_idempotencia, total),
     ).fetchone()[0]
+    registrar_status_inicial(conexao, pedido_id, cliente.id)
     for jogo, (_, quantidade) in zip(jogos, itens, strict=True):
         ids = reservar_chaves(conexao, jogo["id"], quantidade)
         conexao.execute(

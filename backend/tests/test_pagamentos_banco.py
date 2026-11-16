@@ -1,6 +1,7 @@
 """GK-16: pagamento e entrega pela API/JWT/PostgreSQL reais, só em gamekeys_teste local."""
 
 from concurrent.futures import ThreadPoolExecutor
+from datetime import UTC, datetime
 from decimal import Decimal
 from threading import Barrier
 
@@ -8,7 +9,7 @@ import pytest
 from test_carrinho_banco import adicionar, ambiente  # noqa: F401
 from test_reservas_banco import reserva, reservar  # noqa: F401
 
-from app.servicos import pagamentos
+from app.servicos import pagamentos, status_pedidos
 
 
 @pytest.fixture
@@ -58,9 +59,19 @@ def situacao(loja, pedido_id):
         }
 
 
+def historico(loja, pedido_id):
+    with loja.pool.connection() as c:
+        return c.execute(
+            "select status_anterior, status_novo, responsavel_id, alterado_em"
+            " from vendas.historico_status_pedido where pedido_id=%s order by id",
+            (pedido_id,),
+        ).fetchall()
+
+
 def test_pagamento_entrega_as_chaves_e_registra_o_pagamento(loja):
     """Cenário 1 da GK-16: o pedido fica Entregue e o cliente vê suas chaves."""
-    _, headers = loja.cliente()
+    inicio = datetime.now(UTC)
+    cliente, headers = loja.cliente()
     jogo = loja.jogo_fisico(3)
     pedido_id = loja.pedido_reservado(headers, jogo, 2)
     resposta = pagar(loja, headers, pedido_id)
@@ -88,6 +99,12 @@ def test_pagamento_entrega_as_chaves_e_registra_o_pagamento(loja):
     # A chave vendida não volta ao estoque: sobra 1 das 3.
     assert loja.conferir()["estoques"] == [(1, 1)]
     assert loja.api.get(f"/pedidos/{pedido_id}", headers=headers).json() == dados
+    mudancas = historico(loja, pedido_id)
+    assert [(anterior, novo, responsavel) for anterior, novo, responsavel, _ in mudancas] == [
+        (None, "aguardando_pagamento", cliente.id),
+        ("aguardando_pagamento", "entregue", cliente.id),
+    ]
+    assert all(inicio <= alterado_em <= datetime.now(UTC) for *_, alterado_em in mudancas)
 
 
 def test_consulta_antes_da_entrega_nao_mostra_codigos(loja):
@@ -158,6 +175,10 @@ def test_repetir_o_pagamento_devolve_o_mesmo_pedido_sem_cobrar_de_novo(loja):
     assert primeira.status_code == segunda.status_code == 200
     assert segunda.json() == primeira.json()
     assert situacao(loja, pedido_id)["pagamentos"] == [("cartao", "aprovado", Decimal("19.90"))]
+    assert [(a, n) for a, n, *_ in historico(loja, pedido_id)] == [
+        (None, "aguardando_pagamento"),
+        ("aguardando_pagamento", "entregue"),
+    ]
 
 
 def test_dois_pagamentos_simultaneos_geram_um_pagamento_e_a_mesma_entrega(loja):
@@ -174,6 +195,10 @@ def test_dois_pagamentos_simultaneos_geram_um_pagamento_e_a_mesma_entrega(loja):
     assert [r.status_code for r in respostas] == [200] * 4
     assert all(r.json() == respostas[0].json() for r in respostas)
     assert len(situacao(loja, pedido_id)["pagamentos"]) == 1
+    assert [(a, n) for a, n, *_ in historico(loja, pedido_id)] == [
+        (None, "aguardando_pagamento"),
+        ("aguardando_pagamento", "entregue"),
+    ]
 
 
 def test_pedido_de_outro_cliente_nao_e_pago_nem_consultado(loja):
@@ -198,6 +223,18 @@ def test_pedido_cancelado_nao_pode_ser_pago(loja):
     assert resposta.status_code == 409
     assert resposta.json() == {"detail": "Este pedido não está aguardando pagamento."}
     assert situacao(loja, pedido_id)["pagamentos"] == []
+    assert [(a, n) for a, n, *_ in historico(loja, pedido_id)] == [(None, "aguardando_pagamento")]
+
+
+def test_transicao_nao_confirmada_e_recusada_sem_mudar_pedido_ou_historico(loja):
+    cliente, headers = loja.cliente()
+    pedido_id = loja.pedido_reservado(headers, loja.jogo_fisico(1))
+    antes = historico(loja, pedido_id)
+    with pytest.raises(status_pedidos.TransicaoStatusInvalida):
+        with loja.pool.connection() as c, c.transaction():
+            status_pedidos.alterar_status(c, pedido_id, "aguardando_pagamento", "pago", cliente.id)
+    assert situacao(loja, pedido_id)["status"] == "aguardando_pagamento"
+    assert historico(loja, pedido_id) == antes
 
 
 def test_chave_fora_de_reservada_desfaz_o_pagamento_inteiro(loja):
@@ -216,6 +253,25 @@ def test_chave_fora_de_reservada_desfaz_o_pagamento_inteiro(loja):
         "pagamentos": [],
         "chaves": ["invalidada", "reservada"],
     }
+    assert [(a, n) for a, n, *_ in historico(loja, pedido_id)] == [(None, "aguardando_pagamento")]
+
+
+def test_falha_apos_historico_desfaz_status_pagamento_e_entrega(loja, monkeypatch):
+    _, headers = loja.cliente()
+    pedido_id = loja.pedido_reservado(headers, loja.jogo_fisico(1))
+
+    def falhar(*_):
+        raise RuntimeError("falha após a mudança de status")
+
+    monkeypatch.setattr(pagamentos, "_detalhar", falhar)
+    with pytest.raises(RuntimeError, match="após a mudança"):
+        pagar(loja, headers, pedido_id)
+    assert situacao(loja, pedido_id) == {
+        "status": "aguardando_pagamento",
+        "pagamentos": [],
+        "chaves": ["reservada"],
+    }
+    assert [(a, n) for a, n, *_ in historico(loja, pedido_id)] == [(None, "aguardando_pagamento")]
 
 
 def test_administrador_nao_paga_pedido(loja):

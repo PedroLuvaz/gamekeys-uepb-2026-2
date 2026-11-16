@@ -7,16 +7,17 @@ O pagamento parte do pedido `aguardando_pagamento` criado pela reserva (GK-15,
 marca as chaves do pedido como `vendida` e passa o pedido para `entregue`, tudo na mesma
 transação. Só então os códigos aparecem. Qualquer falha desfaz as três coisas.
 
-Fora desta entrega: tela de checkout (GK-14), histórico e validação das transições de
-status (GK-13), cancelamento e expiração da reserva (Release 3). O pagamento é simulado
-e sempre aprovado; a coluna `status` de `vendas.pagamentos` já aceita `recusado` para
-quando existir um cenário de recusa.
+O histórico e a validação da transição para `entregue` são integrados pela GK-13.
+Fora desta entrega: tela de checkout (GK-14), cancelamento e expiração da reserva
+(Release 3). O pagamento é simulado e sempre aprovado; a coluna `status` de
+`vendas.pagamentos` já aceita `recusado` para quando existir um cenário de recusa.
 
-## Banco (migração 0005)
+## Banco (migrações 0005 e 0006)
 
 - `vendas.pedidos.status` passa a aceitar `entregue`, e a tabela ganha `entregue_em`.
 - `vendas.pagamentos` é criada como no DER (`pedido_id` único, `metodo`, `status`, `valor`).
-- A GK-13 também mexe em `vendas.pedidos`. Quem mesclar depois renumera a própria migração.
+- A `0006` cria `vendas.historico_status_pedido`; o status e o histórico mudam na mesma
+  transação.
 
 O DER em `docs/tecnico/banco/` ainda está na v1.1 e precisa da v1.2 com essas mudanças
 e com a tabela de histórico da GK-13.
@@ -95,6 +96,6 @@ estão em `backend/tests/test_pagamentos.py`.
 
 ## Pendências para fechar a história
 
-- Integrar a mudança de status com o histórico da GK-13 quando ela existir.
-- Aplicar a migração 0005 no banco de homologação depois do merge.
+- Aplicar a migração 0006 no banco de homologação depois do merge.
+- Decidir etapa `pago`, cancelamento e consulta administrativa do histórico.
 - Evidência do QA nos dois cenários e aceite do PO registrado no Jira.
