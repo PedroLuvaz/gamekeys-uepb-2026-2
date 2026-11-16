@@ -3,6 +3,7 @@ import type { FormEvent, MouseEvent, ReactNode } from "react";
 import ArteJogo from "./ArteJogo";
 import AdicionarAoCarrinho from "./AdicionarAoCarrinho";
 import Carrinho from "./Carrinho";
+import LimiteDeErro from "./LimiteDeErro";
 import Pedido from "./Pedido";
 import {
   cadastrarCliente,
@@ -882,7 +883,11 @@ function RedirecionarParaLogin({ retorno }: { retorno?: string }) {
       true,
     );
   }, [retorno]);
-  return <div className="detalhe-carregando">Redirecionando para o login…</div>;
+  return (
+    <div className="detalhe-carregando" role="status">
+      Redirecionando para o login…
+    </div>
+  );
 }
 
 export default function App() {
@@ -1018,59 +1023,61 @@ export default function App() {
         </div>
       </header>
       <main id="conteudo" className="largura" tabIndex={-1}>
-        {ehCadastro ? (
-          <Cadastro />
-        ) : ehLogin ? (
-          <Login
-            aoEntrar={(novaSessao) => {
-              setSessao(novaSessao);
-              irPara(destinoAposLogin(url.searchParams.get("retorno")), true);
-            }}
-          />
-        ) : ehConta ? (
-          sessao ? (
-            <Conta sessao={sessao} aoExpirar={expirarSessao} aoSair={sair} />
-          ) : (
-            <RedirecionarParaLogin />
-          )
-        ) : ehCarrinho ? (
-          sessao ? (
-            <Carrinho
-              sessao={sessao}
-              aoExpirar={() => expirarSessao("/carrinho")}
+        <LimiteDeErro chave={endereco}>
+          {ehCadastro ? (
+            <Cadastro />
+          ) : ehLogin ? (
+            <Login
+              aoEntrar={(novaSessao) => {
+                setSessao(novaSessao);
+                irPara(destinoAposLogin(url.searchParams.get("retorno")), true);
+              }}
             />
-          ) : (
-            <RedirecionarParaLogin retorno="/carrinho" />
-          )
-        ) : pedido ? (
-          sessao ? (
-            <Pedido
-              key={pedido[1]}
-              id={Number(pedido[1])}
+          ) : ehConta ? (
+            sessao ? (
+              <Conta sessao={sessao} aoExpirar={expirarSessao} aoSair={sair} />
+            ) : (
+              <RedirecionarParaLogin />
+            )
+          ) : ehCarrinho ? (
+            sessao ? (
+              <Carrinho
+                sessao={sessao}
+                aoExpirar={() => expirarSessao("/carrinho")}
+              />
+            ) : (
+              <RedirecionarParaLogin retorno="/carrinho" />
+            )
+          ) : pedido ? (
+            sessao ? (
+              <Pedido
+                key={pedido[1]}
+                id={Number(pedido[1])}
+                sessao={sessao}
+                aoExpirar={() => expirarSessao(url.pathname)}
+              />
+            ) : (
+              <RedirecionarParaLogin retorno={url.pathname} />
+            )
+          ) : detalhe ? (
+            <Detalhe
+              key={detalhe[1]}
+              id={detalhe[1]}
+              origem={paginaValida(url.searchParams.get("origem"))}
               sessao={sessao}
-              aoExpirar={() => expirarSessao(url.pathname)}
+              aoExpirar={expirarSessao}
             />
+          ) : ehCatalogo ? (
+            <Catalogo pagina={paginaValida(url.searchParams.get("pagina"))} />
           ) : (
-            <RedirecionarParaLogin retorno={url.pathname} />
-          )
-        ) : detalhe ? (
-          <Detalhe
-            key={detalhe[1]}
-            id={detalhe[1]}
-            origem={paginaValida(url.searchParams.get("origem"))}
-            sessao={sessao}
-            aoExpirar={expirarSessao}
-          />
-        ) : ehCatalogo ? (
-          <Catalogo pagina={paginaValida(url.searchParams.get("pagina"))} />
-        ) : (
-          <EstadoDaTela titulo="Página não encontrada">
-            <p>Continue explorando os jogos do GameKeys.</p>
-            <Link href="/" className="botao">
-              Ir para o catálogo →
-            </Link>
-          </EstadoDaTela>
-        )}
+            <EstadoDaTela titulo="Página não encontrada">
+              <p>Continue explorando os jogos do GameKeys.</p>
+              <Link href="/" className="botao">
+                Ir para o catálogo →
+              </Link>
+            </EstadoDaTela>
+          )}
+        </LimiteDeErro>
       </main>
       <footer className="rodape">
         <div className="largura rodape-conteudo">
