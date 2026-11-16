@@ -250,7 +250,32 @@ export async function consultarUsuario(
       mensagemDaApi(corpo) || "Não foi possível validar sua sessão.",
       resposta.status,
     );
-  return corpo as ClienteCadastrado;
+  // Sem esta conferência, um corpo incompleto vira "Olá, undefined" e "Invalid Date" na tela.
+  if (!usuarioValido(corpo))
+    throw new ErroDaApi(
+      "O servidor retornou dados de conta inválidos. Tente novamente.",
+      0,
+    );
+  return corpo;
+}
+
+function usuarioValido(corpo: unknown): corpo is ClienteCadastrado {
+  return (
+    !!corpo &&
+    typeof corpo === "object" &&
+    "id" in corpo &&
+    typeof corpo.id === "number" &&
+    "nome" in corpo &&
+    typeof corpo.nome === "string" &&
+    corpo.nome.trim() !== "" &&
+    "email" in corpo &&
+    typeof corpo.email === "string" &&
+    "data_nascimento" in corpo &&
+    typeof corpo.data_nascimento === "string" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(corpo.data_nascimento) &&
+    "perfil" in corpo &&
+    (corpo.perfil === "cliente" || corpo.perfil === "administrador")
+  );
 }
 
 export async function adicionarAoCarrinho(

@@ -18,3 +18,32 @@ Funcionalidade: Nenhuma tela fica em branco
     Quando abro o catálogo com a falha de desenho
     E escolho voltar ao catálogo pelo aviso de falha
     Então volto a ver os cartões do catálogo
+
+  Cenário: Minha conta anuncia o carregamento enquanto valida a sessão
+    Dado que a validação da minha conta demora
+    Quando abro a página Minha conta
+    Então vejo o aviso de carregamento da conta
+    E depois vejo os dados da minha conta
+
+  @excecao
+  Cenário: Falha de conexão em Minha conta permite tentar de novo
+    Dado que a conexão cai ao validar minha conta
+    Quando abro a página Minha conta
+    Então vejo o erro da conta com a opção de tentar novamente
+    Quando a conexão da conta volta e tento novamente
+    Então depois vejo os dados da minha conta
+
+  @excecao
+  Cenário: Resposta incompleta da conta não vira dados quebrados na tela
+    Dado que o servidor devolve uma conta incompleta
+    Quando abro a página Minha conta
+    Então vejo o erro da conta com a mensagem "O servidor retornou dados de conta inválidos. Tente novamente."
+    E a tela não mostra "undefined" nem "Invalid Date"
+
+  @excecao
+  Cenário: Tentar novamente no carrinho recupera os itens depois da falha
+    Dado que a conexão cai ao abrir o carrinho
+    Quando abro o carrinho para conferir os estados
+    Então vejo o erro de conexão do carrinho
+    Quando a conexão do carrinho volta e tento novamente
+    Então vejo os itens do carrinho sem recarregar a página

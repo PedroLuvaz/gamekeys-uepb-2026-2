@@ -51,9 +51,8 @@ Quando entrarem, precisam dos três estados e de uma linha nesta matriz.
 
 - **QA-R2-007** (total "R$ 0,00" ausente no carrinho vazio): decisão do PO na Planning
   de 17/11 — entra na GK-48 ou vira bug. Não foi alterado nada no carrinho.
-- Lacunas de teste automatizado encontradas no levantamento: erro e carregamento da
-  tela "Minha conta"; clique em "Tentar novamente" no carrinho (hoje só se confere que
-  o erro aparece). Não bloqueiam a história, mas valem na verificação do QA.
+- ~~Lacunas de teste automatizado: erro e carregamento de "Minha conta"; clique em
+  "Tentar novamente" no carrinho.~~ Cobertas em 16/11/2026 (ver "Complemento de 16/11").
 - Teste manual do driver (rede lenta e API desligada nas ferramentas do navegador): a
   executar pelo QA em cada tela de compra depois da GK-14 e da GK-13, para preencher o
   campo "Resultado obtido" da GK-77.
@@ -66,3 +65,17 @@ Quando entrarem, precisam dos três estados e de uma linha nesta matriz.
    mensagem de erro e o botão de tentar de novo.
 3. Com a API de volta, clique em "Tentar novamente": o conteúdo reaparece sem recarregar
    a página.
+
+## Complemento de 16/11/2026
+
+Fecha as duas lacunas de teste do levantamento e um defeito achado ao cobri-las.
+
+- **Defeito:** se `/auth/me` respondesse 200 com um corpo incompleto, "Minha conta" mostrava
+  "Olá," sem nome e "Invalid Date" no lugar da data. Agora `consultarUsuario`
+  (`frontend/src/api.ts`) confere o corpo e, se faltar algum campo, a tela mostra "O servidor
+  retornou dados de conta inválidos. Tente novamente." com o botão de tentar de novo.
+- **Cenários novos** em `frontend/cypress/e2e/telas-sem-branco.feature`:
+  carregamento de "Minha conta"; falha de conexão e "Tentar novamente" em "Minha conta";
+  resposta incompleta da conta; "Tentar novamente" no carrinho recuperando os itens sem
+  recarregar a página.
+- Suíte de tela completa rodada localmente contra o build: 117 cenários, 117 passando.
