@@ -5,25 +5,28 @@ Regra (RNF GK-48, driver DA-USA-I3-03 / GK-77): toda tela mostra **carregando**,
 Medida do driver: indicador de carregando em até 1 segundo e 100% das listagens com
 os três estados.
 
-Levantamento de 16/11/2026, feito sobre o código da `main` (commit `aa0fdbe`) e os
-cenários Cypress que já existiam. Os dados dos cenários são simulados na rede, sem
-acesso ao Neon.
+Levantamento iniciado em 16/11/2026 e revalidado em 17/11/2026 sobre a `main`
+(commit `758a889`). Os dados dos cenários são simulados na rede, sem acesso ao Neon.
+O registro quantitativo e os comandos da revalidação estão em
+[GK-77-registro-qa.md](GK-77-registro-qa.md).
 
 ## Matriz tela × estado
 
-| Tela | Carregando | Vazio | Erro com "tentar de novo" | Cenários Cypress |
-| --- | --- | --- | --- | --- |
-| Catálogo | Sim | Sim (catálogo e página além da última) | Sim | `listagem-jogos.feature` |
-| Ficha do jogo | Sim | Jogo inexistente ou inativo mostra "não encontrado" | Sim (503 e queda de rede) | `detalhe-jogo.feature` |
-| Carrinho | Sim | Sim ("Seu carrinho está vazio") | Sim | `alterar-remover-carrinho.feature` |
-| Pedido e pagamento | Sim | Pedido inexistente ou de outro cliente mostra "não encontrado" | Sim, na consulta e no pagamento | `pagamento-pedido.feature` |
-| Minha conta | Sim ("Validando sua sessão…") | Não se aplica | Sim | só o caso de sessão expirada (`login.feature`) |
-| Login e cadastro | Botão em "enviando" | Não se aplica | Sim (mensagens da Q-06) | `login.feature`, `cadastro.feature`, `q06-mensagens.feature` |
-| Rota desconhecida | Não se aplica | "Página não encontrada" com saída | Não se aplica | sem cenário dedicado (conferido no código de `App.tsx`) |
-| Falha inesperada ao desenhar qualquer tela | Não se aplica | Não se aplica | **Novo:** aviso com "Recarregar a página" e "Ir para o catálogo" | `telas-sem-branco.feature` |
+| Tela                                       | Carregando                    | Vazio                                                          | Erro com "tentar de novo"                                        | Cenários Cypress                                             |
+| ------------------------------------------ | ----------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------ |
+| Catálogo                                   | Sim                           | Sim (catálogo e página além da última)                         | Sim                                                              | `listagem-jogos.feature`                                     |
+| Ficha do jogo                              | Sim                           | Jogo inexistente ou inativo mostra "não encontrado"            | Sim (503 e queda de rede)                                        | `detalhe-jogo.feature`                                       |
+| Carrinho                                   | Sim                           | Sim ("Seu carrinho está vazio")                                | Sim                                                              | `alterar-remover-carrinho.feature`                           |
+| Pedido e pagamento                         | Sim                           | Pedido inexistente ou de outro cliente mostra "não encontrado" | Sim, na consulta e no pagamento                                  | `pagamento-pedido.feature`                                   |
+| Minha conta                                | Sim ("Validando sua sessão…") | Não se aplica                                                  | Sim                                                              | `telas-sem-branco.feature`, `login.feature`                  |
+| Login e cadastro                           | Botão em "enviando"           | Não se aplica                                                  | Sim (mensagens da Q-06)                                          | `login.feature`, `cadastro.feature`, `q06-mensagens.feature` |
+| Rota desconhecida                          | Não se aplica                 | "Página não encontrada" com saída                              | Não se aplica                                                    | sem cenário dedicado (conferido no código de `App.tsx`)      |
+| Falha inesperada ao desenhar qualquer tela | Não se aplica                 | Não se aplica                                                  | **Novo:** aviso com "Recarregar a página" e "Ir para o catálogo" | `telas-sem-branco.feature`                                   |
 
-A biblioteca de chaves e a lista de pedidos do cliente ainda não existem (Release 3).
-Quando entrarem, precisam dos três estados e de uma linha nesta matriz.
+A biblioteca de chaves e a lista de pedidos do cliente ainda não existem na
+interface. Quando entrarem, precisam dos três estados e de uma linha nesta matriz.
+O histórico de status entregue no back-end pela GK-13 não cria uma nova listagem no
+front-end e não foi alterado nesta verificação.
 
 ## O que a GK-48 acrescentou
 
@@ -39,13 +42,14 @@ Quando entrarem, precisam dos três estados e de uma linha nesta matriz.
   aparece quando a formatação de preço lança erro e o link "Ir para o catálogo"
   restaura a navegação.
 
-## Verificação feita em 16/11/2026
+## Verificação reexecutada em 17/11/2026
 
-| Verificação | Resultado |
-| --- | --- |
-| `tsc --noEmit` (aplicação e Cypress) | Passou |
-| Navegador (servidor de desenvolvimento), com a API simulada e a formatação de preço forçada a falhar | O aviso aparece no lugar do catálogo, com menu e rodapé; ir para "Criar conta" limpa o aviso; com a formatação restaurada, o catálogo volta com 3 cartões; o erro é registrado só no console |
-| Cenários Cypress novos e regressão (`pnpm test:e2e`) | **Não executados nesta máquina:** o binário do Cypress não está instalado. Rodar no CI ou localmente com `npx cypress install` antes de pedir a revisão |
+| Verificação                                               | Resultado                                                                                                   |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `pnpm build` (`tsc` da aplicação e Cypress + Vite)        | Passou                                                                                                      |
+| Regressão Cypress com API simulada (`pnpm test:e2e`)      | 117/117 cenários passaram em 1 min 22 s no baseline e em 1 min 24 s na execução final com a medida da GK-77 |
+| Cinco specs de estados após acrescentar a medida da GK-77 | 47/47 passaram em 33 s; indicador observado em até 1.000 ms em catálogo, detalhe, carrinho, pedido e conta  |
+| Falha inesperada de renderização                          | Os dois cenários do limite de erro passaram; aviso, saída e recuperação da navegação foram preservados      |
 
 ## Pendências
 
@@ -53,9 +57,9 @@ Quando entrarem, precisam dos três estados e de uma linha nesta matriz.
   de 17/11 — entra na GK-48 ou vira bug. Não foi alterado nada no carrinho.
 - ~~Lacunas de teste automatizado: erro e carregamento de "Minha conta"; clique em
   "Tentar novamente" no carrinho.~~ Cobertas em 16/11/2026 (ver "Complemento de 16/11").
-- Teste manual do driver (rede lenta e API desligada nas ferramentas do navegador): a
-  executar pelo QA em cada tela de compra depois da GK-14 e da GK-13, para preencher o
-  campo "Resultado obtido" da GK-77.
+- A medida automatizada usa atraso e indisponibilidade controlados por `cy.intercept`.
+  Rede lenta e API realmente desligada em homologação continuam pendentes e não são
+  consideradas aprovadas por esta execução local.
 
 ## Como reproduzir à mão
 
@@ -79,3 +83,12 @@ Fecha as duas lacunas de teste do levantamento e um defeito achado ao cobri-las.
   resposta incompleta da conta; "Tentar novamente" no carrinho recuperando os itens sem
   recarregar a página.
 - Suíte de tela completa rodada localmente contra o build: 117 cenários, 117 passando.
+
+## Complemento de 17/11/2026 — GK-77
+
+- Os cenários lentos existentes passaram a medir o instante em que o indicador entra
+  no DOM, contado a partir de `onBeforeLoad`, e falham se ultrapassar 1.000 ms.
+- A medida cobre as duas listagens entregues (catálogo e carrinho) e, adicionalmente,
+  detalhe, pedido e Minha conta. Não houve duplicação da implementação do Pedro.
+- Nenhuma falha funcional foi reproduzida. `App.tsx`, `Carrinho.tsx`, `Pedido.tsx` e
+  `LimiteDeErro.tsx` permaneceram sem alterações.

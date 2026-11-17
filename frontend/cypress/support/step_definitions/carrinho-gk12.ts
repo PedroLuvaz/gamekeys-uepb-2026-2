@@ -4,6 +4,10 @@ import {
   Then,
   When,
 } from "@badeball/cypress-cucumber-preprocessor";
+import {
+  confirmarEmAteUmSegundo,
+  medirAteAparecer,
+} from "../medir-carregamento.js";
 
 const usuario = {
   id: 12,
@@ -98,6 +102,7 @@ Given("que a consulta do carrinho demora", () => {
 When("abro a página do carrinho da GK-12", () => {
   cy.visit("/carrinho", {
     onBeforeLoad(janela) {
+      medirAteAparecer(janela, "carrinho", '[data-cy="carrinho-carregando"]');
       janela.sessionStorage.setItem(
         "gamekeys.sessao",
         JSON.stringify({
@@ -168,10 +173,11 @@ Then("sou direcionado ao login para retornar ao carrinho", () => {
     .invoke("getItem", "gamekeys.sessao")
     .should("be.null");
 });
-Then("vejo o carregamento do carrinho", () => {
+Then("vejo o carregamento do carrinho em até 1 segundo", () => {
   cy.get('[data-cy="carrinho-carregando"]')
     .should("have.attr", "role", "status")
     .and("contain.text", "Carregando seu carrinho");
+  confirmarEmAteUmSegundo("carrinho");
 });
 Then("a consulta do carrinho pode terminar", () => {
   cy.wait("@consultarCarrinhoGk12");

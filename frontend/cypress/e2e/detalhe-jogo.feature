@@ -58,10 +58,11 @@ Funcionalidade: Consultar o detalhe do jogo
     Quando a API se recupera e tento carregar o detalhe novamente
     Então os seis dados do detalhe correspondem à resposta da API
 
-  Cenário: Informar carregamento enquanto aguarda a consulta
+  @GK-77
+  Cenário: Informar carregamento em até 1 segundo enquanto aguarda a consulta
     Dado que a API de detalhe demora para responder
     Quando acesso o endereço direto do jogo em teste
-    Então o detalhe informa carregamento antes de exibir os dados
+    Então o detalhe informa carregamento em até 1 segundo antes dos dados
     E os seis dados do detalhe correspondem à resposta da API
 
   @mobile @smoke

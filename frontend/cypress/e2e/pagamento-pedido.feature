@@ -28,10 +28,11 @@ Funcionalidade: Pagar o pedido e receber as chaves
     Então o pedido fica entregue e vejo 2 chaves
     E não há formulário de pagamento
 
-  Cenário: Carregamento do pedido é anunciado
+  @GK-77
+  Cenário: Carregamento do pedido é anunciado em até 1 segundo
     Dado que a consulta do pedido demora
     Quando abro a página do pedido
-    Então vejo o aviso de carregamento do pedido
+    Então vejo o aviso de carregamento do pedido em até 1 segundo
     E vejo o pedido aguardando pagamento com total de "R$ 39,80"
 
   Cenário: Envio duplicado do pagamento é bloqueado
