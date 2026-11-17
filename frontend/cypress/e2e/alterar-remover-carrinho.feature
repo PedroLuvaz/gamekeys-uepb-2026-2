@@ -37,8 +37,9 @@ Funcionalidade: Alterar e remover itens do carrinho
     Quando abro a página do carrinho da GK-12
     Então sou direcionado ao login para retornar ao carrinho
 
-  Cenário: Carregamento é anunciado
+  @GK-77
+  Cenário: Carregamento é anunciado em até 1 segundo
     Dado que a consulta do carrinho demora
     Quando abro a página do carrinho da GK-12
-    Então vejo o carregamento do carrinho
+    Então vejo o carregamento do carrinho em até 1 segundo
     E a consulta do carrinho pode terminar

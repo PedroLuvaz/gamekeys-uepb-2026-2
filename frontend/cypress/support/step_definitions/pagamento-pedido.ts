@@ -4,6 +4,10 @@ import {
   Then,
   When,
 } from "@badeball/cypress-cucumber-preprocessor";
+import {
+  confirmarEmAteUmSegundo,
+  medirAteAparecer,
+} from "../medir-carregamento.js";
 
 const cliente = {
   id: 16,
@@ -101,6 +105,7 @@ Before({ tags: "@US-16" }, () => {
 function abrir(comSessao = true) {
   cy.visit("/pedidos/7", {
     onBeforeLoad(janela) {
+      medirAteAparecer(janela, "pedido", '[data-cy="pedido-carregando"]');
       if (!comSessao) return;
       janela.sessionStorage.setItem(
         "gamekeys.sessao",
@@ -216,10 +221,11 @@ Then(
 Then("não há formulário de pagamento", () => {
   cy.get('[data-cy="formulario-pagamento"]').should("not.exist");
 });
-Then("vejo o aviso de carregamento do pedido", () => {
+Then("vejo o aviso de carregamento do pedido em até 1 segundo", () => {
   cy.get('[data-cy="pedido-carregando"]')
     .should("be.visible")
     .and("have.attr", "role", "status");
+  confirmarEmAteUmSegundo("pedido");
 });
 Then("a tela informa que está confirmando o pagamento", () => {
   cy.get('[data-cy="confirmar-pagamento"]')

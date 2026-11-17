@@ -4,6 +4,10 @@ import {
   Then,
   When,
 } from "@badeball/cypress-cucumber-preprocessor";
+import {
+  confirmarEmAteUmSegundo,
+  medirAteAparecer,
+} from "../medir-carregamento.js";
 
 const jogos = Array.from({ length: 3 }, (_, indice) => ({
   id: indice + 1,
@@ -116,6 +120,13 @@ Before({ tags: "@US-48" }, () => {
 function abrirComSessao(caminho: string) {
   cy.visit(caminho, {
     onBeforeLoad(janela) {
+      if (caminho === "/conta") {
+        medirAteAparecer(
+          janela,
+          "conta",
+          '[data-cy="conta-protegida"] [role="status"]',
+        );
+      }
       janela.sessionStorage.setItem(
         "gamekeys.sessao",
         JSON.stringify({
@@ -162,10 +173,11 @@ When("a conexão do carrinho volta e tento novamente", () => {
     .click();
 });
 
-Then("vejo o aviso de carregamento da conta", () => {
+Then("vejo o aviso de carregamento da conta em até 1 segundo", () => {
   cy.get("[data-cy=conta-protegida] [role=status]")
     .should("be.visible")
     .and("contain.text", "Validando sua sessão");
+  confirmarEmAteUmSegundo("conta");
 });
 Then("depois vejo os dados da minha conta", () => {
   cy.get("[data-cy=conta-protegida]")

@@ -36,10 +36,11 @@ Funcionalidade: Explorar o catálogo de jogos
     Quando tento novamente
     Então vejo 20 cartões e os preços em reais
 
-  Cenário: Mostrar carregamento enquanto a consulta está em andamento
+  @GK-77
+  Cenário: Mostrar carregamento em até 1 segundo enquanto a consulta está em andamento
     Dado que a consulta ao catálogo demora para responder
     Quando abro o catálogo
-    Então vejo o estado de carregamento antes dos cartões
+    Então vejo o estado de carregamento em até 1 segundo antes dos cartões
 
   @excecao
   Cenário: Abrir uma página além da última

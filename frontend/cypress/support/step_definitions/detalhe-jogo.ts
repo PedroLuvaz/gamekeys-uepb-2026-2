@@ -4,6 +4,10 @@ import {
   When,
   Then,
 } from "@badeball/cypress-cucumber-preprocessor";
+import {
+  confirmarEmAteUmSegundo,
+  medirAteAparecer,
+} from "../medir-carregamento.js";
 
 interface JogoDetalhado {
   id: number;
@@ -109,6 +113,7 @@ When("abro esse jogo na segunda página do catálogo", () => {
 When("acesso o endereço direto do jogo em teste", () => {
   cy.visit(`/jogos/${idConsultado}`, {
     onBeforeLoad(janela) {
+      medirAteAparecer(janela, "detalhe", '[data-cy="carregando-detalhe"]');
       if (!redeInterrompida) return;
       const consultar = janela.fetch.bind(janela);
       // Rejeita no limite do fetch, evitando as novas tentativas internas do navegador.
@@ -194,9 +199,10 @@ Then(
     cy.get('[data-cy="descricao-jogo"]').should("not.exist");
   },
 );
-Then("o detalhe informa carregamento antes de exibir os dados", () => {
+Then("o detalhe informa carregamento em até 1 segundo antes dos dados", () => {
   cy.get('[data-cy="detalhe"]').should("have.attr", "aria-busy", "true");
   cy.get('[data-cy="carregando-detalhe"]').should("be.visible");
+  confirmarEmAteUmSegundo("detalhe");
   cy.get('[data-cy="descricao-jogo"]').should("not.exist");
 });
 Then("retorno à primeira página do catálogo do detalhe", () => {

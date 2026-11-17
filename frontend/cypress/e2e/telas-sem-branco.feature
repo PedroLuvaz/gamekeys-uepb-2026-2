@@ -19,10 +19,10 @@ Funcionalidade: Nenhuma tela fica em branco
     E escolho voltar ao catálogo pelo aviso de falha
     Então volto a ver os cartões do catálogo
 
-  Cenário: Minha conta anuncia o carregamento enquanto valida a sessão
+  Cenário: Minha conta anuncia o carregamento em até 1 segundo
     Dado que a validação da minha conta demora
     Quando abro a página Minha conta
-    Então vejo o aviso de carregamento da conta
+    Então vejo o aviso de carregamento da conta em até 1 segundo
     E depois vejo os dados da minha conta
 
   @excecao

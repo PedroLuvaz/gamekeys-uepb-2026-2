@@ -1,4 +1,8 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import {
+  confirmarEmAteUmSegundo,
+  medirAteAparecer,
+} from "../medir-carregamento.js";
 
 const jogos = Array.from({ length: 23 }, (_, indice) => ({
   id: indice + 1,
@@ -87,7 +91,13 @@ Given("que a consulta de detalhe não encontra o jogo", () => {
   }).as("detalhe");
 });
 
-When("abro o catálogo", () => cy.visit("/"));
+When("abro o catálogo", () =>
+  cy.visit("/", {
+    onBeforeLoad(janela) {
+      medirAteAparecer(janela, "catalogo", '[data-cy="carregando"]');
+    },
+  }),
+);
 When("abro a segunda página do catálogo", () => cy.visit("/?pagina=2"));
 When("abro a terceira página do catálogo", () => cy.visit("/?pagina=3"));
 When("avanço para a próxima página", () =>
@@ -155,8 +165,9 @@ Then("vejo uma mensagem de falha e a opção de tentar novamente", () => {
   );
   cy.get('[data-cy="tentar-novamente"]').should("be.visible");
 });
-Then("vejo o estado de carregamento antes dos cartões", () => {
+Then("vejo o estado de carregamento em até 1 segundo antes dos cartões", () => {
   cy.get('[data-cy="carregando"]').should("be.visible");
+  confirmarEmAteUmSegundo("catalogo");
   cy.get('[data-cy="jogo"]').should("have.length", 20);
 });
 Then("posso retornar ao catálogo pela mensagem de página vazia", () => {
