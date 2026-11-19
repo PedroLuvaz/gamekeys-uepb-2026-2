@@ -151,6 +151,12 @@ Then("vejo que meu carrinho está vazio", () => {
   cy.get('[data-cy="carrinho-vazio"]').should("be.visible");
   cy.get('[data-cy="item-carrinho"]').should("not.exist");
 });
+// QA-R2-007: o carrinho vazio também mostra o total, em R$ 0,00.
+Then("vejo o total de {string} no carrinho vazio", (total: string) => {
+  cy.get('[data-cy="carrinho-vazio"]')
+    .find('[data-cy="total-carrinho"]')
+    .should("contain.text", total.replace(/^R\$\s?/, ""));
+});
 Then("vejo a mensagem de estoque insuficiente no carrinho", () => {
   cy.wait("@alterarCarrinhoGk12").its("response.statusCode").should("eq", 409);
   cy.get('[data-cy="mensagem-carrinho-erro"]')

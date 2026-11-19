@@ -19,6 +19,7 @@ Funcionalidade: Alterar e remover itens do carrinho
     Quando abro a página do carrinho da GK-12
     E removo o item do carrinho
     Então vejo que meu carrinho está vazio
+    E vejo o total de "R$ 0,00" no carrinho vazio
 
   Cenário: Estoque insuficiente preserva a quantidade anterior
     Dado que o estoque recusa o aumento do item
