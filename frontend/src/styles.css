@@ -903,6 +903,13 @@ p {
 .carrinho-vazio {
   min-height: 360px;
 }
+.estado-tela .carrinho-vazio-total {
+  margin: 0 auto 23px;
+}
+.carrinho-vazio-total strong {
+  color: #242536;
+  font-family: "Space Grotesk", sans-serif;
+}
 @keyframes girar {
   to {
     transform: rotate(360deg);

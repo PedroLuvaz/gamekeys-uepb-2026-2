@@ -53,8 +53,9 @@ front-end e não foi alterado nesta verificação.
 
 ## Pendências
 
-- **QA-R2-007** (total "R$ 0,00" ausente no carrinho vazio): decisão do PO na Planning
-  de 17/11 — entra na GK-48 ou vira bug. Não foi alterado nada no carrinho.
+- ~~**QA-R2-007** (total "R$ 0,00" ausente no carrinho vazio).~~ O PO decidiu na
+  Planning de 17/11 que entra na GK-48, sem bug separado; implementada em 19/11/2026
+  (ver "Complemento de 19/11").
 - ~~Lacunas de teste automatizado: erro e carregamento de "Minha conta"; clique em
   "Tentar novamente" no carrinho.~~ Cobertas em 16/11/2026 (ver "Complemento de 16/11").
 - A medida automatizada usa atraso e indisponibilidade controlados por `cy.intercept`.
@@ -92,3 +93,20 @@ Fecha as duas lacunas de teste do levantamento e um defeito achado ao cobri-las.
   detalhe, pedido e Minha conta. Não houve duplicação da implementação do Pedro.
 - Nenhuma falha funcional foi reproduzida. `App.tsx`, `Carrinho.tsx`, `Pedido.tsx` e
   `LimiteDeErro.tsx` permaneceram sem alterações.
+
+## Complemento de 19/11/2026 — QA-R2-007
+
+Decisão da Planning de 17/11: o ajuste do carrinho vazio entra na GK-48, sem bug separado
+e sem mudar os pontos da história.
+
+- **Mudança:** o estado "Seu carrinho está vazio" (`frontend/src/Carrinho.tsx`) passa a
+  mostrar a linha "Total R$ 0,00", com o valor que a API já devolve para o carrinho sem
+  itens (`total: "0.00"`). O estilo da linha está em `frontend/src/styles.css`.
+- **Cenário:** "Remover o último jogo deixa o carrinho vazio"
+  (`frontend/cypress/e2e/alterar-remover-carrinho.feature`) ganhou o passo
+  `vejo o total de "R$ 0,00" no carrinho vazio`.
+- **Verificação em 19/11/2026:** `tsc --noEmit` da aplicação e do Cypress passou e o
+  formato do Prettier foi conferido. No navegador (servidor de desenvolvimento, API
+  simulada com carrinho sem itens), a tela mostra "Seu carrinho está vazio", o texto de
+  apoio, "Total R$ 0,00" e o botão "Explorar jogos". O Cypress não foi executado nesta
+  máquina; a regressão fica para o CI e para a validação do QA.

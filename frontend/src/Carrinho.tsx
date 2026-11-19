@@ -290,6 +290,12 @@ export default function Carrinho({
           </span>
           <h2>Seu carrinho está vazio</h2>
           <p>Explore o catálogo e escolha sua próxima aventura.</p>
+          <p className="carrinho-vazio-total">
+            Total{" "}
+            <strong data-cy="total-carrinho">
+              {precoEmReais(estado.carrinho.total)}
+            </strong>
+          </p>
           <a href="/" className="botao">
             Explorar jogos →
           </a>
