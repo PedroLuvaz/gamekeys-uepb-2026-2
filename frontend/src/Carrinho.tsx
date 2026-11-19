@@ -4,9 +4,15 @@ import {
   alterarQuantidadeDoCarrinho,
   consultarCarrinho,
   ErroDaApi,
+  finalizarCompra,
   precoEmReais,
   removerDoCarrinho,
 } from "./api";
+import {
+  lerFinalizacao,
+  limparFinalizacao,
+  prepararFinalizacao,
+} from "./finalizacao";
 import type {
   CarrinhoConsultado,
   ItemListadoNoCarrinho,
@@ -18,12 +24,16 @@ type Estado =
   | { tipo: "pronto"; carrinho: CarrinhoConsultado }
   | { tipo: "erro"; mensagem: string };
 
+type Finalizacao = "pronto" | "pendente" | "enviando" | "indisponivel";
+
 export default function Carrinho({
   sessao,
   aoExpirar,
+  aoConcluir,
 }: {
   sessao: SessaoLocal;
   aoExpirar: () => void;
+  aoConcluir: (pedidoId: number) => void;
 }) {
   const [estado, setEstado] = useState<Estado>({ tipo: "carregando" });
   const [tentativa, setTentativa] = useState(0);
@@ -33,6 +43,14 @@ export default function Carrinho({
     texto: string;
   } | null>(null);
   const ativa = useRef(true);
+  const emOperacao = useRef(false);
+  const [finalizacao, setFinalizacao] = useState<Finalizacao>(() => {
+    try {
+      return lerFinalizacao(sessao.usuario.id) ? "pendente" : "pronto";
+    } catch {
+      return "indisponivel";
+    }
+  });
 
   useEffect(() => {
     document.title = "Meu carrinho | GameKeys";
@@ -43,7 +61,6 @@ export default function Carrinho({
     if (sessao.usuario.perfil !== "cliente") return;
     const controle = new AbortController();
     setEstado({ tipo: "carregando" });
-    setMensagem(null);
     consultarCarrinho(sessao.token, controle.signal)
       .then((carrinho) => {
         if (ativa.current) setEstado({ tipo: "pronto", carrinho });
@@ -74,7 +91,8 @@ export default function Carrinho({
       acao: () => Promise<CarrinhoConsultado>,
       sucesso: string,
     ) => {
-      if (operando !== null) return;
+      if (emOperacao.current || finalizacao !== "pronto") return;
+      emOperacao.current = true;
       setOperando(jogoId);
       setMensagem(null);
       try {
@@ -96,11 +114,69 @@ export default function Carrinho({
               : "Não foi possível atualizar o carrinho.",
         });
       } finally {
+        emOperacao.current = false;
         if (ativa.current) setOperando(null);
       }
     },
-    [aoExpirar, operando],
+    [aoExpirar, finalizacao],
   );
+
+  async function finalizar() {
+    if (emOperacao.current || finalizacao === "indisponivel") return;
+    emOperacao.current = true;
+    setMensagem(null);
+    // Persistir antes do POST permite recuperar a mesma operação após recarga ou resposta perdida.
+    try {
+      const chave = prepararFinalizacao(sessao.usuario.id);
+      setFinalizacao("enviando");
+      try {
+        const pedido = await finalizarCompra(sessao.token, chave);
+        if (!ativa.current) return;
+        try {
+          limparFinalizacao(sessao.usuario.id);
+        } catch {
+          /* Mantém a recuperação se o navegador bloquear o armazenamento. */
+        }
+        aoConcluir(pedido.pedido_id);
+      } catch (erro) {
+        if (!ativa.current) return;
+        if (erro instanceof ErroDaApi && erro.status === 401) {
+          aoExpirar();
+          return;
+        }
+        if (
+          erro instanceof ErroDaApi &&
+          [403, 404, 409, 422].includes(erro.status)
+        ) {
+          // Estas recusas acontecem antes do commit. Atualizar o carrinho mostra estoque/preço atuais.
+          limparFinalizacao(sessao.usuario.id);
+          setFinalizacao("pronto");
+          setTentativa((valor) => valor + 1);
+        } else {
+          // Rede, timeout, 5xx e confirmação inválida podem esconder uma operação já efetivada.
+          setFinalizacao("pendente");
+        }
+        setMensagem({
+          tipo: "erro",
+          texto:
+            erro instanceof Error
+              ? erro.message
+              : "Não foi possível confirmar a finalização.",
+        });
+      }
+    } catch {
+      if (ativa.current) {
+        setFinalizacao("indisponivel");
+        setMensagem({
+          tipo: "erro",
+          texto:
+            "Não foi possível preparar ou recuperar a finalização nesta sessão. Verifique o armazenamento do navegador e tente atualizar a página.",
+        });
+      }
+    } finally {
+      emOperacao.current = false;
+    }
+  }
 
   if (sessao.usuario.perfil !== "cliente")
     return (
@@ -133,6 +209,43 @@ export default function Carrinho({
           ← Continuar comprando
         </a>
       </header>
+
+      {finalizacao === "pendente" && (
+        <div
+          className="aviso-finalizacao"
+          role="status"
+          data-cy="finalizacao-pendente"
+        >
+          <p>
+            Há uma finalização aguardando confirmação. Verifique o resultado
+            antes de alterar o carrinho ou iniciar outra compra.
+          </p>
+          <button
+            type="button"
+            className="botao"
+            onClick={finalizar}
+            data-cy="recuperar-finalizacao"
+          >
+            Verificar finalização
+          </button>
+        </div>
+      )}
+      {finalizacao === "indisponivel" && (
+        <p
+          className="mensagem-carrinho erro"
+          role="alert"
+          data-cy="finalizacao-indisponivel"
+        >
+          Não foi possível recuperar a finalização desta sessão. Verifique o
+          armazenamento do navegador e atualize a página. Se uma compra estava
+          em andamento, confira o resultado com a equipe.
+        </p>
+      )}
+      {finalizacao === "enviando" && (
+        <p role="status" data-cy="finalizacao-enviando">
+          Finalizando sua compra… Aguarde a confirmação do pedido.
+        </p>
+      )}
 
       {mensagem && (
         <p
@@ -182,13 +295,16 @@ export default function Carrinho({
           </a>
         </div>
       ) : (
-        <div className="carrinho-grade" aria-busy={operando !== null}>
+        <div
+          className="carrinho-grade"
+          aria-busy={operando !== null || finalizacao === "enviando"}
+        >
           <div className="lista-carrinho" data-cy="itens-carrinho">
             {estado.carrinho.itens.map((item) => (
               <ItemCarrinho
                 key={item.jogo_id}
                 item={item}
-                bloqueado={operando !== null}
+                bloqueado={operando !== null || finalizacao !== "pronto"}
                 processando={operando === item.jogo_id}
                 aoAlterar={(quantidade) =>
                   executar(
@@ -226,14 +342,16 @@ export default function Carrinho({
             </p>
             <button
               className="botao"
-              disabled
-              title="Finalização será entregue em outra história"
+              type="button"
+              disabled={operando !== null || finalizacao !== "pronto"}
+              onClick={finalizar}
+              data-cy="finalizar-compra"
             >
-              Finalizar compra
+              {finalizacao === "enviando" ? "Finalizando…" : "Finalizar compra"}
             </button>
             <small>
-              A disponibilidade será confirmada na finalização. Nenhuma chave
-              está reservada.
+              Preços e disponibilidade são confirmados na finalização. O
+              pagamento será confirmado na próxima tela.
             </small>
           </aside>
         </div>

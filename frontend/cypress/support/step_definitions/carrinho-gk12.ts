@@ -46,10 +46,6 @@ Before({ tags: "@US-12" }, () => {
   removido = false;
   cy.intercept("GET", "**/api/carrinho", (pedido) => {
     expect(pedido.headers.authorization).to.eq("Bearer token-gk12");
-    if (modo === "rede") {
-      pedido.reply({ forceNetworkError: true });
-      return;
-    }
     if (modo === "sessao") {
       pedido.reply({
         statusCode: 401,
@@ -102,6 +98,17 @@ Given("que a consulta do carrinho demora", () => {
 When("abro a página do carrinho da GK-12", () => {
   cy.visit("/carrinho", {
     onBeforeLoad(janela) {
+      if (modo === "rede") {
+        // Simular a rejeição do fetch evita as retentativas automáticas de GET do Chromium.
+        const original = janela.fetch.bind(janela);
+        cy.stub(janela, "fetch").callsFake(
+          (entrada: RequestInfo | URL, opcoes?: RequestInit) => {
+            if (String(entrada).endsWith("/api/carrinho"))
+              return Promise.reject(new TypeError("Falha simulada de rede"));
+            return original(entrada, opcoes);
+          },
+        );
+      }
       medirAteAparecer(janela, "carrinho", '[data-cy="carrinho-carregando"]');
       janela.sessionStorage.setItem(
         "gamekeys.sessao",

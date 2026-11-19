@@ -1042,8 +1042,10 @@ export default function App() {
           ) : ehCarrinho ? (
             sessao ? (
               <Carrinho
+                key={sessao.usuario.id}
                 sessao={sessao}
                 aoExpirar={() => expirarSessao("/carrinho")}
+                aoConcluir={(pedidoId) => irPara(`/pedidos/${pedidoId}`, true)}
               />
             ) : (
               <RedirecionarParaLogin retorno="/carrinho" />

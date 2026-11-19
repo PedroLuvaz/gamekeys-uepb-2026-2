@@ -104,6 +104,13 @@ export interface PedidoDetalhado {
   chaves: ChaveEntregue[];
 }
 
+export interface PedidoReservado {
+  pedido_id: number;
+  status: StatusDoPedido;
+  valor_total: string;
+  itens: Omit<ItemDoPedido, "nome">[];
+}
+
 export function destinoAposLogin(retorno: string | null) {
   // Só permite voltar para rotas internas conhecidas; nunca para endereço externo.
   return retorno &&
@@ -436,6 +443,68 @@ const ehValor = (valor: unknown): valor is string =>
   typeof valor === "string" && /^\d+\.\d{2}$/.test(valor);
 const ehIdentificador = (valor: unknown): valor is number =>
   typeof valor === "number" && Number.isInteger(valor) && valor > 0;
+
+function reservaValida(corpo: unknown): corpo is PedidoReservado {
+  if (!corpo || typeof corpo !== "object") return false;
+  const pedido = corpo as Partial<PedidoReservado>;
+  if (
+    !ehIdentificador(pedido.pedido_id) ||
+    !Number.isSafeInteger(pedido.pedido_id) ||
+    !["aguardando_pagamento", "pago", "entregue", "cancelado"].includes(
+      pedido.status || "",
+    ) ||
+    !ehValor(pedido.valor_total) ||
+    !Array.isArray(pedido.itens) ||
+    pedido.itens.length === 0 ||
+    pedido.itens.length > 100
+  )
+    return false;
+  return pedido.itens.every(
+    (item) =>
+      item &&
+      ehIdentificador(item.jogo_id) &&
+      Number.isSafeInteger(item.jogo_id) &&
+      ehIdentificador(item.quantidade) &&
+      item.quantidade <= 1000 &&
+      ehValor(item.preco_unitario) &&
+      ehValor(item.subtotal),
+  );
+}
+
+export async function finalizarCompra(
+  token: string,
+  chaveIdempotencia: string,
+): Promise<PedidoReservado> {
+  let resposta: Response;
+  try {
+    resposta = await fetch(`${baseDaApi}/pedidos/reservas`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ chave_idempotencia: chaveIdempotencia }),
+      signal: AbortSignal.timeout(15000),
+    });
+  } catch {
+    throw new ErroDaApi(
+      "Não foi possível confirmar a finalização. Verifique a finalização pendente para recuperar seu pedido.",
+      0,
+    );
+  }
+  const corpo: unknown = await resposta.json().catch(() => null);
+  if (!resposta.ok)
+    throw new ErroDaApi(
+      mensagemDaApi(corpo) || "Não foi possível finalizar a compra.",
+      resposta.status,
+    );
+  if (!reservaValida(corpo))
+    throw new ErroDaApi(
+      "A confirmação recebida está incompleta. Verifique a finalização pendente para recuperar seu pedido.",
+      0,
+    );
+  return corpo;
+}
 
 function pedidoValido(corpo: unknown): corpo is PedidoDetalhado {
   if (
