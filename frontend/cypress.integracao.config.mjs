@@ -12,9 +12,9 @@ const python =
     ? path.join(backend, ".venv/Scripts/python.exe")
     : "python");
 
-function fixtureCarrinho(acao, dados = {}) {
+function fixtureCarrinho(acao, dados = {}, modulo = "qa.gk11_carrinho") {
   return JSON.parse(
-    execFileSync(python, ["-m", "qa.gk11_carrinho", acao], {
+    execFileSync(python, ["-m", modulo, acao], {
       cwd: backend,
       input: JSON.stringify(dados),
       encoding: "utf8",
@@ -46,6 +46,14 @@ export default defineConfig({
         "carrinho:preparar": () => fixtureCarrinho("preparar"),
         "carrinho:estado": (dados) => fixtureCarrinho("estado", dados),
         "carrinho:limpar": (dados) => fixtureCarrinho("limpar", dados),
+        "checkout:preparar": () =>
+          fixtureCarrinho("preparar", {}, "qa.gk14_checkout"),
+        "checkout:estado": (dados) =>
+          fixtureCarrinho("estado", dados, "qa.gk14_checkout"),
+        "checkout:alterar-preco": (dados) =>
+          fixtureCarrinho("alterar-preco", dados, "qa.gk14_checkout"),
+        "checkout:limpar": (dados) =>
+          fixtureCarrinho("limpar", dados, "qa.gk14_checkout"),
       });
       return config;
     },

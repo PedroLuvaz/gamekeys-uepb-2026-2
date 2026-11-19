@@ -760,6 +760,7 @@ p {
   min-width: 0;
 }
 .item-carrinho-arte .arte-jogo {
+  width: 100%;
   height: 112px;
   border-radius: 9px;
   overflow: hidden;
@@ -951,6 +952,12 @@ p {
   }
 }
 @media (max-width: 400px) {
+  .item-carrinho {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .item-carrinho-arte .arte-jogo {
+    height: auto;
+  }
   .controles-carrinho {
     flex-direction: column;
     align-items: stretch;
@@ -1593,4 +1600,13 @@ p {
     padding: 10px 6px;
     overflow-wrap: anywhere;
   }
+}
+.aviso-finalizacao {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid currentColor;
+  border-radius: 1rem;
+}
+.aviso-finalizacao p {
+  margin: 0 0 1rem;
 }

@@ -351,9 +351,10 @@ mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da c
 - Em `backend/`, com `TEST_DATABASE_URL` local (`gamekeys_teste`) e migrações aplicadas: `psql "$TEST_DATABASE_URL" -f qa/sql/chave_em_mais_de_um_pedido.sql` consulta duplicidades (GK-128); `python -m qa.gk129_reserva_concorrente --rodadas 100 --concorrentes 20` testa a reserva real e imprime o relatório JSON (GK-129).
 - `pytest` roda tudo (é a regressão). `pytest -m smoke` roda só a verificação rápida: API no ar, banco alcançável e front-end liberado pelo CORS. Os testes de banco usam só `TEST_DATABASE_URL` (banco local `gamekeys_teste`) e são pulados quando ela não está definida. Por segurança, a suíte interrompe a execução antes da primeira conexão se o host não for `localhost`, `127.0.0.1` ou `::1`.
 - A cada push e pull request, o GitHub Actions sobe um PostgreSQL próprio do job (serviço `postgres`), aplica migrações e carga, roda ruff, o smoke e depois a suíte completa, e confere que os dados continuam no banco depois de reiniciá-lo.
-- O job de interface compila o front-end e executa os 27 cenários com API simulada. O job de back-end também executa os nove testes reais da tela integrada à API e ao PostgreSQL local. Relatórios e capturas de falhas são guardados como artefatos separados.
+- O job de interface compila o front-end e executa os cenários com API simulada. O job de back-end também executa os testes reais da tela integrada à API e ao PostgreSQL local. Relatórios e capturas são guardados como artefatos separados; as quantidades de testes ficam registradas em cada execução.
 - O job `imagens Docker` gera as imagens da API e do front-end com `docker compose build`, para o `Dockerfile` não quebrar sem ninguém ver.
 - Os relatórios JUnit (`smoke.xml` e `pytest.xml`) ficam no artefato `relatorios-de-teste` de cada execução, na aba Actions, mesmo quando algum teste falha. É a evidência para anexar no Jira.
+- Em cada PR, preencher **Evidências do pipeline** com o commit verificado, a data, os links das execuções de push e pull request e o resultado dos três jobs. Vincular também os artefatos `relatorios-de-interface`, `relatorios-de-integracao-real` e `relatorios-de-teste` da execução do último commit. O [modelo do PR](.github/pull_request_template.md) já contém essa seção; atualizar as evidências depois de um novo push. Os resultados locais ficam identificados separadamente.
 
 ### Deploy (Vercel)
 
@@ -473,8 +474,9 @@ pytest                          # inclui os testes de estrutura, contra gamekeys
 `POST /pedidos/reservas`, autenticado, recebe somente `chave_idempotencia` (UUID).
 Reserva todo o carrinho, grava o pedido aguardando pagamento e limpa o carrinho
 em uma transação. Repetir o UUID recupera o mesmo pedido. Preços são persistidos;
-códigos de ativação ficam ocultos até a entrega da GK-16. O checkout visual segue
-na GK-14. Há limites de 100 jogos, 1.000 unidades e R$ 99.999.999,99 por pedido.
+códigos de ativação ficam ocultos até a entrega da GK-16. O checkout visual da
+GK-14 usa essa mesma operação. Há limites de 100 jogos, 1.000 unidades e
+R$ 99.999.999,99 por pedido.
 
 A migração `0004_reserva_chaves.sql` cria chaves/pedidos/itens e **zera o estoque
 legado**, que ainda não representa códigos físicos. O responsável do banco precisa
@@ -488,6 +490,25 @@ Veja o [contrato e integração com GK-126/GK-14](docs/tecnico/api/GK-15-reserva
 [roteiro de testes locais](docs/release-2/sprint-2/testes/GK-124-reserva.md) e o
 [DER v1.1](docs/tecnico/banco/DER-GameKeys-v1.1.dbml). Testes e migrações destrutivas de QA
 usam exclusivamente PostgreSQL local isolado `gamekeys_teste`.
+
+## Finalizar compra (GK-14)
+
+Entre como cliente, adicione jogos e abra `/carrinho`. **Finalizar compra** confirma
+preços e disponibilidade no servidor, reserva as chaves e abre `/pedidos/{id}`,
+aguardando o pagamento simulado da GK-16. O pedido mantém os preços gravados mesmo
+que o catálogo seja alterado depois. Carrinho vazio não pode ser finalizado.
+
+Enquanto envia, a tela bloqueia alterações e novos cliques. Se houver timeout,
+falha de conexão ou confirmação incompleta, use **Verificar finalização**: a mesma
+identidade de operação recupera o pedido sem reservar novamente. A identidade fica
+no `sessionStorage`, separada por cliente, e sobrevive à recarga da mesma aba e ao
+novo login após expiração. A tela também permite recuperá-la com o carrinho vazio.
+Evite fechar a aba ou apagar seu armazenamento enquanto houver confirmação pendente;
+essa recuperação local não é um histórico de pedidos entre dispositivos.
+
+A implementação reutiliza a reserva transacional da GK-15 e a tela de pedido e
+pagamento da GK-16, sem criar outra regra de preço ou migração. Veja o
+[roteiro e as evidências da GK-14](docs/release-2/sprint-3/testes/GK-14-checkout.md).
 
 ## Commits e branches
 
