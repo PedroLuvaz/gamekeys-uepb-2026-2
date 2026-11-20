@@ -125,6 +125,7 @@ Pasta no Google Drive: [GameKeys - Release 2](https://drive.google.com/drive/fol
 | SM | [Acompanhamento e Resultados - Sprint 3](https://docs.google.com/document/d/1whd2f6HFlZUfOG_1D6iozZtAJcmGTjUKn-_iZsxDC7I/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/release-2/sprint-3/Acompanhamento-e-Resultados-Sprint-3.docx` |
 | SM | [Ata da Review - Sprint 3](https://docs.google.com/document/d/1XMyS5UIxRc5ZUx4lp36kWLxwnIF3v-alP_lwutjP-4k/edit) (preparada; fecha em 26/11 com a Release 2) | `docs/release-2/sprint-3/Ata-Review-Sprint-3.docx` |
 | SM | [Ata da Retrospectiva - Sprint 3](https://docs.google.com/document/d/1bb2QoZqK2gICaA3sgv0O6bkjFgrjSicQrlgVzDwDs8M/edit) (preparada; fecha em 26/11 com a Release 2) | `docs/release-2/sprint-3/Ata-Retrospectiva-Sprint-3.docx` |
+| SM | [Roteiro da Review - Sprint 3](https://docs.google.com/document/d/1avYpaniGPN7ELNlpHsxl4jVFfXBYvjzpd8WlsQKdNQc/edit) (checklist da véspera, ordem da demonstração, perguntas e plano B da Review de 26/11) | `docs/release-2/sprint-3/Roteiro-Review-Sprint-3.docx` |
 
 As cópias do repositório foram sincronizadas com o Drive em 08/11/2026; as da Sprint 3 e o Plano da Release 2, em 13/11/2026. Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
 
