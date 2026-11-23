@@ -357,6 +357,7 @@ mensagem de não encontrado; falha de banco recebe HTTP 503 sem expor dados da c
 - O job `imagens Docker` gera as imagens da API e do front-end com `docker compose build`, para o `Dockerfile` não quebrar sem ninguém ver.
 - Os relatórios JUnit (`smoke.xml` e `pytest.xml`) ficam no artefato `relatorios-de-teste` de cada execução, na aba Actions, mesmo quando algum teste falha. É a evidência para anexar no Jira.
 - Em cada PR, preencher **Evidências do pipeline** com o commit verificado, a data, os links das execuções de push e pull request e o resultado dos três jobs. Vincular também os artefatos `relatorios-de-interface`, `relatorios-de-integracao-real` e `relatorios-de-teste` da execução do último commit. O [modelo do PR](.github/pull_request_template.md) já contém essa seção; atualizar as evidências depois de um novo push. Os resultados locais ficam identificados separadamente.
+- A GK-149 protege mensagens de configuração, tracebacks dos validadores e erros de conexão registrados pelo pool. A regressão inclui URLs malformadas com senhas fictícias e verifica a saída completa das ferramentas. O [roteiro de sigilo e rotação](docs/release-2/sprint-3/testes/GK-149-sigilo-e-rotacao.md) separa a correção de código da troca efetiva da credencial, que depende da atualização dos consumidores e do deploy da API pelo responsável do Vercel.
 
 ### Deploy (Vercel)
 

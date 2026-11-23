@@ -6,6 +6,7 @@ devem usar DATABASE_URL_UNPOOLED, que é a conexão direta.
 
 from psycopg_pool import ConnectionPool
 
+from app.conexao import ConexaoPostgres, parametros_conexao
 from app.config import carregar
 
 _pool: ConnectionPool | None = None
@@ -21,9 +22,11 @@ def obter_pool() -> ConnectionPool:
         config = carregar()
         if not config.database_url:
             raise BancoNaoConfigurado("DATABASE_URL não definida")
+        parametros_conexao(config.database_url)
         # O PgBouncer do Neon roda em modo transação: sem prepared statements no servidor.
         _pool = ConnectionPool(
             config.database_url,
+            connection_class=ConexaoPostgres,
             min_size=1,
             max_size=5,
             timeout=config.timeout_banco,
