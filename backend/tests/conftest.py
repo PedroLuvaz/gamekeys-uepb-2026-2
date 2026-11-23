@@ -8,9 +8,9 @@ import os
 
 import psycopg
 import pytest
-from psycopg.conninfo import conninfo_to_dict
 
 from app import db  # noqa: F401  (carrega o .env.local)
+from app.conexao import parametros_conexao
 from app.migrar import migrar
 
 URL_TESTE = os.getenv("TEST_DATABASE_URL")
@@ -22,9 +22,9 @@ def _validar_url_banco_teste(url: str) -> str:
     # Impede que o pytest inclua a URL (que pode conter senha) no traceback.
     __tracebackhide__ = True
     try:
-        parametros = conninfo_to_dict(url)
-    except (psycopg.Error, ValueError) as erro:
-        raise pytest.UsageError("TEST_DATABASE_URL não é uma conexão PostgreSQL válida") from erro
+        parametros = parametros_conexao(url)
+    except (psycopg.Error, ValueError):
+        raise pytest.UsageError("TEST_DATABASE_URL não é uma conexão PostgreSQL válida") from None
 
     banco = parametros.get("dbname")
     host = (parametros.get("host") or "").lower()

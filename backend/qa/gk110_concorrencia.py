@@ -19,8 +19,9 @@ from datetime import UTC, datetime
 from threading import Barrier
 
 import psycopg
-from psycopg.conninfo import conninfo_to_dict
 from psycopg_pool import ConnectionPool
+
+from app.conexao import parametros_conexao
 
 HOSTS_LOCAIS = {"localhost", "127.0.0.1", "::1"}
 SCHEMA = "qa_gk110"
@@ -46,9 +47,9 @@ def validar_url_local(url: str) -> str:
     """Aceita somente ``gamekeys_teste`` em loopback, sem abrir conexão."""
     __tracebackhide__ = True
     try:
-        parametros = conninfo_to_dict(url)
-    except (psycopg.Error, ValueError) as erro:
-        raise BancoDeTesteInseguro("TEST_DATABASE_URL não é uma URL PostgreSQL válida") from erro
+        parametros = parametros_conexao(url)
+    except (psycopg.Error, ValueError):
+        raise BancoDeTesteInseguro("TEST_DATABASE_URL não é uma URL PostgreSQL válida") from None
 
     banco = parametros.get("dbname")
     host = (parametros.get("host") or "").lower()
