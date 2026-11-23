@@ -118,44 +118,87 @@ def test_consulta_antes_da_entrega_nao_mostra_codigos(loja):
     assert "QA-SEM-VALOR" not in resposta.text
 
 
-def test_valor_pago_e_o_gravado_no_pedido_mesmo_com_preco_novo_no_catalogo(loja):
-    """GK-47 / DA-CON-I2-02: o preço do pedido não acompanha o catálogo."""
+@pytest.mark.parametrize("pagar_antes", [False, True], ids=["pendente", "pago"])
+@pytest.mark.parametrize(
+    "novos_precos",
+    [(Decimal("70.00"), Decimal("11.00")), (Decimal("40.00"), Decimal("5.15"))],
+    ids=["aumento", "reducao"],
+)
+def test_valor_pago_e_o_gravado_no_pedido_mesmo_com_preco_novo_no_catalogo(
+    loja, pagar_antes, novos_precos
+):
+    """GK-47 / GK-73: pedidos pagos e pendentes preservam o preço; novos usam o atual."""
     _, headers = loja.cliente()
     jogo_a = loja.jogo_fisico(3, preco=Decimal("50.00"))
     jogo_b = loja.jogo_fisico(4, preco=Decimal("7.25"))
     assert adicionar(loja, headers, jogo_b, 3).status_code == 200
     pedido_id = loja.pedido_reservado(headers, jogo_a, 2)
+    if pagar_antes:
+        assert pagar(loja, headers, pedido_id).status_code == 200
+    consulta = loja.api.get(f"/pedidos/{pedido_id}", headers=headers)
+    assert consulta.status_code == 200
+    pedido_antigo = consulta.json()
+    assert pedido_antigo["status"] == ("entregue" if pagar_antes else "aguardando_pagamento")
+    assert pedido_antigo["valor_total"] == "121.75"
+    assert pedido_antigo["itens"] == [
+        {
+            "jogo_id": jogo_a,
+            "nome": "Jogo Carrinho",
+            "quantidade": 2,
+            "preco_unitario": "50.00",
+            "subtotal": "100.00",
+        },
+        {
+            "jogo_id": jogo_b,
+            "nome": "Jogo Carrinho",
+            "quantidade": 3,
+            "preco_unitario": "7.25",
+            "subtotal": "21.75",
+        },
+    ]
+    assert len(pedido_antigo["chaves"]) == (5 if pagar_antes else 0)
+
     with loja.pool.connection() as c:
         c.execute(
-            "update catalogo.jogos set preco = case id when %s then 70.00 else 11.00 end"
+            "update catalogo.jogos set preco = case id when %s then %s else %s end"
             " where id in (%s, %s)",
-            (jogo_a, jogo_a, jogo_b),
+            (jogo_a, *novos_precos, jogo_a, jogo_b),
         )
 
-    pedido_antigo = loja.api.get(f"/pedidos/{pedido_id}", headers=headers).json()
-    assert pedido_antigo == {
-        "pedido_id": pedido_id,
+    consulta = loja.api.get(f"/pedidos/{pedido_id}", headers=headers)
+    assert consulta.status_code == 200
+    assert consulta.json() == pedido_antigo
+
+    # Mesmos jogos e cliente, mas outra compra: deve usar os dois preços novos.
+    assert adicionar(loja, headers, jogo_b).status_code == 200
+    novo_id = loja.pedido_reservado(headers, jogo_a)
+    assert novo_id != pedido_id
+    novo = loja.api.get(f"/pedidos/{novo_id}", headers=headers)
+    assert novo.status_code == 200
+    total_novo = sum(novos_precos)
+    assert novo.json() == {
+        "pedido_id": novo_id,
         "status": "aguardando_pagamento",
-        "valor_total": "121.75",
+        "valor_total": str(total_novo),
         "itens": [
             {
-                "jogo_id": jogo_a,
+                "jogo_id": jogo,
                 "nome": "Jogo Carrinho",
-                "quantidade": 2,
-                "preco_unitario": "50.00",
-                "subtotal": "100.00",
-            },
-            {
-                "jogo_id": jogo_b,
-                "nome": "Jogo Carrinho",
-                "quantidade": 3,
-                "preco_unitario": "7.25",
-                "subtotal": "21.75",
-            },
+                "quantidade": 1,
+                "preco_unitario": str(preco),
+                "subtotal": str(preco),
+            }
+            for jogo, preco in zip((jogo_a, jogo_b), novos_precos, strict=True)
         ],
         "chaves": [],
     }
+    pagamento_novo = pagar(loja, headers, novo_id)
+    assert pagamento_novo.status_code == 200
+    assert pagamento_novo.json()["valor_total"] == str(total_novo)
+    assert pagamento_novo.json()["itens"] == novo.json()["itens"]
+    assert situacao(loja, novo_id)["pagamentos"] == [("pix", "aprovado", total_novo)]
 
+    # Pagar depois da alteração também usa o valor antigo; repetir não cobra novamente.
     resposta = pagar(loja, headers, pedido_id)
     assert resposta.status_code == 200
     pago = resposta.json()

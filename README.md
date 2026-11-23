@@ -513,6 +513,11 @@ A implementação reutiliza a reserva transacional da GK-15 e a tela de pedido e
 pagamento da GK-16, sem criar outra regra de preço ou migração. Veja o
 [roteiro e as evidências da GK-14](docs/release-2/sprint-3/testes/GK-14-checkout.md).
 
+O [driver GK-73 de preço congelado](docs/release-2/sprint-3/testes/GK-73-preco-congelado.md)
+verifica pedidos pagos e pendentes após aumento ou redução do catálogo, além de
+confirmar que compras novas usam o preço atualizado. Os quatro cenários fazem
+parte da regressão do backend no CI.
+
 ## Commits e branches
 
 - Branch: `<tipo>/GK-<número>-descricao-curta` (ex.: `feature/GK-12-carrinho-alterar-itens`)
