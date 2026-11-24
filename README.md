@@ -429,6 +429,12 @@ PostgreSQL no Neon (projeto `weathered-shadow-77764238`, branch `production`) pa
 
 ### PostgreSQL local isolado para testes
 
+O Compose de testes publica a porta 5433 somente em `127.0.0.1`. Sua configuração
+de demonstração é independente do Neon. Para containers antigos, a restrição
+passa a valer após recriação com o arquivo atualizado; faça isso ao encerrar os
+testes que estiverem em andamento. Evidências e decisão de escopo na
+[GK-149](docs/release-2/sprint-3/testes/GK-149-sigilo-e-rotacao.md).
+
 Na raiz do repositório:
 
 ```powershell

@@ -2,9 +2,10 @@
 
 Correção e verificação local em 22/11/2026, por Wagner (PO e DevOps), partindo da
 `main` em `b0d0153`. A reprodução com senha fictícia confirmou exposição em erros
-de conexão malformada. A correção elimina o marcador nos casos reproduzidos;
-a identificação e a rotação da credencial do incidente original continuam
-pendentes de execução coordenada com Pedro.
+de conexão malformada. A correção elimina o marcador nos casos reproduzidos.
+O registro de 22/11 é preservado abaixo como histórico. A decisão de escopo de
+24/11 e o complemento do isolamento local estão na seção final; a rotação remota
+não foi executada nem é apresentada como resultado desta entrega.
 
 ## Reprodução e correção
 
@@ -58,7 +59,7 @@ Esta reprodução não identifica qual usuário teve sua credencial exposta no
 traceback original de 04/11. Corrigir o código também não revoga uma credencial
 que já tenha sido exposta.
 
-## Acessos e consumidores
+## Acessos e consumidores — plano contingencial de 22/11
 
 Wagner confirmou acesso **Editor** ao projeto Neon `gamekeys`, branch
 `production`, em 22/11. Existem os usuários `gamekeys_equipe` e `neondb_owner`.
@@ -81,7 +82,7 @@ de acesso, sem compartilhar login e sem exigir novo plano para esta ação.
 Se o alvo for `neondb_owner`, mapear seus consumidores administrativos; não
 substituir por padrão a conexão da API por uma role com mais privilégios.
 
-## Roteiro do corte
+## Roteiro do corte — somente se for identificada credencial remota
 
 1. **Wagner e Rodrigo:** identificar a role do incidente original, sem publicar
    senha ou traceback bruto. Confirmar os consumidores dessa role.
@@ -114,9 +115,77 @@ Para esta troca isolada, atualizar somente a variável necessária. O script
 reenviar toda a configuração. Caso a publicação falhe, corrigir a configuração
 e republicar; não restaurar uma senha sabidamente exposta.
 
-## Situação da entrega
+## Decisão de escopo e complemento de 24/11/2026
 
-Correção e regressão local concluídas. Permanecem revisão/integração da correção,
-identificação do usuário do incidente, janela combinada, rotação, atualização dos
-consumidores e validação posterior. Nenhuma senha foi trocada nesta entrega, e
-a GK-149 permanece em andamento até a comprovação da revogação e dos consumidores.
+Wagner conduziu a conferência e o encaminhamento da GK-149 como PO e DevOps,
+conforme a solicitação nesta conversa. Foram consultados os registros existentes,
+sem copiar valores de conexão, senhas ou traceback bruto para este documento.
+
+### Evidências verificadas
+
+- O [PR #61](https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/61), commit
+  `448ceb94906230a9f6127e04425c08112a80c1c6`, foi aprovado por Rodrigo e integrado
+  por outro integrante em 23/11, merge `73f3af57239dba6301334d4b714ec924b6ae2ada`.
+  A revisão e a integração da correção deixaram de ser pendências.
+- O QA confirmou no [comentário 10345 da GK-149](https://pedrolucas0721.atlassian.net/browse/GK-149?focusedCommentId=10345)
+  que a execução de 04/11 usava PostgreSQL Docker local, banco `gamekeys_teste`,
+  porta 5433, sem conexão ao Neon nessa execução.
+- A descrição atual do [PR #18](https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/18)
+  também contém uma conexão de teste em loopback:5433/gamekeys_teste. O
+  [registro de execução](https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/18#issuecomment-6639675739)
+  informa PostgreSQL local e nenhuma execução no Neon. A conferência foi feita
+  em memória; foram retidos somente classificação do destino e identificadores
+  públicos, sem a URL completa ou senha.
+- O Compose de testes usa uma conta de demonstração com configuração pública
+  desde a preparação do ambiente. Esse arquivo é independente do `.env.local`
+  e das credenciais protegidas da API. A evidência sanitizada está em
+  [`../evidencias/GK-149-decisao-2026-11-24.json`](../evidencias/GK-149-decisao-2026-11-24.json).
+
+### Encaminhamento adotado
+
+O alvo sustentado pelas evidências disponíveis é a conta do banco local de
+testes. Sua configuração pública é tratada como dado de demonstração restrito
+ao ambiente local; não é uma credencial de autenticação do Neon ou Vercel.
+Assim, **troca de senha no Neon, revogação remota e atualização da DATABASE_URL
+no Vercel não se aplicam ao alvo local identificado**. Nenhuma dessas operações
+foi executada ou marcada como comprovada. O roteiro remoto acima fica como
+contingência para uma identificação diferente.
+
+A associação do traceback específico de 04/11 àquela execução continua sem prova
+inequívoca, conforme a ressalva do QA. A decisão usa as evidências convergentes
+do ambiente local e registra esse limite; não afirma ausência absoluta de outra
+exposição. Nova evidência de credencial remota exige reabrir a avaliação e aplicar
+o roteiro de corte ao usuário e aos consumidores efetivamente afetados.
+
+### Isolamento da configuração local
+
+O mapeamento anterior `5433:5432` não fixava a interface do host. O complemento
+passa a usar **`127.0.0.1:5433:5432`** no `docker-compose.test.yml`. A porta e o
+banco usados pelos testes permanecem os mesmos. A intenção é que a conta de
+demonstração seja acessível pelo loopback do computador que executa o Compose.
+O comportamento de publicação de portas está descrito na
+[documentação do Docker](https://docs.docker.com/engine/network/port-publishing/).
+
+O job de imagens valida o modelo real gerado pelo Compose e exige um único
+mapeamento com `host_ip=127.0.0.1`, porta publicada 5433 e destino 5432. Não é só
+uma busca textual no YAML. Essa conferência não inicia containers nem altera o
+banco; usa [`docker compose config`](https://docs.docker.com/reference/cli/docker/compose/config/).
+
+O vínculo ao loopback vale para containers criados/recriados com essa revisão.
+Esta entrega não reiniciou nenhum container já em uso. Quem mantém um container
+antigo deve aplicar o Compose atualizado quando encerrar seus testes. A máquina
+local desta conferência não tinha Docker disponível; a validação do Compose
+é executada no runner Linux do CI, separada dos testes de sigilo locais.
+
+### Verificação e fechamento
+
+Os **14 testes de sigilo** passaram localmente em 24/11, em 3,29 s, sem falhas ou
+testes pulados, com valores fictícios, `.env.local` desabilitado e sem conexão ao
+banco compartilhado. O aviso existente de depreciação do TestClient permanece.
+O resultado completo e o teste do Compose no CI devem constar no relatório do
+PR deste complemento, vinculados ao commit efetivamente verificado.
+
+Para concluir a GK-149, conferir a revisão independente e a integração deste
+complemento e registrar a decisão e suas ressalvas na GK-149/GK-116/GK-145.
+Rotação remota é **não aplicável ao alvo local sustentado pelas evidências**;
+não registrar “credencial remota revogada” sem uma operação que a comprove.

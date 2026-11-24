@@ -1,0 +1,51 @@
+{
+  "card": "GK-149",
+  "data": "2026-11-24",
+  "responsavel": "Wagner Tiburcio da Silva Junior (PO e DevOps)",
+  "objeto": "Decisão de escopo do incidente local e complemento do isolamento de testes",
+  "fontes": [
+    {
+      "id": "PR #18",
+      "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/18",
+      "sha256_texto_consultado": "420b4b40a78cb3b3aded28c2b5be839b812521981bfd8f4a651443a113ca141b",
+      "contextos_url": [
+        {
+          "host_local": true,
+          "host_neon": false,
+          "porta": 5433,
+          "banco": "gamekeys_teste",
+          "credencial_corresponde_ao_exemplo_publico": true
+        }
+      ]
+    },
+    {
+      "id": "6639675739",
+      "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/18#issuecomment-6639675739",
+      "sha256_texto_consultado": "156f45aaffe9a8c4607d47433bb06d98a7c58fb52adda92ce0f2e28855844ea6",
+      "contextos_url": []
+    }
+  ],
+  "confirmacao_qa": "https://pedrolucas0721.atlassian.net/browse/GK-149?focusedCommentId=10345",
+  "correcao": {
+    "pr": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/61",
+    "commit": "448ceb94906230a9f6127e04425c08112a80c1c6",
+    "merge": "73f3af57239dba6301334d4b714ec924b6ae2ada",
+    "revisor": "rodrigoalmei"
+  },
+  "decisao": {
+    "alvo_sustentado": "PostgreSQL Docker local de testes; gamekeys_teste em loopback:5433; configuração pública de demonstração",
+    "rotacao_neon": "não aplicável ao alvo local identificado; não executada",
+    "alteracao_vercel": "não aplicável ao alvo local identificado; não executada",
+    "limite": "A associação inequívoca do traceback específico à execução de 04/11 não foi demonstrada. Nova evidência contraditória exige reabrir a avaliação.",
+    "hardening": "Publicação da porta de testes fixada em 127.0.0.1:5433:5432; validação do modelo Compose no CI",
+    "containers_ja_em_uso": "Nenhum foi reiniciado; configuração vale ao criar/recriar com a revisão atualizada"
+  },
+  "validacao_local": {
+    "sigilo": 14,
+    "falhas": 0,
+    "pulados": 0,
+    "duracao_segundos": 3.29,
+    "ambiente": "valores fictícios, PYTHON_DOTENV_DISABLED=1, sem banco compartilhado"
+  },
+  "fechamento": "Complemento sujeito a CI, revisão independente e integração; não constitui prova de revogação remota"
+}

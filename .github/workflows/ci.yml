@@ -176,6 +176,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Validar isolamento do PostgreSQL de testes (GK-149)
+        run: |
+          docker compose -f docker-compose.test.yml config --quiet
+          docker compose -f docker-compose.test.yml config --format json \
+            | python3 -c 'import json, sys; p = json.load(sys.stdin)["services"]["postgres-test"]["ports"]; assert len(p) == 1 and p[0]["host_ip"] == "127.0.0.1" and str(p[0]["published"]) == "5433" and p[0]["target"] == 5432'
       # O compose exige o .env.local; no CI ele fica vazio, porque só as imagens são geradas.
       - name: Gerar imagens da API e do front-end
         run: |
