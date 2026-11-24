@@ -16,7 +16,7 @@ A versão que vale é a do Google Drive, onde a equipe preenche. As cópias dest
 | `release-2/sprint-2/` | Atas, acompanhamento e roteiro da Review da Sprint 2 |
 | `release-2/sprint-2/testes/` | Roteiros, evidências e experimentos de teste da Sprint 2 (GK-11, GK-110, GK-116, GK-124 e GK-140) |
 | `release-2/sprint-3/` | Ata da Planning (realizada em 17/11), Acompanhamento, roteiro e atas da Review e da Retrospectiva da Sprint 3, preparados antes das reuniões |
-| `release-2/sprint-3/testes/` | Roteiros e evidências de teste da Sprint 3 (GK-47 e GK-48) |
+| `release-2/sprint-3/testes/` | Roteiros e evidências de teste da Sprint 3, incluindo o [Registro QA de 24/11/2026](release-2/sprint-3/testes/REGISTRO-QA-2026-11-24.md) para GK-144 |
 
 ## Onde colocar um documento novo
 
