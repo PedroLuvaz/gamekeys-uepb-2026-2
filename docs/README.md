@@ -20,6 +20,8 @@ A versão que vale é a do Google Drive, onde a equipe preenche. As cópias dest
 
 ## Onde colocar um documento novo
 
+A atualização de 24/11 da GK-147 está na seção 5 da [Priorização do Backlog](projeto/Priorizacao-do-Backlog.docx). Ela registra a sequência revisada da R3, os pendentes da R2 e as decisões para refinamento, preservando o histórico anterior. O [registro da GK-147](release-2/sprint-3/Repriorizacao-do-Backlog-GK-147.json) contém prioridades e Rank antes e depois da alteração, conferidos no Jira. O feedback da Review de 26/11 será incorporado após seu registro.
+
 - Vale para o projeto inteiro e quase não muda: `projeto/`.
 - Plano ou planilha que o QA atualiza a cada release: `qualidade/`.
 - Contrato de API ou DER: `tecnico/`.

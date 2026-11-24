@@ -1,0 +1,432 @@
+{
+  "card": "GK-147",
+  "data": "2026-11-24",
+  "responsavel": "Wagner Tiburcio da Silva Junior",
+  "papel": "PO e DevOps da Release 2",
+  "base": "Registros atuais da R2 e passagem de bastão; uso confirmado pelo PO. Feedback da Review de 26/11 ainda não recebido.",
+  "documento": "https://docs.google.com/document/d/1-9X8xE_vmyZ47UAf6DgMhwGcjfvX8AQvYJW3GNoyOS4/edit",
+  "ordem_revisada": [
+    {
+      "ordem": 1,
+      "chave": "GK-49",
+      "titulo": "Isolamento dos dados do cliente",
+      "prioridade": "Highest",
+      "pontos": null,
+      "justificativa": "Protege chaves e pedidos; preparar junto de GK-17 e GK-23."
+    },
+    {
+      "ordem": 2,
+      "chave": "GK-70",
+      "titulo": "Driver: acesso somente aos próprios dados",
+      "prioridade": "High",
+      "pontos": 3,
+      "justificativa": "Verificar acesso cruzado e respostas 404 com GK-49."
+    },
+    {
+      "ordem": 3,
+      "chave": "GK-17",
+      "titulo": "Biblioteca de chaves",
+      "prioridade": "High",
+      "pontos": 3,
+      "justificativa": "Primeira entrega funcional da passagem de bastão; depende de pedidos entregues."
+    },
+    {
+      "ordem": 4,
+      "chave": "GK-23",
+      "titulo": "Histórico de pedidos",
+      "prioridade": "High",
+      "pontos": 2,
+      "justificativa": "Sobe de Média para Alta; acompanhar compras e proteger a titularidade."
+    },
+    {
+      "ordem": 5,
+      "chave": "GK-18",
+      "titulo": "Cancelar pedido não pago",
+      "prioridade": "High",
+      "pontos": 3,
+      "justificativa": "Completa o ciclo do pedido e devolve o estoque; recusar pedido pago."
+    },
+    {
+      "ordem": 6,
+      "chave": "GK-52",
+      "titulo": "RNF: fluxo concluído sem ajuda",
+      "prioridade": "High",
+      "pontos": null,
+      "justificativa": "Antecipar sessões reais do fluxo completo; Q05 ainda sem medição."
+    },
+    {
+      "ordem": 7,
+      "chave": "GK-75",
+      "titulo": "Driver: compra sem ajuda",
+      "prioridade": "High",
+      "pontos": 3,
+      "justificativa": "Medir com cinco colegas; meta de quatro em até cinco minutos."
+    },
+    {
+      "ordem": 8,
+      "chave": "GK-19",
+      "titulo": "Acesso por perfil de administrador",
+      "prioridade": "High",
+      "pontos": 3,
+      "justificativa": "Preparar autorização antes das operações administrativas."
+    },
+    {
+      "ordem": 9,
+      "chave": "GK-50",
+      "titulo": "RNF: proteção das rotas administrativas",
+      "prioridade": "High",
+      "pontos": null,
+      "justificativa": "Validar ausência de token e perfil indevido junto de GK-19."
+    },
+    {
+      "ordem": 10,
+      "chave": "GK-21",
+      "titulo": "Criar, editar e desativar jogos",
+      "prioridade": "High",
+      "pontos": 5,
+      "justificativa": "Exige perfil administrador; preservar jogos vinculados a pedidos."
+    },
+    {
+      "ordem": 11,
+      "chave": "GK-51",
+      "titulo": "RNF: lote de chaves atômico",
+      "prioridade": "High",
+      "pontos": null,
+      "justificativa": "Definir a regra de duplicadas com GK-22 antes da implementação."
+    },
+    {
+      "ordem": 12,
+      "chave": "GK-74",
+      "titulo": "Driver: lote tudo ou nada",
+      "prioridade": "High",
+      "pontos": 3,
+      "justificativa": "Promovido para acompanhar a atomicidade exigida em GK-51."
+    },
+    {
+      "ordem": 13,
+      "chave": "GK-22",
+      "titulo": "Cadastro de chaves em lote",
+      "prioridade": "High",
+      "pontos": 3,
+      "justificativa": "Após acesso administrativo e decisão sobre duplicadas; conferir estoque."
+    },
+    {
+      "ordem": 14,
+      "chave": "GK-20",
+      "titulo": "Busca e filtros de jogos",
+      "prioridade": "Medium",
+      "pontos": 5,
+      "justificativa": "Permanece após o ciclo de compra e os controles administrativos."
+    }
+  ],
+  "rank_aplicado": true,
+  "prioridades_alteradas": [
+    {
+      "chave": "GK-23",
+      "antes": "Medium",
+      "depois": "High",
+      "label": "prioridade-alta"
+    },
+    {
+      "chave": "GK-52",
+      "antes": "Medium",
+      "depois": "High",
+      "label": "prioridade-alta"
+    },
+    {
+      "chave": "GK-74",
+      "antes": "Medium",
+      "depois": "High",
+      "label": "prioridade-alta"
+    },
+    {
+      "chave": "GK-75",
+      "antes": "Medium",
+      "depois": "High",
+      "label": "prioridade-alta"
+    }
+  ],
+  "observacao_anterior": [
+    {
+      "chave": "GK-49",
+      "prioridade": "Highest",
+      "pontos": null,
+      "rank": "0|i000gv:z"
+    },
+    {
+      "chave": "GK-17",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000iy:"
+    },
+    {
+      "chave": "GK-18",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000j3:"
+    },
+    {
+      "chave": "GK-19",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000jf:"
+    },
+    {
+      "chave": "GK-21",
+      "prioridade": "High",
+      "pontos": 5,
+      "rank": "0|i000jh:"
+    },
+    {
+      "chave": "GK-22",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000ji:"
+    },
+    {
+      "chave": "GK-50",
+      "prioridade": "High",
+      "pontos": null,
+      "rank": "0|i000ji:i"
+    },
+    {
+      "chave": "GK-51",
+      "prioridade": "High",
+      "pontos": null,
+      "rank": "0|i000ji:r"
+    },
+    {
+      "chave": "GK-20",
+      "prioridade": "Medium",
+      "pontos": 5,
+      "rank": "0|i000jj:"
+    },
+    {
+      "chave": "GK-23",
+      "prioridade": "Medium",
+      "pontos": 2,
+      "rank": "0|i000k7:"
+    },
+    {
+      "chave": "GK-52",
+      "prioridade": "Medium",
+      "pontos": null,
+      "rank": "0|i000k8:"
+    },
+    {
+      "chave": "GK-70",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000qb:"
+    },
+    {
+      "chave": "GK-74",
+      "prioridade": "Medium",
+      "pontos": 3,
+      "rank": "0|i000r6:"
+    },
+    {
+      "chave": "GK-75",
+      "prioridade": "Medium",
+      "pontos": 3,
+      "rank": "0|i000rk:"
+    }
+  ],
+  "observacao_atual": [
+    {
+      "chave": "GK-49",
+      "prioridade": "Highest",
+      "pontos": null,
+      "rank": "0|i000gv:yzr00i",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-70",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000gv:yzr01",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-17",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000gv:yzr02",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-23",
+      "prioridade": "High",
+      "pontos": 2,
+      "rank": "0|i000gv:yzr04",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-18",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000gv:yzr09",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-52",
+      "prioridade": "High",
+      "pontos": null,
+      "rank": "0|i000gv:yzr0i",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-75",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000gv:yzr1",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-19",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000gv:yzr2",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-50",
+      "prioridade": "High",
+      "pontos": null,
+      "rank": "0|i000gv:yzr4",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-21",
+      "prioridade": "High",
+      "pontos": 5,
+      "rank": "0|i000gv:yzr9",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-51",
+      "prioridade": "High",
+      "pontos": null,
+      "rank": "0|i000gv:yzri",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-74",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000gv:yzs",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-22",
+      "prioridade": "High",
+      "pontos": 3,
+      "rank": "0|i000gv:yzt",
+      "status": "Backlog",
+      "sprint": null
+    },
+    {
+      "chave": "GK-20",
+      "prioridade": "Medium",
+      "pontos": 5,
+      "rank": "0|i000gv:yzv",
+      "status": "Backlog",
+      "sprint": null
+    }
+  ],
+  "carga_remanescente": {
+    "pontos_funcionais": 24,
+    "pontos_drivers": 9,
+    "total_estimado": 33,
+    "rnfs_sem_estimativa": [
+      "GK-49",
+      "GK-50",
+      "GK-51",
+      "GK-52"
+    ],
+    "sprint_alocada": false
+  },
+  "encaminhamento_r2": [
+    {
+      "chaves": [
+        "GK-105"
+      ],
+      "situacao": "Backlog",
+      "acao": "Conferir DoD/evidências de planilhas com QA/SM; permanece R2."
+    },
+    {
+      "chaves": [
+        "GK-143",
+        "GK-144",
+        "GK-145"
+      ],
+      "situacao": "Em andamento",
+      "acao": "Completar cerimônias e resultados em 26/11; permanecem R2."
+    },
+    {
+      "chaves": [
+        "GK-147"
+      ],
+      "situacao": "Em revisão",
+      "acao": "Ordem aplicada e conferida no Jira; revisar PR e complementar feedback real da Review."
+    }
+  ],
+  "refinamento": {
+    "chaves": [
+      "GK-22",
+      "GK-51",
+      "GK-74"
+    ],
+    "divergencia": "GK-22 ignora duplicadas; GK-51/GK-74 recusam lote inteiro.",
+    "encaminhamento": "PO/equipe R3 decidem e conciliam os critérios antes da implementação.",
+    "criterios_alterados": false,
+    "comentarios": [
+      "10393",
+      "10394",
+      "10395"
+    ]
+  },
+  "q05": {
+    "sessoes_reais": 0,
+    "planejadas": 5,
+    "estado": "Não medido",
+    "meta": "Pelo menos 4 de 5 concluem sem ajuda; driver GK-75 exige até 300 segundos."
+  },
+  "validacao_documental": {
+    "historico_nativo_preservado": true,
+    "elementos_anteriores_preservados": 19,
+    "novas_tabelas": [
+      {
+        "linhas": 5,
+        "colunas": 4
+      },
+      {
+        "linhas": 15,
+        "colunas": 4
+      }
+    ],
+    "render_docx": "Indisponível: LibreOffice não está no runtime. Layout conferido pelo PDF exportado do Google Docs; DOCX exportado da mesma revisão.",
+    "paginas_pdf": 7,
+    "paginacao": "Linhas das cinco tabelas mantidas inteiras; conteúdo histórico preservado."
+  },
+  "fontes": [
+    "https://pedrolucas0721.atlassian.net/browse/GK-144?focusedCommentId=10391",
+    "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/blob/acdb062/README.md",
+    "https://docs.google.com/document/d/1XMyS5UIxRc5ZUx4lp36kWLxwnIF3v-alP_lwutjP-4k/edit",
+    "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/releases/tag/v0.2.0"
+  ],
+  "sincronizacao_historico": "Linha histórica Equipe presente na cópia física foi acrescentada ao cabeçalho do Drive para preservar ambas as fontes. A seção 5 registra os papéis atuais e a passagem de bastão.",
+  "pr": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/72"
+}
