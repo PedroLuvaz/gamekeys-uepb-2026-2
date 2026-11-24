@@ -375,7 +375,7 @@ scripts/vercel-env.sh           # envia DATABASE_URL, JWT_SECRET, AMBIENTE, BANC
 - O `JWT_SECRET` do `.env.local` precisa ter pelo menos 32 caracteres (`openssl rand -hex 32`); o script recusa o valor de exemplo.
 - Produção usa `AMBIENTE=producao` (sem `/docs`); preview usa `desenvolvimento`.
 - Para liberar as origens do front-end publicado, rode de novo com o endereço dele: `scripts/vercel-env.sh https://gamekeys-web.vercel.app`.
-- Migrações não rodam no deploy: aplique com `python -m app.migrar` antes de publicar uma versão que mude o banco.
+- Migrações não são aplicadas automaticamente no banco compartilhado. A GK-136 confere o registro em leitura e bloqueia a publicação se houver divergência; o responsável aplica as migrações antes de repetir o fluxo.
 - Depois do deploy, `/saude/banco` confirma que a API alcança o Neon.
 
 #### Ambiente de homologação (Release 2)
@@ -397,11 +397,17 @@ Com a proteção ligada, a verificação usa o próprio CLI, que passa pela prot
 vercel curl /saude/banco --deployment gamekeys-api.vercel.app
 ```
 
-Para publicar uma versão nova da API, na raiz do repositório vinculada ao `gamekeys-api`:
+O fluxo da **GK-136** publica a main somente após o CI aprovado, prepara API e web
+sem trocar os domínios, confere versões e banco e promove os dois projetos. A
+main não é publicada diretamente pelo gatilho Git; os previews das branches
+continuam habilitados. Consulte a [ativação e as evidências da GK-136](docs/release-2/sprint-3/testes/GK-136-homologacao.md)
+antes de integrar esse fluxo: Pedro precisa aplicar a migração 0007 e executar o
+configurador de segredos e checks com sua conta de administrador.
 
-```bash
-vercel deploy --prod
-```
+A versão publicada pode ser conferida em `/saude/versao` na API e `/versao.json`
+no site. Cada execução de **Homologação** registra commit, CI e URLs no resumo e
+no artefato `homologacao-<run_id>`. Se faltar migração ou acesso, a publicação é
+bloqueada e a versão atual permanece no ar.
 
 ## Banco de dados
 

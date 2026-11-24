@@ -31,3 +31,13 @@ def test_documentacao_desligada_em_producao():
 
     assert cliente.get("/docs").status_code == 404
     assert cliente.get("/openapi.json").status_code == 404
+
+
+@pytest.mark.parametrize("commit", ["a" * 40, "valor-invalido", ""])
+def test_versao_publica_apenas_sha_valido(monkeypatch, commit):
+    monkeypatch.setenv("GAMEKEYS_COMMIT", commit)
+    monkeypatch.delenv("VERCEL_GIT_COMMIT_SHA", raising=False)
+    monkeypatch.setenv("SEGREDO_FICTICIO", "nao-publicar")
+    resposta = client.get("/saude/versao")
+    assert resposta.status_code == 200
+    assert resposta.json() == {"commit": commit if len(commit) == 40 else "desenvolvimento"}
