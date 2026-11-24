@@ -286,7 +286,7 @@ def test_token_do_vercel_vai_so_pelo_ambiente_no_curl(monkeypatch):
         antes = args[3 : args.index("--")]
         assert {a for a in antes if a.startswith("-")} <= CURL_OPCOES_DO_CLI
         assert env["VERCEL_TOKEN"] == "token-ficticio"
-        return SimpleNamespace(returncode=0, stdout=json.dumps({"commit": SHA}))
+        return SimpleNamespace(returncode=0, stdout=json.dumps({"commit": SHA}) + "\n200")
 
     monkeypatch.setattr(h.subprocess, "run", executar)
     assert h.Vercel("token-ficticio").consultar(
@@ -307,6 +307,101 @@ def test_token_do_vercel_nao_aparece_nos_argumentos_do_deploy(monkeypatch):
         h.Vercel("token-ficticio").preparar({"accountId": "org", "id": "projeto"}, SHA)
         == "https://exemplo.vercel.app"
     )
+
+
+@pytest.mark.parametrize(
+    "retorno,saida,motivo,http",
+    [
+        (22, "\n404", "http", 404),
+        (2, "", "cli", None),
+        (0, "<html>conteudo-ficticio</html>\n200", "json_invalido", 200),
+    ],
+)
+def test_diagnostico_http_registra_so_contexto_seguro(monkeypatch, retorno, saida, motivo, http):
+    marcador = "SEGREDO_FICTICIO_GK136"
+    monkeypatch.setattr(h.shutil, "which", lambda _: "vercel")
+    monkeypatch.setattr(
+        h.subprocess,
+        "run",
+        lambda *a, **kw: SimpleNamespace(returncode=retorno, stdout=saida, stderr=marcador),
+    )
+    with pytest.raises(h.PublicacaoBloqueada) as erro:
+        h.Vercel(marcador).consultar(
+            {"accountId": "org", "id": "projeto", "name": "gamekeys-api"},
+            "https://exemplo.vercel.app",
+            "/saude/versao",
+        )
+    assert erro.value.diagnostico == {
+        "projeto": "gamekeys-api",
+        "caminho": "/saude/versao",
+        "codigo_cli": retorno,
+        "http": http,
+        "motivo": motivo,
+    }
+    assert marcador not in str(erro.value) + json.dumps(erro.value.diagnostico)
+
+
+def test_deploy_e_promocao_tambem_autenticam_sem_token_em_argumento(monkeypatch):
+    monkeypatch.setattr(h.shutil, "which", lambda _: "vercel")
+
+    def executar(args, **opcoes):
+        assert "--token" not in args
+        assert "token-ficticio" not in args
+        assert opcoes["env"]["VERCEL_TOKEN"] == "token-ficticio"
+        return SimpleNamespace(returncode=0, stdout="feito")
+
+    monkeypatch.setattr(h.subprocess, "run", executar)
+    assert (
+        h.Vercel("token-ficticio").comando({"accountId": "org", "id": "projeto"}, "promote")
+        == "feito"
+    )
+
+
+@pytest.mark.parametrize(
+    "url,caminho",
+    [
+        ("https://outro.example", "/saude/versao"),
+        ("https://exemplo.vercel.app?token=ficticio", "/saude/versao"),
+        ("https://exemplo.vercel.app", "/caminho?token=ficticio"),
+    ],
+)
+def test_verificacao_recusa_destinos_fora_do_contrato(monkeypatch, url, caminho):
+    monkeypatch.setattr(h.shutil, "which", lambda _: "vercel")
+
+    def nao_executar(*_, **__):
+        raise AssertionError("não deve iniciar processo")
+
+    monkeypatch.setattr(h.subprocess, "run", nao_executar)
+    with pytest.raises(h.PublicacaoBloqueada) as erro:
+        h.Vercel("token-ficticio").consultar({"accountId": "org", "id": "projeto"}, url, caminho)
+    assert "ficticio" not in str(erro.value)
+
+
+def test_relatorio_persiste_diagnostico_sem_saida_bruta(monkeypatch, tmp_path, capsys):
+    monkeypatch.setattr(h, "RAIZ", tmp_path)
+    for nome in ("GH_TOKEN", "VERCEL_TOKEN", "HOMOLOGACAO_DATABASE_URL_UNPOOLED"):
+        monkeypatch.setenv(nome, "SEGREDO_FICTICIO_NAO_PUBLICAR")
+    monkeypatch.setenv("GITHUB_REF", "refs/heads/main")
+    monkeypatch.delenv("GITHUB_STEP_SUMMARY", raising=False)
+    monkeypatch.setattr(h, "confirmar_ci", lambda *_: (SHA, "123"))
+    monkeypatch.setattr(h.subprocess, "run", lambda *a, **kw: SimpleNamespace(stdout=SHA))
+    monkeypatch.setattr(h, "Vercel", lambda _: object())
+    diagnostico = {
+        "projeto": "gamekeys-api",
+        "caminho": "/saude/versao",
+        "http": 404,
+        "codigo_cli": 22,
+        "motivo": "http",
+    }
+
+    def falhar(*_):
+        raise h.PublicacaoBloqueada("Falha na verificação HTTP do build preparado.", diagnostico)
+
+    monkeypatch.setattr(h, "publicar", falhar)
+    assert h.main() == 1
+    texto = (tmp_path / "backend/relatorios/homologacao.json").read_text(encoding="utf-8")
+    assert json.loads(texto)["verificacao_http"] == diagnostico
+    assert "SEGREDO_FICTICIO_NAO_PUBLICAR" not in texto + capsys.readouterr().out
 
 
 def test_cli_nao_recebe_segredos_do_banco_ou_github(monkeypatch):

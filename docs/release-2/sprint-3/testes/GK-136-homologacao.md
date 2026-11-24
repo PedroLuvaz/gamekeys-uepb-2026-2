@@ -1,5 +1,10 @@
 # GK-136 — Publicação contínua em homologação
 
+Atualização de 24/11/2026: Pedro já configurou os segredos, os checks Vercel e a
+leitura das sete migrações. As seções de ativação abaixo registram o roteiro de
+23/11. A correção da verificação HTTP está detalhada ao final; não exige novos
+segredos nem repetição da configuração pelo Pedro.
+
 Preparado por Wagner Tiburcio da Silva Junior (PO e DevOps) em 23/11/2026.
 Branch: `feature/GK-136-homologacao-segura`. Base: `main` `9c83939`, incluindo
 a GK-73 e o acompanhamento da Sprint 3 integrados em 23/11.
@@ -159,3 +164,63 @@ acessos, integrar o PR, verificar a primeira execução e registrar os aceites.
 - [Vercel: curl com proteção de deployment](https://vercel.com/docs/cli/curl).
 - [Vercel: rollback no plano Hobby](https://vercel.com/docs/instant-rollback).
 - [GitHub: eventos workflow_run e suas permissões](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows).
+
+## Correção da verificação HTTP em 24/11/2026
+
+A [execução 45303218571](https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45303218571)
+reconheceu os segredos e conferiu as sete migrações, mas bloqueou na verificação
+do build preparado. A mensagem original era genérica e os domínios não foram
+promovidos.
+
+Wagner reproduziu a falha com o CLI real **65.2.0**, um servidor HTTP em loopback
+e valores fictícios: `vercel curl ... --token ...` é interpretado pelo parser
+desse comando como argumento do curl nativo, que termina com código 2 e informa
+`curl: option --token: is unknown`. Nenhuma requisição alcançou a fixture nesse
+controle negativo. Com `VERCEL_TOKEN` no ambiente e sem a opção nos argumentos,
+a chamada chegou ao servidor e retornou HTTP 200 com o JSON esperado.
+
+A correção de autenticação foi entregue por Pedro no
+[PR #66](https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/66), aprovada por
+Rodrigo e integrada na main `7572ce5`. O token é fornecido pelo ambiente em todas
+as chamadas do CLI, inclusive preparação e promoção.
+
+O complemento de Wagner coleta o código HTTP com
+`--write-out` e registra somente projeto conhecido, caminho permitido, código do
+processo, status HTTP e motivo controlado. Não registra corpo de resposta,
+stderr bruto, token, cookie ou dados da conexão. Falhas de HTTP, CLI, JSON e
+timeout continuam bloqueando a publicação.
+
+O CI agora executa `python -m qa.gk136_cli_regressao` depois de instalar
+`vercel@65.2.0`. A prova usa somente HTTP local, verifica a recusa do comando
+antigo, o sucesso do comando corrigido e que o token do CLI não foi enviado ao
+servidor. Seu resultado é guardado em `relatorios/vercel-cli-gk136.json`, dentro
+do artefato `relatorios-de-teste`. No Windows, a prova chama a entrada Node do CLI
+para preservar o argumento de quebra de linha do curl sem passar pelo wrapper
+`.CMD`.
+
+## Publicação real conferida em 24/11/2026
+
+O [CI 45414617455](https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45414617455)
+da main `7572ce521536c5e1c79c6aec889d9a37123f7af1` disparou automaticamente a
+[Homologação 45415177297](https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45415177297),
+que passou. Seu relatório registra as sete migrações e a promoção dos dois
+projetos. O
+[artefato 14932217145](https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45415177297/artifacts/14932217145)
+foi baixado e conferido; expira em 22/02/2027 às 11:32:11 (America/Fortaleza).
+
+Às 11:34:32 (America/Fortaleza), Wagner conferiu por GET público:
+
+- API `/saude` e `/saude/banco`: HTTP 200 e status `ok`, banco `gamekeys`.
+- API `/saude/versao`, site `/versao.json` e proxy `/api/saude/versao`:
+  HTTP 200 e o mesmo SHA completo `7572ce521536c5e1c79c6aec889d9a37123f7af1`.
+- Proxy `/api/saude/banco`: HTTP 200 e status `ok`.
+
+API: <https://gamekeys-api.vercel.app>. Site: <https://gamekeys-web.vercel.app>.
+A evidência sem credenciais está em
+[`../evidencias/GK-136-publicacao-2026-11-24.json`](../evidencias/GK-136-publicacao-2026-11-24.json).
+
+Esse resultado comprova a publicação real da correção de Pedro. O complemento de
+diagnósticos e regressão de Wagner ainda depende de revisão independente e
+integração. A validação funcional do QA, o aceite explícito do PO e o fechamento
+do relatório em 26/11 permanecem separados desta verificação operacional; não
+houve teste de rollback real nem alterações de dados de negócio nesta conferência.

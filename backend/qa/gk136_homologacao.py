@@ -31,6 +31,10 @@ PROJETOS = ("gamekeys-api", "gamekeys-web")
 class PublicacaoBloqueada(RuntimeError):
     """Só mensagens fixas e identificadores públicos podem sair deste módulo."""
 
+    def __init__(self, mensagem: str, diagnostico: dict | None = None):
+        super().__init__(mensagem)
+        self.diagnostico = diagnostico
+
 
 class SemRedirecionamento(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
@@ -203,7 +207,20 @@ class Vercel:
         return url
 
     def consultar(self, projeto, url, caminho):
-        # Nenhuma credencial nos argumentos: o token chega ao CLI só por VERCEL_TOKEN.
+        if caminho not in {"/saude/versao", "/saude/banco", "/versao.json"}:
+            raise PublicacaoBloqueada("Caminho de verificação não permitido.")
+        if not re.fullmatch(r"https://[a-zA-Z0-9-]+\.vercel\.app", url):
+            raise PublicacaoBloqueada("Endereço do build preparado não permitido.")
+        diagnostico = {
+            "projeto": projeto.get("name")
+            if projeto.get("name") in PROJETOS
+            else "nao_identificado",
+            "caminho": caminho,
+            "codigo_cli": None,
+            "http": None,
+        }
+        # O parser de curl do CLI 65.2.0 repassa --token ao curl nativo.
+        # Autenticação só via VERCEL_TOKEN; nunca incluir credenciais nos argumentos.
         args = [
             self.cli,
             "curl",
@@ -219,6 +236,8 @@ class Vercel:
             "--show-error",
             "--max-time",
             "30",
+            "--write-out",
+            "\n%{http_code}",
         ]
         ambiente = self.ambiente(projeto)
         try:
@@ -231,11 +250,27 @@ class Vercel:
                 timeout=60,
                 check=False,
             )
-            if r.returncode:
-                raise ValueError
-            return json.loads(r.stdout)
-        except (OSError, ValueError, subprocess.TimeoutExpired):
-            raise PublicacaoBloqueada("Falha na verificação HTTP do build preparado.") from None
+        except (OSError, subprocess.TimeoutExpired) as erro:
+            diagnostico["motivo"] = (
+                "timeout" if isinstance(erro, subprocess.TimeoutExpired) else "execucao"
+            )
+            raise PublicacaoBloqueada(
+                "Falha na verificação HTTP do build preparado.", diagnostico
+            ) from None
+        diagnostico["codigo_cli"] = r.returncode
+        corpo, _, codigo = r.stdout.rpartition("\n")
+        if re.fullmatch(r"[0-9]{3}", codigo):
+            diagnostico["http"] = int(codigo)
+        if r.returncode or diagnostico["http"] != 200:
+            diagnostico["motivo"] = "http" if diagnostico["http"] else "cli"
+            raise PublicacaoBloqueada("Falha na verificação HTTP do build preparado.", diagnostico)
+        try:
+            return json.loads(corpo)
+        except ValueError:
+            diagnostico["motivo"] = "json_invalido"
+            raise PublicacaoBloqueada(
+                "Falha na verificação HTTP do build preparado.", diagnostico
+            ) from None
 
     def promover(self, projeto, url):
         self.comando(projeto, "promote", url, "--yes", "--timeout", "3m", timeout=210)
@@ -361,6 +396,8 @@ def main():
         relatorio["resultado"] = "aprovado"
     except PublicacaoBloqueada as erro:
         relatorio["motivo"] = str(erro)
+        if erro.diagnostico:
+            relatorio["verificacao_http"] = erro.diagnostico
     except Exception:
         # Nenhuma exceção imprevista deve imprimir ambiente, argumentos do CLI ou credenciais.
         relatorio["motivo"] = (
