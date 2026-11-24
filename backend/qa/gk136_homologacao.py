@@ -158,6 +158,9 @@ class Vercel:
             VERCEL_PROJECT_ID=projeto["id"],
             VERCEL_TELEMETRY_DISABLED="1",
             NO_COLOR="1",
+            # O token vai pelo ambiente: o `vercel curl` repassa ao curl opções que não
+            # reconhece, e `--token` antes de `--` chegaria ao curl com o valor do token.
+            VERCEL_TOKEN=self.token,
         )
         return ambiente
 
@@ -165,7 +168,7 @@ class Vercel:
         ambiente = self.ambiente(projeto)
         try:
             resultado = subprocess.run(
-                [self.cli, *args, "--scope", ESCOPO, "--token", self.token],
+                [self.cli, *args, "--scope", ESCOPO],
                 cwd=RAIZ,
                 env=ambiente,
                 text=True,
@@ -200,7 +203,7 @@ class Vercel:
         return url
 
     def consultar(self, projeto, url, caminho):
-        # O token é opção do CLI, antes de '--'; não deve ser encaminhado ao curl.
+        # Nenhuma credencial nos argumentos: o token chega ao CLI só por VERCEL_TOKEN.
         args = [
             self.cli,
             "curl",
@@ -210,8 +213,6 @@ class Vercel:
             "--yes",
             "--scope",
             ESCOPO,
-            "--token",
-            self.token,
             "--",
             "--fail",
             "--silent",
