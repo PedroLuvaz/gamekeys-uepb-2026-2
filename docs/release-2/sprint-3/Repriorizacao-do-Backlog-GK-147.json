@@ -379,7 +379,7 @@
       "chaves": [
         "GK-147"
       ],
-      "situacao": "Em andamento",
+      "situacao": "Em revisão",
       "acao": "Ordem aplicada e conferida no Jira; revisar PR e complementar feedback real da Review."
     }
   ],
@@ -418,7 +418,8 @@
       }
     ],
     "render_docx": "Indisponível: LibreOffice não está no runtime. Layout conferido pelo PDF exportado do Google Docs; DOCX exportado da mesma revisão.",
-    "paginas_pdf": 7
+    "paginas_pdf": 7,
+    "paginacao": "Linhas das cinco tabelas mantidas inteiras; conteúdo histórico preservado."
   },
   "fontes": [
     "https://pedrolucas0721.atlassian.net/browse/GK-144?focusedCommentId=10391",
@@ -426,5 +427,6 @@
     "https://docs.google.com/document/d/1XMyS5UIxRc5ZUx4lp36kWLxwnIF3v-alP_lwutjP-4k/edit",
     "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/releases/tag/v0.2.0"
   ],
-  "sincronizacao_historico": "Linha histórica Equipe presente na cópia física foi acrescentada ao cabeçalho do Drive para preservar ambas as fontes. A seção 5 registra os papéis atuais e a passagem de bastão."
+  "sincronizacao_historico": "Linha histórica Equipe presente na cópia física foi acrescentada ao cabeçalho do Drive para preservar ambas as fontes. A seção 5 registra os papéis atuais e a passagem de bastão.",
+  "pr": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/72"
 }
