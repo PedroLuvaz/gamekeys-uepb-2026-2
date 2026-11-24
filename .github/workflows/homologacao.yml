@@ -1,0 +1,60 @@
+name: Homologação
+
+on:
+  workflow_run:
+    workflows: [CI]
+    branches: [main]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+# Não interromper uma promoção ou restauração em andamento.
+concurrency:
+  group: homologacao-main
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Instalar ferramentas fixadas do projeto
+        run: |
+          python -m pip install ./backend
+          npm install --global vercel@65.2.0
+      - name: Conferir CI, migrações, preparar e promover
+        working-directory: backend
+        env:
+          PYTHON_DOTENV_DISABLED: '1'
+          GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          HOMOLOGACAO_DATABASE_URL_UNPOOLED: ${{ secrets.HOMOLOGACAO_DATABASE_URL_UNPOOLED }}
+          CI_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: python -m qa.gk136_homologacao
+      - name: Guardar evidência da publicação ou bloqueio
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: homologacao-${{ github.run_id }}
+          path: backend/relatorios/homologacao.json
+          if-no-files-found: error

@@ -25,6 +25,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Conferir TypeScript e gerar front-end
         run: pnpm build
+      - name: Conferir identificador público do build (GK-136)
+        run: node --test scripts/versao.test.mjs
       # Testa o build gerado no passo anterior (o mesmo que o Vercel publica). No servidor de
       # desenvolvimento, o StrictMode monta os componentes duas vezes e derrubava cenários do carrinho.
       - name: Testar catálogo com Cypress/Cucumber e API simulada
@@ -84,6 +86,9 @@ jobs:
 
       - name: Criar banco de testes
         run: psql -c "create database gamekeys_teste"
+
+      - name: Validar workflows (GK-136)
+        run: go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.7 -shellcheck= -pyflakes= ../.github/workflows/*.yml
 
       - name: Instalar dependências
         run: pip install -e ".[dev]"

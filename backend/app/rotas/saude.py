@@ -1,3 +1,6 @@
+import os
+import re
+
 import psycopg
 from fastapi import APIRouter, HTTPException
 
@@ -11,6 +14,13 @@ router = APIRouter(prefix="/saude", tags=["saúde"])
 def saude() -> Saude:
     """Verificação de saúde usada pelo CI e, depois, pelo deploy."""
     return Saude(status="ok")
+
+
+@router.get("/versao")
+def versao() -> dict[str, str]:
+    """Identifica o código publicado, sem consultar o banco ou expor configuração."""
+    commit = os.getenv("GAMEKEYS_COMMIT") or os.getenv("VERCEL_GIT_COMMIT_SHA", "")
+    return {"commit": commit if re.fullmatch(r"[0-9a-f]{40}", commit) else "desenvolvimento"}
 
 
 @router.get("/banco", response_model=SaudeBanco)

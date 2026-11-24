@@ -1,8 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { pluginVersao } from "./scripts/versao.mjs";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), pluginVersao()],
   server: {
     proxy: {
       "/api": {
