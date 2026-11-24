@@ -12,7 +12,7 @@ A versão que vale é a do Google Drive, onde a equipe preenche. As cópias dest
 | `tecnico/banco/` | DER do banco em formato editável (DBML) |
 | `release-1/` | Relatórios e Release Notes da Release 1 |
 | `release-1/sprint-1/` | Plano, atas (Planning, Review e Retrospectiva), acompanhamento e roteiros de teste da Sprint 1 |
-| `release-2/` | Plano da Release 2, Plano de Qualidade e Testes da R2 e Relatório do Pipeline R2 |
+| `release-2/` | Plano da Release 2, Release Notes R2 (prévia para a Review de 26/11), Plano de Qualidade e Testes da R2 e relatórios de Pipeline e Métricas R2 |
 | `release-2/sprint-2/` | Atas, acompanhamento e roteiro da Review da Sprint 2 |
 | `release-2/sprint-2/testes/` | Roteiros, evidências e experimentos de teste da Sprint 2 (GK-11, GK-110, GK-116, GK-124 e GK-140) |
 | `release-2/sprint-3/` | Ata da Planning (realizada em 17/11), Acompanhamento, roteiro e atas da Review e da Retrospectiva da Sprint 3, preparados antes das reuniões |

@@ -1,0 +1,763 @@
+{
+  "card": "GK-146",
+  "documento": "https://docs.google.com/document/d/1UdJmrl6cJJKUHXRpbsmcUC_vVgT0bjTRhU-fs1Y4Oi8/edit",
+  "estado": "Prévia para a Review de 26/11/2026; não representa encerramento da release",
+  "consulta_utc": "2026-11-24 14:57:19 UTC",
+  "timezone": "America/Fortaleza",
+  "fontes": {
+    "plano_release": "https://docs.google.com/document/d/1TBzpeiyrZG81ur2l_uoBKzavjskJAV71tsItetSN9JM/edit",
+    "review_sprint2": "https://docs.google.com/document/d/1gyfrCYCxlZWo0QXTiQoJCjdM14S0L2QC86thOHos050/edit",
+    "acompanhamento_sprint3": "https://docs.google.com/document/d/1whd2f6HFlZUfOG_1D6iozZtAJcmGTjUKn-_iZsxDC7I/edit",
+    "pipeline": "https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit"
+  },
+  "cards": [
+    {
+      "chave": "GK-11",
+      "titulo": "[US-11] Adicionar jogo ao carrinho",
+      "status": "Concluído",
+      "pontos": 5,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-11",
+      "comentarios_consultados": [
+        {
+          "id": "10187",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-07T00:12:00.907-0300"
+        },
+        {
+          "id": "10194",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-07T10:03:22.324-0300"
+        },
+        {
+          "id": "10206",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-07T11:11:53.202-0300"
+        },
+        {
+          "id": "10210",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-07T11:46:01.535-0300"
+        },
+        {
+          "id": "10213",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-07T11:55:57.143-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-12",
+      "titulo": "[US-12] Alterar e remover itens do carrinho",
+      "status": "Concluído",
+      "pontos": 3,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-12",
+      "comentarios_consultados": [
+        {
+          "id": "10216",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-07T12:08:57.229-0300"
+        },
+        {
+          "id": "10219",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-07T12:59:00.266-0300"
+        },
+        {
+          "id": "10246",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-09T09:55:28.517-0300"
+        },
+        {
+          "id": "10254",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-09T11:30:01.013-0300"
+        },
+        {
+          "id": "10258",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-09T11:49:28.645-0300"
+        },
+        {
+          "id": "10264",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-09T11:56:27.613-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-13",
+      "titulo": "[US-13] Status do pedido com histórico",
+      "status": "Em revisão",
+      "pontos": 5,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-13",
+      "comentarios_consultados": [
+        {
+          "id": "10291",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-16T12:39:34.744-0300"
+        },
+        {
+          "id": "10295",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-16T16:42:08.693-0300"
+        },
+        {
+          "id": "10297",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-16T17:05:19.033-0300"
+        },
+        {
+          "id": "10298",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-16T17:33:22.257-0300"
+        },
+        {
+          "id": "10299",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-16T17:49:11.849-0300"
+        },
+        {
+          "id": "10300",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-16T19:17:36.222-0300"
+        },
+        {
+          "id": "10327",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-22T21:00:08.482-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-14",
+      "titulo": "[US-14] Finalizar compra",
+      "status": "Em revisão",
+      "pontos": 5,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-14",
+      "comentarios_consultados": [
+        {
+          "id": "10310",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-19T12:24:10.892-0300"
+        },
+        {
+          "id": "10311",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-19T12:25:47.612-0300"
+        },
+        {
+          "id": "10341",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T19:54:51.778-0300"
+        },
+        {
+          "id": "10350",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T21:28:37.814-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-15",
+      "titulo": "[US-15] Reservar chaves sem venda duplicada",
+      "status": "Concluído",
+      "pontos": 5,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-15",
+      "comentarios_consultados": [
+        {
+          "id": "10222",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-08T13:23:41.869-0300"
+        },
+        {
+          "id": "10242",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-09T09:44:29.011-0300"
+        },
+        {
+          "id": "10248",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-09T10:35:45.560-0300"
+        },
+        {
+          "id": "10250",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-09T10:38:03.295-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-16",
+      "titulo": "[US-16] Pagamento simulado e entrega da chave",
+      "status": "Concluído",
+      "pontos": 3,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-16",
+      "comentarios_consultados": [
+        {
+          "id": "10285",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-13T20:05:57.933-0300"
+        },
+        {
+          "id": "10287",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-14T10:53:55.146-0300"
+        },
+        {
+          "id": "10288",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-14T10:55:48.839-0300"
+        },
+        {
+          "id": "10315",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-20T03:16:42.546-0300"
+        },
+        {
+          "id": "10316",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-20T03:34:42.738-0300"
+        },
+        {
+          "id": "10330",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-22T21:08:36.046-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-46",
+      "titulo": "[US-46] RNF: Reserva de chave em transação com bloqueio de linha",
+      "status": "Concluído",
+      "pontos": 3,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-46",
+      "comentarios_consultados": [
+        {
+          "id": "10234",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-08T13:50:23.035-0300"
+        },
+        {
+          "id": "10241",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-09T09:44:23.366-0300"
+        },
+        {
+          "id": "10260",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-09T11:49:45.341-0300"
+        },
+        {
+          "id": "10265",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-09T11:56:30.120-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-47",
+      "titulo": "[US-47] RNF: Preço do pedido gravado no momento da compra",
+      "status": "Em revisão",
+      "pontos": 2,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-47",
+      "comentarios_consultados": [
+        {
+          "id": "10290",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-16T12:39:24.398-0300"
+        },
+        {
+          "id": "10293",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-16T13:04:12.992-0300"
+        },
+        {
+          "id": "10294",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-16T13:09:15.089-0300"
+        },
+        {
+          "id": "10296",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-16T16:53:35.491-0300"
+        },
+        {
+          "id": "10328",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-22T21:00:09.494-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-48",
+      "titulo": "[US-48] RNF: Telas sempre mostram carregando, lista vazia ou erro",
+      "status": "Concluído",
+      "pontos": 3,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-48",
+      "comentarios_consultados": [
+        {
+          "id": "10289",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-16T08:52:51.244-0300"
+        },
+        {
+          "id": "10301",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-16T20:03:37.673-0300"
+        },
+        {
+          "id": "10312",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-19T14:00:01.486-0300"
+        },
+        {
+          "id": "10331",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-22T21:08:37.015-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-72",
+      "titulo": "[DA-CON-I1-02] Chave nunca vendida duas vezes",
+      "status": "Concluído",
+      "pontos": 5,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-72",
+      "comentarios_consultados": [
+        {
+          "id": "10204",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-07T11:09:26.589-0300"
+        },
+        {
+          "id": "10235",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-08T13:50:23.934-0300"
+        },
+        {
+          "id": "10238",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-09T09:38:37.291-0300"
+        },
+        {
+          "id": "10243",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-09T09:44:35.921-0300"
+        },
+        {
+          "id": "10272",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-09T14:44:01.657-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-73",
+      "titulo": "[DA-CON-I2-02] Preço congelado no pedido",
+      "status": "Em revisão",
+      "pontos": 2,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-73",
+      "comentarios_consultados": [
+        {
+          "id": "10324",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-21T15:03:44.621-0300"
+        },
+        {
+          "id": "10342",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-23T20:47:59.836-0300"
+        },
+        {
+          "id": "10348",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T21:25:44.256-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-77",
+      "titulo": "[DA-USA-I3-03] Telas nunca ficam em branco",
+      "status": "Em revisão",
+      "pontos": 2,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-77",
+      "comentarios_consultados": [
+        {
+          "id": "10292",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-16T12:39:43.828-0300"
+        },
+        {
+          "id": "10302",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-17T19:57:17.783-0300"
+        },
+        {
+          "id": "10304",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-17T20:45:34.689-0300"
+        },
+        {
+          "id": "10305",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-17T21:22:38.616-0300"
+        },
+        {
+          "id": "10308",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-18T13:28:28.315-0300"
+        },
+        {
+          "id": "10329",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-22T21:00:10.484-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-110",
+      "titulo": "[US-110] Estudo de transações e concorrência no PostgreSQL",
+      "status": "Concluído",
+      "pontos": 3,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-110",
+      "comentarios_consultados": [
+        {
+          "id": "10155",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-04T15:08:12.295-0300"
+        },
+        {
+          "id": "10156",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-04T15:42:40.095-0300"
+        },
+        {
+          "id": "10158",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-04T15:54:32.465-0300"
+        },
+        {
+          "id": "10160",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-04T16:06:09.840-0300"
+        },
+        {
+          "id": "10161",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-04T16:14:17.117-0300"
+        },
+        {
+          "id": "10162",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-04T16:19:54.269-0300"
+        },
+        {
+          "id": "10247",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-09T09:55:33.938-0300"
+        },
+        {
+          "id": "10259",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-09T11:49:39.062-0300"
+        },
+        {
+          "id": "10266",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-09T11:56:32.647-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-135",
+      "titulo": "[US-135] Deploy em homologação no Vercel: estudo e primeira versão",
+      "status": "Concluído",
+      "pontos": 3,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-135",
+      "comentarios_consultados": [
+        {
+          "id": "10195",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-07T10:09:57.882-0300"
+        },
+        {
+          "id": "10211",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-07T11:46:02.640-0300"
+        },
+        {
+          "id": "10256",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-09T11:30:16.211-0300"
+        },
+        {
+          "id": "10274",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-09T14:44:33.399-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-136",
+      "titulo": "[US-136] Deploy contínuo em homologação para a Sprint Review",
+      "status": "Em revisão",
+      "pontos": 3,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-136",
+      "comentarios_consultados": [
+        {
+          "id": "10217",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-07T12:46:52.383-0300"
+        },
+        {
+          "id": "10319",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-20T04:13:51.049-0300"
+        },
+        {
+          "id": "10346",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-23T21:22:39.201-0300"
+        },
+        {
+          "id": "10351",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-23T21:33:21.405-0300"
+        },
+        {
+          "id": "10352",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T21:40:33.568-0300"
+        },
+        {
+          "id": "10354",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-23T21:45:09.675-0300"
+        },
+        {
+          "id": "10355",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T21:52:32.616-0300"
+        },
+        {
+          "id": "10357",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-23T21:58:43.304-0300"
+        },
+        {
+          "id": "10359",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T22:16:50.206-0300"
+        },
+        {
+          "id": "10360",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-24T11:45:41.193-0300"
+        },
+        {
+          "id": "10362",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-24T11:51:09.240-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-144",
+      "titulo": "[US-144] Resultados da Sprint 3",
+      "status": "Em andamento",
+      "pontos": 1,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-144",
+      "comentarios_consultados": [
+        {
+          "id": "10303",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-17T19:57:19.785-0300"
+        },
+        {
+          "id": "10306",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-17T21:22:40.741-0300"
+        },
+        {
+          "id": "10309",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-18T13:28:30.723-0300"
+        },
+        {
+          "id": "10313",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-19T14:03:08.715-0300"
+        },
+        {
+          "id": "10314",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-19T14:29:13.580-0300"
+        },
+        {
+          "id": "10317",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-20T03:42:11.183-0300"
+        },
+        {
+          "id": "10326",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-21T15:07:36.525-0300"
+        },
+        {
+          "id": "10339",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T19:54:46.988-0300"
+        },
+        {
+          "id": "10344",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-23T20:59:18.605-0300"
+        },
+        {
+          "id": "10347",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T21:25:41.836-0300"
+        },
+        {
+          "id": "10353",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T21:40:35.861-0300"
+        }
+      ]
+    },
+    {
+      "chave": "GK-149",
+      "titulo": "Trocar a credencial exposta e registrar a verificação",
+      "status": "Em andamento",
+      "pontos": null,
+      "url": "https://pedrolucas0721.atlassian.net/browse/GK-149",
+      "comentarios_consultados": [
+        {
+          "id": "10318",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-20T04:13:49.888-0300"
+        },
+        {
+          "id": "10320",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-21T12:04:19.484-0300"
+        },
+        {
+          "id": "10321",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-21T12:05:47.046-0300"
+        },
+        {
+          "id": "10323",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-21T12:34:49.333-0300"
+        },
+        {
+          "id": "10325",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-21T15:03:45.575-0300"
+        },
+        {
+          "id": "10332",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-22T22:04:53.048-0300"
+        },
+        {
+          "id": "10334",
+          "autor": "Pedro Lucas Vaz Andrade",
+          "data": "2026-11-22T22:10:08.076-0300"
+        },
+        {
+          "id": "10335",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-22T22:21:19.912-0300"
+        },
+        {
+          "id": "10336",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-22T22:23:49.926-0300"
+        },
+        {
+          "id": "10338",
+          "autor": "WAGNER TIBURCIO DA SILVA JUNIOR",
+          "data": "2026-11-22T22:29:11.154-0300"
+        },
+        {
+          "id": "10340",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T19:54:49.168-0300"
+        },
+        {
+          "id": "10343",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T20:49:14.928-0300"
+        },
+        {
+          "id": "10345",
+          "autor": "Rodrigo Almeida Gomes",
+          "data": "2026-11-23T21:22:25.071-0300"
+        }
+      ]
+    }
+  ],
+  "aceites": {
+    "sprint2": "Ata da Review de 11/11/2026: GK-11, GK-12, GK-15, GK-46, GK-72, GK-110, GK-115, GK-117, GK-135 e itens de processo aceitos por Wagner; 35/35 pontos",
+    "GK16": "Comentário 10330 de 22/11: validação Rodrigo e aceite Wagner registrados por Pedro (SM)",
+    "GK48": "Comentário 10331 de 22/11: validação Rodrigo e aceite Wagner registrados por Pedro (SM)"
+  },
+  "publicacao": {
+    "commit": "bcd143cda532d2e1449b5f0273f3f1e9aeeb8f68",
+    "verificacao_utc": "2026-11-24T14:50:26.983735+00:00",
+    "ci": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45417624163",
+    "homologacao": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45418172612",
+    "artefato": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45418172612/artifacts/14933551011",
+    "tag_release2": null,
+    "api": "https://gamekeys-api.vercel.app",
+    "web": "https://gamekeys-web.vercel.app"
+  },
+  "metricas": {
+    "sprint2": {
+      "planejado": 35,
+      "concluido": 35
+    },
+    "sprint3": {
+      "planejado": 28,
+      "concluido": 6,
+      "restante": 22
+    },
+    "release2": {
+      "planejado": 63,
+      "concluido_no_corte": 41,
+      "restante": 22,
+      "observacao": "Sem somar subtasks ou estimativas de outros recortes"
+    },
+    "ci": {
+      "corte_local": "2026-11-23 21:39:42",
+      "main_sucesso": 46,
+      "main_total": 48,
+      "percentual": 95.83,
+      "meta_Q12": 90,
+      "fonte_repositorio": "docs/release-2/sprint-3/evidencias/GK-148-resumo-2026-11-23.json"
+    },
+    "regressao": {
+      "contexto": "PR #67, commit a2a21ca",
+      "execucao": 45416790776,
+      "backend": 339,
+      "interface": 135,
+      "integracao_real": 17,
+      "smoke_subconjunto": 3,
+      "concorrencia": {
+        "tentativas": 2000,
+        "reservas": 100,
+        "recusas_estoque": 1900,
+        "duplicidades": 0,
+        "rodadas_com_falha": 0
+      }
+    }
+  },
+  "consulta_bugs": {
+    "jql": "project = GK AND issuetype = Bug AND fixVersion = \"Release 2\" ORDER BY key",
+    "resultados": 0,
+    "observacao": "Não equivale a ausência de pendências de QA ou a contagem final de defeitos"
+  }
+}

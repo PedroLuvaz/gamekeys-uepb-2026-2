@@ -113,6 +113,7 @@ Pasta no Google Drive: [GameKeys - Release 2](https://drive.google.com/drive/fol
 | Papel | Documento | Repositório |
 |---|---|---|
 | PO | [Plano da Release 2](https://docs.google.com/document/d/1TBzpeiyrZG81ur2l_uoBKzavjskJAV71tsItetSN9JM/edit) (objetivo, papéis, escopo por sprint, capacidade e riscos) | `docs/release-2/Plano-da-Release-2.docx` |
+| PO | [Release Notes R2](https://docs.google.com/document/d/1UdJmrl6cJJKUHXRpbsmcUC_vVgT0bjTRhU-fs1Y4Oi8/edit) (prévia de 24/11: entregas aceitas, pendências, versão publicada e métricas; fecha após a Review de 26/11, GK-146) | `docs/release-2/Release-Notes-R2.docx` |
 | QA | [Plano de Qualidade e Testes da Release 2](https://docs.google.com/document/d/1IFobma41GfA1SwybH1yJDNPN8vf76YyoLbZQ1Cg2DC4/edit) (metas, matriz de testes, riscos e DoD) | `docs/release-2/Plano-de-Qualidade-e-Testes-Release-2.md` |
 | QA | [Acompanhamento QA R2](https://docs.google.com/spreadsheets/d/1ZJsomiV2_mLoEhCEVhpdOIKnlsPTkwyq43jIpFViLOQ/edit) (planilha de métricas, testes e riscos) | só no Drive |
 | DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main, homologação e deploy automático) | `docs/release-2/Relatorio-do-Pipeline-R2.docx` |
