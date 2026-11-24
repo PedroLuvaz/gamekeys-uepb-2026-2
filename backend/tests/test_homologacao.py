@@ -270,18 +270,43 @@ def test_erro_driver_e_saida_cli_nao_expoem_credenciais(monkeypatch):
     assert marcador not in str(erro.value)
 
 
-def test_token_do_vercel_nao_e_repassado_ao_curl(monkeypatch):
+# O `vercel curl` 65.2.0 só consome --deployment, --protection-bypass, --scope, --team,
+# --yes, --help, --trace e --json antes de `--`; qualquer outra opção, como --token e o
+# seu valor, segue para o curl. Execução 45303218571: curl recusou a opção e a
+# verificação HTTP falhou sem nenhuma requisição chegar ao build.
+CURL_OPCOES_DO_CLI = {"--deployment", "--yes", "--scope"}
+
+
+def test_token_do_vercel_vai_so_pelo_ambiente_no_curl(monkeypatch):
     monkeypatch.setattr(h.shutil, "which", lambda _: "vercel")
 
-    def executar(args, **_):
-        assert args.index("--token") < args.index("--")
-        assert "token-ficticio" not in args[args.index("--") + 1 :]
+    def executar(args, env, **_):
+        assert "token-ficticio" not in args
+        assert "--token" not in args
+        antes = args[3 : args.index("--")]
+        assert {a for a in antes if a.startswith("-")} <= CURL_OPCOES_DO_CLI
+        assert env["VERCEL_TOKEN"] == "token-ficticio"
         return SimpleNamespace(returncode=0, stdout=json.dumps({"commit": SHA}))
 
     monkeypatch.setattr(h.subprocess, "run", executar)
     assert h.Vercel("token-ficticio").consultar(
         {"accountId": "org", "id": "projeto"}, "https://exemplo.vercel.app", "/saude/versao"
     ) == {"commit": SHA}
+
+
+def test_token_do_vercel_nao_aparece_nos_argumentos_do_deploy(monkeypatch):
+    monkeypatch.setattr(h.shutil, "which", lambda _: "vercel")
+
+    def executar(args, env, **_):
+        assert "token-ficticio" not in args
+        assert env["VERCEL_TOKEN"] == "token-ficticio"
+        return SimpleNamespace(returncode=0, stdout="https://exemplo.vercel.app")
+
+    monkeypatch.setattr(h.subprocess, "run", executar)
+    assert (
+        h.Vercel("token-ficticio").preparar({"accountId": "org", "id": "projeto"}, SHA)
+        == "https://exemplo.vercel.app"
+    )
 
 
 def test_cli_nao_recebe_segredos_do_banco_ou_github(monkeypatch):
