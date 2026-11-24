@@ -1,0 +1,224 @@
+{
+  "card": "GK-148",
+  "status": "parcial; fechamento previsto para 26/11/2026",
+  "documento": "https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit",
+  "periodo_utc": {
+    "inicio": "2026-11-03T03:00:00Z",
+    "corte": "2026-11-24T00:39:42Z"
+  },
+  "timezone_apresentacao": "America/Fortaleza",
+  "capturado_em_utc": "2026-11-24T00:42:46.013964+00:00",
+  "fonte": "GitHub Actions, workflow .github/workflows/ci.yml; API paginada",
+  "contagem_por_run_id": {
+    "main": {
+      "total": 48,
+      "concluidas": 48,
+      "resultados": {
+        "success": 46,
+        "failure": 2
+      },
+      "em_execucao": 0,
+      "percentual_verde": 95.83,
+      "duracao_media_s": 129.31,
+      "duracao_max_s": 191.0
+    },
+    "pull_request": {
+      "total": 82,
+      "concluidas": 82,
+      "resultados": {
+        "success": 76,
+        "failure": 6
+      },
+      "em_execucao": 0,
+      "percentual_verde": 92.68,
+      "duracao_media_s": 199.62,
+      "duracao_max_s": 3142.0
+    },
+    "outras_branches": {
+      "total": 89,
+      "concluidas": 89,
+      "resultados": {
+        "success": 86,
+        "failure": 3
+      },
+      "em_execucao": 0,
+      "percentual_verde": 96.63,
+      "duracao_media_s": 124.72,
+      "duracao_max_s": 182.0
+    },
+    "manual_outros": {
+      "total": 0,
+      "concluidas": 0,
+      "resultados": {},
+      "em_execucao": 0,
+      "percentual_verde": null,
+      "duracao_media_s": null,
+      "duracao_max_s": null
+    }
+  },
+  "contagem_todas_tentativas": {
+    "total": 222,
+    "resultados": {
+      "success": 208,
+      "failure": 12,
+      "action_required": 2
+    },
+    "percentual_verde": 93.69,
+    "main": {
+      "total": 49,
+      "success": 46,
+      "failure": 3,
+      "percentual_verde": 93.88
+    }
+  },
+  "duracao": "updated_at - run_started_at em segundos; intervalo registrado, não soma dos jobs",
+  "meta_Q12_percentual_verde_minimo": 90,
+  "main": {
+    "commit": "e8123f2531d4e3e204390eacbfaa141a0c701043",
+    "run_id": 45298397655,
+    "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45298397655",
+    "conclusao": "success",
+    "backend": 330,
+    "interface": 135,
+    "integracao": 17,
+    "smoke_subconjunto_backend": 3
+  },
+  "artefatos_main": [
+    {
+      "id": 14878085696,
+      "nome": "relatorios-de-teste",
+      "expira_em": "2027-02-22T00:35:30Z",
+      "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45298397655/artifacts/14878085696"
+    },
+    {
+      "id": 14876993458,
+      "nome": "relatorios-de-interface",
+      "expira_em": "2027-02-22T00:35:30Z",
+      "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45298397655/artifacts/14876993458"
+    },
+    {
+      "id": 14876589651,
+      "nome": "relatorios-de-integracao-real",
+      "expira_em": "2027-02-22T00:35:30Z",
+      "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45298397655/artifacts/14876589651"
+    }
+  ],
+  "prs": {
+    "55": {
+      "number": 55,
+      "title": "feat: GK-14 finaliza compra com recuperação segura",
+      "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/55",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-19T18:36:34Z",
+      "merge_commit_sha": "058520bce237139f505b24cff4830222be1a6a66",
+      "autor": "Wagnerxxdd",
+      "commit": "0b31fc87f1d0899028527c118fc108da97321b35",
+      "aprovacoes": [
+        {
+          "autor": "rodrigoalmei",
+          "data": "2026-11-19T18:36:27Z"
+        }
+      ]
+    },
+    "61": {
+      "number": 61,
+      "title": "fix: GK-149 protege credenciais nos erros de conexão",
+      "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/61",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-23T15:31:55Z",
+      "merge_commit_sha": "73f3af57239dba6301334d4b714ec924b6ae2ada",
+      "autor": "Wagnerxxdd",
+      "commit": "448ceb94906230a9f6127e04425c08112a80c1c6",
+      "aprovacoes": [
+        {
+          "autor": "rodrigoalmei",
+          "data": "2026-11-23T15:31:48Z"
+        }
+      ]
+    },
+    "62": {
+      "number": 62,
+      "title": "test: GK-73 comprova preços de pedidos antigos e novos",
+      "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/62",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-24T00:16:27Z",
+      "merge_commit_sha": "283f45e488fe80bd18e6889e79df57e751ea5ac9",
+      "autor": "Wagnerxxdd",
+      "commit": "9fcf42b74a4a150d6649aad6fff69de3cc6179f5",
+      "aprovacoes": [
+        {
+          "autor": "rodrigoalmei",
+          "data": "2026-11-24T00:16:20Z"
+        }
+      ]
+    },
+    "64": {
+      "number": 64,
+      "title": "feat: GK-136 protege a publicação contínua em homologação",
+      "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/64",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-24T00:35:27Z",
+      "merge_commit_sha": "e8123f2531d4e3e204390eacbfaa141a0c701043",
+      "autor": "Wagnerxxdd",
+      "commit": "c4f5406d14c9ec00f497d486f343f8286877223c",
+      "aprovacoes": [
+        {
+          "autor": "rodrigoalmei",
+          "data": "2026-11-24T00:35:20Z"
+        }
+      ]
+    }
+  },
+  "homologacao": {
+    "data": "2026-11-24T00:38:59.402981+00:00",
+    "card": "GK-136",
+    "resultado": "bloqueado",
+    "motivo": "Configure os segredos de homologação antes de publicar."
+  },
+  "workflow_homologacao": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45298778597",
+  "checks_obrigatorios": [
+    "frontend",
+    "backend",
+    "imagens Docker"
+  ],
+  "nomes_segredos_actions": [],
+  "verificacoes_publicas": {
+    "data": "2026-11-24T00:45:42.957786+00:00",
+    "verificacoes": [
+      {
+        "url": "https://gamekeys-api.vercel.app/saude",
+        "http": 200,
+        "tipo": "application/json",
+        "status": "ok"
+      },
+      {
+        "url": "https://gamekeys-api.vercel.app/saude/banco",
+        "http": 200,
+        "tipo": "application/json",
+        "status": "ok",
+        "banco": "gamekeys"
+      },
+      {
+        "url": "https://gamekeys-api.vercel.app/saude/versao",
+        "http": 404
+      },
+      {
+        "url": "https://gamekeys-web.vercel.app/",
+        "http": 200,
+        "tipo": "text/html; charset=utf-8"
+      },
+      {
+        "url": "https://gamekeys-web.vercel.app/versao.json",
+        "http": 200,
+        "tipo": "text/html; charset=utf-8"
+      }
+    ]
+  },
+  "commit_servido_publicamente": "não comprovado no corte",
+  "csv": "GK-148-ci-2026-11-23.csv",
+  "preservacao": "Seções 1 a 8 do Google Docs conferidas sem alteração de conteúdo ou estrutura; seção 9 acrescentada."
+}

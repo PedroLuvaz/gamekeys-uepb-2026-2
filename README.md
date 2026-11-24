@@ -130,6 +130,12 @@ Pasta no Google Drive: [GameKeys - Release 2](https://drive.google.com/drive/fol
 
 As cópias do repositório foram sincronizadas com o Drive em 08/11/2026; as da Sprint 3 e o Plano da Release 2, em 13/11/2026. Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
 
+A GK-148 acrescenta ao Relatório do Pipeline R2 o corte de 23/11/2026, às 21:39:42
+(America/Fortaleza), preservando as seções históricas. A coleta pode ser conferida
+no [CSV de execuções e tentativas](docs/release-2/sprint-3/evidencias/GK-148-ci-2026-11-23.csv)
+e no [resumo com métricas e fontes](docs/release-2/sprint-3/evidencias/GK-148-resumo-2026-11-23.json).
+O fechamento de 26/11 e a comprovação da publicação pela GK-136 permanecem pendentes.
+
 ## Tecnologias
 
 Python 3.12 com FastAPI, PostgreSQL, React com TypeScript e GitHub Actions.
