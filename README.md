@@ -16,11 +16,11 @@ O GameKeys controla o estoque de chaves, os pedidos e a entrega, mantendo separa
 
 ## Equipe
 
-| Integrante | Papel na Release 1 (até 29/10) | Papel na Release 2 (03/11 a 26/11) |
-|---|---|---|
-| Pedro Lucas Vaz de Andrade | Product Owner e DevOps | Scrum Master |
-| Wagner Tiburcio da Silva Junior | QA | Product Owner e DevOps |
-| Rodrigo Almeida Gomes | Scrum Master | QA |
+| Integrante | Papel na Release 1 (até 29/10) | Papel na Release 2 (03/11 a 26/11) | Papel na Release 3 (27/11 a 22/12) |
+|---|---|---|---|
+| Pedro Lucas Vaz de Andrade | Product Owner e DevOps | Scrum Master | QA |
+| Wagner Tiburcio da Silva Junior | QA | Product Owner e DevOps | Scrum Master |
+| Rodrigo Almeida Gomes | Scrum Master | QA | Product Owner e DevOps |
 
 Os papéis mudam ao fim de cada release. Quem é PO também é DevOps.
 
@@ -29,6 +29,12 @@ Passagem de bastão para a Release 2:
 - **PO e DevOps (Pedro → Wagner):** backlog da Release 2 priorizado no épico GK-3, com as histórias GK-11 a GK-16 prontas pela DoR; Release Notes R1; pipeline de CI, PostgreSQL local isolado para testes e o README como guia do ambiente.
 - **Scrum Master (Rodrigo → Pedro):** board 34 do Jira, calendário de cerimônias, atas da Sprint 1, planilha de riscos e DoD; a exigência de 1 aprovação antes do merge (Q-11) está ativa na `main` desde 03/11.
 - **QA (Wagner → Rodrigo):** Plano de Teste com os 30 casos da Release 1, Plano de Qualidade com o Resultado R1 e Relatório de Qualidade R1; próximos casos: carrinho, reserva de chaves e teste de concorrência (Q-03).
+
+Passagem de bastão para a Release 3:
+
+- **PO e DevOps (Wagner → Rodrigo):** backlog da Release 3 priorizado, com a biblioteca de chaves (GK-17), o histórico de pedidos do cliente (GK-23) e o cancelamento de pedido não pago (GK-18) no topo; Release Notes R2; pipeline de CI, workflow Homologação da GK-136 e Relatório do Pipeline R2. A conta do Vercel continua com o Pedro (plano Hobby, sem membros).
+- **Scrum Master (Pedro → Wagner):** board 34 do Jira, calendário de cerimônias, atas e Acompanhamento das Sprints 2 e 3, Relatório de Métricas R2, Registro de Riscos e DoD; ações da Retrospectiva da Sprint 3 para acompanhar.
+- **QA (Rodrigo → Pedro):** Plano de Qualidade e Testes da Release 2, Acompanhamento QA R2, roteiros de teste da Sprint 3 e Relatório de Qualidade R2; próximos casos: biblioteca de chaves, histórico de pedidos e cancelamento de pedido não pago.
 
 ## Responsabilidades
 
