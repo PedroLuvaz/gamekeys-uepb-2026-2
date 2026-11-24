@@ -4,19 +4,19 @@ A versão que vale é a do Google Drive, onde a equipe preenche. As cópias dest
 
 ## Como a pasta está organizada
 
-| Pasta | O que guarda |
-| --- | --- |
-| `projeto/` | Documentos que valem para as quatro releases: proposta, acordos de trabalho, ambiente de desenvolvimento, calendário de cerimônias, priorização do backlog e registro de riscos |
-| `qualidade/` | Planos e planilhas que evoluem a cada release: Plano de Qualidade, Plano de Teste, Análise de Riscos e DoD de sprint e release |
-| `tecnico/api/` | Contratos de API e guias de integração (carrinho, reserva) |
-| `tecnico/banco/` | DER do banco em formato editável (DBML) |
-| `release-1/` | Relatórios e Release Notes da Release 1 |
-| `release-1/sprint-1/` | Plano, atas (Planning, Review e Retrospectiva), acompanhamento e roteiros de teste da Sprint 1 |
-| `release-2/` | Plano da Release 2, Release Notes R2 (prévia para a Review de 26/11), Plano de Qualidade e Testes da R2 e relatórios de Pipeline e Métricas R2 |
-| `release-2/sprint-2/` | Atas, acompanhamento e roteiro da Review da Sprint 2 |
-| `release-2/sprint-2/testes/` | Roteiros, evidências e experimentos de teste da Sprint 2 (GK-11, GK-110, GK-116, GK-124 e GK-140) |
-| `release-2/sprint-3/` | Ata da Planning (realizada em 17/11), Acompanhamento, roteiro e atas da Review e da Retrospectiva da Sprint 3, preparados antes das reuniões |
-| `release-2/sprint-3/testes/` | Roteiros e evidências de teste da Sprint 3, incluindo o [Registro QA de 24/11/2026](release-2/sprint-3/testes/REGISTRO-QA-2026-11-24.md) para GK-144 |
+| Pasta                        | O que guarda                                                                                                                                                                                                                                        |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `projeto/`                   | Documentos que valem para as quatro releases: proposta, acordos de trabalho, ambiente de desenvolvimento, calendário de cerimônias, priorização do backlog e registro de riscos                                                                     |
+| `qualidade/`                 | Planos e planilhas que evoluem a cada release: Plano de Qualidade, Plano de Teste, Análise de Riscos e DoD de sprint e release                                                                                                                      |
+| `tecnico/api/`               | Contratos de API e guias de integração (carrinho, reserva)                                                                                                                                                                                          |
+| `tecnico/banco/`             | DER do banco em formato editável (DBML)                                                                                                                                                                                                             |
+| `release-1/`                 | Relatórios e Release Notes da Release 1                                                                                                                                                                                                             |
+| `release-1/sprint-1/`        | Plano, atas (Planning, Review e Retrospectiva), acompanhamento e roteiros de teste da Sprint 1                                                                                                                                                      |
+| `release-2/`                 | Plano da Release 2, Release Notes R2 (prévia para a Review de 26/11), Plano de Qualidade e Testes da R2 e relatórios de Pipeline e Métricas R2                                                                                                      |
+| `release-2/sprint-2/`        | Atas, acompanhamento e roteiro da Review da Sprint 2                                                                                                                                                                                                |
+| `release-2/sprint-2/testes/` | Roteiros, evidências e experimentos de teste da Sprint 2 (GK-11, GK-110, GK-116, GK-124 e GK-140)                                                                                                                                                   |
+| `release-2/sprint-3/`        | Ata da Planning (realizada em 17/11), Acompanhamento, roteiro e atas da Review e da Retrospectiva da Sprint 3, preparados antes das reuniões                                                                                                        |
+| `release-2/sprint-3/testes/` | Roteiros e evidências de teste da Sprint 3, incluindo o [Registro QA de 24/11/2026](release-2/sprint-3/testes/REGISTRO-QA-2026-11-24.md) e o [Ensaio Q-05 automatizado](release-2/sprint-3/testes/REGISTRO-Q05-AUTOMACAO-2026-11-24.md) para GK-144 |
 
 ## Onde colocar um documento novo
 
