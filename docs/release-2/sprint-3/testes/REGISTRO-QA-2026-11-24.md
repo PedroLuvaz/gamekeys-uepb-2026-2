@@ -169,24 +169,26 @@ ensaio real de indisponibilidade em ambiente isolado e obter seu aceite.
 
 ## Q-05 — roteiro para cinco participantes reais
 
-O [protocolo de usabilidade existente](https://drive.google.com/file/d/178amBRRsfMGTgtJUXilBpZetpAb-lGB8/view)
-é um estudo **complementar de catálogo/carrinho**. Ele proíbe checkout,
-pagamento e reserva reais e declara que não substitui a Q-05 original de
-compra completa. Como o fluxo da R2 agora está implementado, Pedro e Wagner
-precisam decidir se atualizam formalmente o protocolo para a compra completa
-em ambiente isolado. Nenhuma sessão foi realizada nesta auditoria.
+O [XLSX antigo de usabilidade](https://drive.google.com/file/d/178amBRRsfMGTgtJUXilBpZetpAb-lGB8/view)
+cobre apenas catálogo e carrinho, sem checkout, pagamento ou reserva; é um
+estudo complementar. A aba
+[Protocolo da planilha Q-05 da Sprint 3](https://docs.google.com/spreadsheets/d/1Dyd0CsbbBjptbA_l8vQDX28BNNL9vCR0KZZ_4YN7PGw/edit#gid=533534898)
+já prevê a **compra completa**, do catálogo à entrega simulada da chave.
+Falta confirmar com Wagner (PO) a aplicação do protocolo atual em ambiente
+de teste com contas, pagamento simulado e chaves fictícias. Nenhuma sessão
+foi realizada nesta auditoria.
 
-Roteiro pronto para o protocolo atual: convidar cinco voluntários diferentes,
-identificados apenas como P01–P05, cada um em sessão de teste própria com
-dados fictícios controlados. Ler a instrução padrão: “Faça as quatro tarefas
-usando somente o que vê na tela. Não explicarei como operar; pode pensar em
-voz alta.” Tarefas: (1) encontrar um jogo disponível, (2) adicioná-lo ao
-carrinho, (3) aumentar e reduzir a quantidade, (4) remover o item. Iniciar
+Roteiro do protocolo atual: convidar cinco voluntários diferentes,
+identificados apenas como P01–P05, cada um em sessão própria com dados
+fictícios controlados. Ler a instrução padrão: “Conclua a compra de teste
+usando apenas o que vê na tela. Não darei instruções durante a tarefa.”
+Tarefas: (1) encontrar um jogo, (2) adicionar ao carrinho, (3) finalizar o
+pedido e (4) confirmar o pagamento simulado e visualizar a chave. Iniciar o
 cronômetro antes da tarefa 1; parar ao concluir a tarefa 4 ou atingir 300 s.
-Sucesso individual exige as quatro tarefas, sem orientação, em até 300 s;
-qualquer intervenção conta como não aprovação. Meta do estudo: **ao menos
-4/5 participantes**. Não registrar nome, e-mail, senha ou outros dados
-pessoais nas evidências.
+Sucesso individual exige as quatro tarefas, sem ajuda, em até 300 s. Meta do
+estudo: **ao menos 4/5 participantes**. Se a entrega não estiver funcional,
+registrar a sessão como não executada. Não registrar nome, e-mail, senha ou
+outros dados pessoais nas evidências.
 
 | ID  | Data/ambiente | Quatro tarefas? | Sem ajuda? | Tempo (s) | Dificuldades/erros | Evidência anônima | Resultado     |
 | --- | ------------- | --------------- | ---------- | --------: | ------------------ | ----------------- | ------------- |
@@ -197,8 +199,8 @@ pessoais nas evidências.
 | P05 | —             | —               | —          |         — | —                  | —                 | Não executado |
 
 **Conclusão Q-05:** 0/5 sessões reais executadas; nenhuma taxa de sucesso
-pode ser declarada. O estudo do carrinho, mesmo quando realizado, não fecha
-a Q-05 original sem decisão formal do PO sobre o escopo.
+pode ser declarada. O XLSX antigo não substitui o protocolo atual de compra
+completa. A confirmação do PO para aplicá-lo continua pendente.
 
 ## Comandos, relatórios e próximos passos
 
