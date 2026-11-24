@@ -134,7 +134,9 @@ A GK-148 acrescenta ao Relatório do Pipeline R2 o corte de 23/11/2026, às 21:3
 (America/Fortaleza), preservando as seções históricas. A coleta pode ser conferida
 no [CSV de execuções e tentativas](docs/release-2/sprint-3/evidencias/GK-148-ci-2026-11-23.csv)
 e no [resumo com métricas e fontes](docs/release-2/sprint-3/evidencias/GK-148-resumo-2026-11-23.json).
-O fechamento de 26/11 e a comprovação da publicação pela GK-136 permanecem pendentes.
+Em 24/11, a seção 10 registra a [publicação real da GK-136](docs/release-2/sprint-3/evidencias/GK-136-publicacao-2026-11-24.json),
+com API, site e proxy no mesmo commit `7572ce5`. O fechamento do relatório em
+26/11, a validação funcional do QA e o aceite do PO permanecem pendentes.
 
 ## Tecnologias
 

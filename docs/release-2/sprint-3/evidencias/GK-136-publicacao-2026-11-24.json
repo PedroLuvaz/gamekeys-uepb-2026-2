@@ -1,0 +1,105 @@
+{
+  "card": "GK-136",
+  "autoria_correcao": {
+    "nome": "Pedro Andrade",
+    "pr": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/66",
+    "commit": "26d267fddd199f032e507a929481341920c2a533"
+  },
+  "revisao": {
+    "usuario": "rodrigoalmei",
+    "resultado": "APPROVED",
+    "data": "2026-11-24T14:29:01Z"
+  },
+  "registro_operacional": "Wagner Tiburcio da Silva Junior",
+  "execucao": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45415177297",
+  "evento": "workflow_run; CI push na main aprovado",
+  "artefato": {
+    "id": 14932217145,
+    "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45415177297/artifacts/14932217145",
+    "expira": "2027-02-22T14:32:11Z"
+  },
+  "relatorio_homologacao": {
+    "data": "2026-11-24T14:32:35.868194+00:00",
+    "card": "GK-136",
+    "resultado": "aprovado",
+    "commit": "7572ce521536c5e1c79c6aec889d9a37123f7af1",
+    "ci": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45414617455",
+    "migracoes": [
+      "0001_core_e_catalogo.sql",
+      "0002_permissoes_equipe.sql",
+      "0003_carrinho.sql",
+      "0004_reserva_chaves.sql",
+      "0005_pagamento_e_entrega.sql",
+      "0006_historico_status_pedido.sql",
+      "0007_leitura_registro_migracoes.sql"
+    ],
+    "publicacoes": {
+      "gamekeys-api": {
+        "url": "https://gamekeys-api.vercel.app",
+        "build": "https://gamekeys-2n25cixei-pedro-andrades-projects-abe06b11.vercel.app"
+      },
+      "gamekeys-web": {
+        "url": "https://gamekeys-web.vercel.app",
+        "build": "https://gamekeys-6rlwzk86y-pedro-andrades-projects-abe06b11.vercel.app"
+      }
+    }
+  },
+  "verificacao_publica": {
+    "data": "2026-11-24T14:34:32.867587+00:00",
+    "commit": "7572ce521536c5e1c79c6aec889d9a37123f7af1",
+    "verificacoes": [
+      {
+        "url": "https://gamekeys-api.vercel.app/saude",
+        "http": 200,
+        "resposta": {
+          "status": "ok"
+        }
+      },
+      {
+        "url": "https://gamekeys-api.vercel.app/saude/banco",
+        "http": 200,
+        "resposta": {
+          "status": "ok",
+          "banco": "gamekeys",
+          "versao": "18.7 (84da7d8)"
+        }
+      },
+      {
+        "url": "https://gamekeys-api.vercel.app/saude/versao",
+        "http": 200,
+        "resposta": {
+          "commit": "7572ce521536c5e1c79c6aec889d9a37123f7af1"
+        }
+      },
+      {
+        "url": "https://gamekeys-web.vercel.app/versao.json",
+        "http": 200,
+        "resposta": {
+          "commit": "7572ce521536c5e1c79c6aec889d9a37123f7af1"
+        }
+      },
+      {
+        "url": "https://gamekeys-web.vercel.app/api/saude/versao",
+        "http": 200,
+        "resposta": {
+          "commit": "7572ce521536c5e1c79c6aec889d9a37123f7af1"
+        }
+      },
+      {
+        "url": "https://gamekeys-web.vercel.app/api/saude/banco",
+        "http": 200,
+        "resposta": {
+          "status": "ok",
+          "banco": "gamekeys",
+          "versao": "18.7 (84da7d8)"
+        }
+      }
+    ]
+  },
+  "limites": [
+    "Consultas GET sem alterar dados de negócio",
+    "Rollback real não exercitado",
+    "Validação funcional do QA e aceite do PO pendentes",
+    "Fechamento da GK-148 previsto para 26/11/2026"
+  ]
+}

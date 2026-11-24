@@ -127,6 +127,10 @@ jobs:
       - name: Preparar interface para integração real
         working-directory: frontend
         run: pnpm install --frozen-lockfile
+      - name: Validar CLI real do Vercel sem serviços externos (GK-136)
+        run: |
+          npm install --global vercel@65.2.0
+          python -m qa.gk136_cli_regressao
       - name: Identificar jogo inativo na carga local (GK-10)
         working-directory: .
         run: |
