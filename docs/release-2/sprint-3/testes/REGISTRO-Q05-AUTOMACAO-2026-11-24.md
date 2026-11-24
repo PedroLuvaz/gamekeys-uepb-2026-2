@@ -94,6 +94,8 @@ Evidências locais, todas ignoradas pelo Git e não incluídas no PR:
 
 ## Testes de usabilidade com participantes reais — 0/5
 
+Esta seção registra o estado **antes** da aplicação presencial. Os resultados posteriores de P01–P05 constam no [registro presencial de 24/11/2026](REGISTRO-Q05-PRESENCIAL-2026-11-24.md).
+
 **Nenhum voluntário participou ainda.** Não há tempos humanos, opiniões,
 taxa de sucesso ou feedback para preencher. Cinco automações aprovadas não
 equivalem a cinco pessoas e não satisfazem a Q-05. A aplicação do protocolo
