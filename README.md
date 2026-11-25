@@ -123,7 +123,7 @@ Pasta no Google Drive: [GameKeys - Release 2](https://drive.google.com/drive/fol
 | QA | [Plano de Qualidade e Testes da Release 2](https://docs.google.com/document/d/1IFobma41GfA1SwybH1yJDNPN8vf76YyoLbZQ1Cg2DC4/edit) (metas, matriz de testes, riscos e DoD) | `docs/release-2/Plano-de-Qualidade-e-Testes-Release-2.md` |
 | QA | [Acompanhamento QA R2](https://docs.google.com/spreadsheets/d/1ZJsomiV2_mLoEhCEVhpdOIKnlsPTkwyq43jIpFViLOQ/edit) (planilha de métricas, testes e riscos) | só no Drive |
 | DevOps | [Relatório do Pipeline R2](https://docs.google.com/document/d/1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk/edit) (versão preliminar: CI, proteção da main, homologação e deploy automático) | `docs/release-2/Relatorio-do-Pipeline-R2.docx` |
-| SM | [Relatório de Métricas R2](https://docs.google.com/document/d/1IyVjX6vxpduGJTnIEaqRWyqQ4TeakPdtwjvTaTtG8oQ/edit) (rascunho: velocity, burndown das Sprints 2 e 3, impedimentos e indicadores; fecha em 26/11) | `docs/release-2/Relatorio-de-Metricas-R2.docx` |
+| SM | [Relatório de Métricas R2](https://docs.google.com/document/d/1IyVjX6vxpduGJTnIEaqRWyqQ4TeakPdtwjvTaTtG8oQ/edit) (versão de 25/11: velocity da Sprint 3 e da Release 2, burndown das Sprints 2 e 3, impedimentos e indicadores, incluindo a Q-05; fecha em 26/11) | `docs/release-2/Relatorio-de-Metricas-R2.docx` |
 | SM | [Ata da Planning - Sprint 2](https://docs.google.com/document/d/12tAuNdJ9sn_yyHmyuh9Re8GtH_yCdZkFoKyMBKi-_Os/edit) | `docs/release-2/sprint-2/Ata-Planning-Sprint-2.docx` |
 | SM | [Acompanhamento e Resultados - Sprint 2](https://docs.google.com/document/d/1DIxA-qxKtHKApLr_6_mDT_uOIiEZB6XLZDsJqB_MHRM/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/release-2/sprint-2/Acompanhamento-e-Resultados-Sprint-2.docx` |
 | SM | [Ata da Review - Sprint 2](https://docs.google.com/document/d/1gyfrCYCxlZWo0QXTiQoJCjdM14S0L2QC86thOHos050/edit) (fechada em 11/11) | `docs/release-2/sprint-2/Ata-Review-Sprint-2.docx` |
@@ -133,9 +133,9 @@ Pasta no Google Drive: [GameKeys - Release 2](https://drive.google.com/drive/fol
 | SM | [Acompanhamento e Resultados - Sprint 3](https://docs.google.com/document/d/1whd2f6HFlZUfOG_1D6iozZtAJcmGTjUKn-_iZsxDC7I/edit) (burndown, impedimentos e ações da retrospectiva) | `docs/release-2/sprint-3/Acompanhamento-e-Resultados-Sprint-3.docx` |
 | SM | [Ata da Review - Sprint 3](https://docs.google.com/document/d/1XMyS5UIxRc5ZUx4lp36kWLxwnIF3v-alP_lwutjP-4k/edit) (preparada; fecha em 26/11 com a Release 2) | `docs/release-2/sprint-3/Ata-Review-Sprint-3.docx` |
 | SM | [Ata da Retrospectiva - Sprint 3](https://docs.google.com/document/d/1bb2QoZqK2gICaA3sgv0O6bkjFgrjSicQrlgVzDwDs8M/edit) (preparada; fecha em 26/11 com a Release 2) | `docs/release-2/sprint-3/Ata-Retrospectiva-Sprint-3.docx` |
-| SM | [Roteiro da Review - Sprint 3](https://docs.google.com/document/d/1avYpaniGPN7ELNlpHsxl4jVFfXBYvjzpd8WlsQKdNQc/edit) (checklist da véspera, ordem da demonstração, perguntas e plano B da Review de 26/11) | `docs/release-2/sprint-3/Roteiro-Review-Sprint-3.docx` |
+| SM | [Roteiro da Review - Sprint 3](https://docs.google.com/document/d/1avYpaniGPN7ELNlpHsxl4jVFfXBYvjzpd8WlsQKdNQc/edit) (checklist da véspera, ordem da demonstração, perguntas, plano B e, na seção 6, a divisão do vídeo da Review por integrante com a fala do SM) | `docs/release-2/sprint-3/Roteiro-Review-Sprint-3.docx` |
 
-As cópias do repositório foram sincronizadas com o Drive em 08/11/2026; as da Sprint 3 e o Plano da Release 2, em 13/11/2026. Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
+As cópias do repositório foram sincronizadas com o Drive em 08/11/2026; o Plano da Release 2, em 13/11/2026; e os documentos do SM da Sprint 3 (Acompanhamento, atas, roteiro da Review e Relatório de Métricas R2), em 25/11/2026. Os demais documentos da Release 2 entram nesta tabela conforme forem criados.
 
 A GK-148 acrescenta ao Relatório do Pipeline R2 o corte de 23/11/2026, às 21:39:42
 (America/Fortaleza), preservando as seções históricas. A coleta pode ser conferida
