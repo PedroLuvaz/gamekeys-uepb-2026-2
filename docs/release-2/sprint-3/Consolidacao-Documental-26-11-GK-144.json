@@ -1348,5 +1348,45 @@
     "acompanhamento": 14,
     "retrospectiva": 5,
     "limite": "Renderizador local DOCX indisponivel por ausencia de LibreOffice; paginacao em todas as versoes do Word nao verificada"
+  },
+  "dod_release2": {
+    "data": "2026-11-26",
+    "versao_documental": "2.0",
+    "versao_sistema": "v0.2.0",
+    "celulas_editadas": 54,
+    "historico_e_criterios_preservados": true,
+    "formulas_originais_preservadas": true,
+    "validacao_e_formatacao_condicional_preservadas": true,
+    "sha256": "e00074f38a83392a4aac44c9cc3c1146e2714570ffa372fc7b81ad0c58a65359",
+    "formulas": {
+      "sprint": [
+        [
+          0.9047619047619048
+        ],
+        [
+          0
+        ]
+      ],
+      "release": [
+        [
+          0.7894736842105263
+        ],
+        [
+          0
+        ]
+      ]
+    },
+    "metodo": "Edicao e calculo pelo Artifact Tool; pacote original preservado fora das celulas, formatos e alturas autorizados.",
+    "drive_id": "1Mr-6oT0po8POyaRGD75hCEQjqA-TzI4Q",
+    "arquivo": "docs/qualidade/DoD-Sprint-e-Release.xlsx",
+    "arquivo_no_drive_identico_ao_git": true,
+    "pendencias": [
+      "Comprovacao da demonstracao da Review por video",
+      "Confirmacao das deliberacoes da Retrospectiva",
+      "Avaliacao entre pares por todos",
+      "Encerramento administrativo da Sprint 3 e versao R2 no Jira"
+    ],
+    "autorizacao": "Wagner autorizou atualizar os resultados e a versao documental a cada release em 26/11/2026",
+    "criterios_alterados": false
   }
 }
