@@ -1,0 +1,1392 @@
+{
+  "card": "GK-144",
+  "data": "2026-11-26",
+  "responsavel": "Wagner Tiburcio da Silva Junior",
+  "escopo": "Consolidacao documental com os registros disponiveis; sem inventar video, feedback ou deliberacoes.",
+  "sprint3": [
+    {
+      "key": "GK-13",
+      "summary": "[US-13] Status do pedido com histórico",
+      "status": "Concluído",
+      "pontos": 5,
+      "updated": "2026-11-24T21:42:35.201-0300"
+    },
+    {
+      "key": "GK-14",
+      "summary": "[US-14] Finalizar compra",
+      "status": "Concluído",
+      "pontos": 5,
+      "updated": "2026-11-24T18:27:34.521-0300"
+    },
+    {
+      "key": "GK-16",
+      "summary": "[US-16] Pagamento simulado e entrega da chave",
+      "status": "Concluído",
+      "pontos": 3,
+      "updated": "2026-11-22T21:08:46.942-0300"
+    },
+    {
+      "key": "GK-47",
+      "summary": "[US-47] RNF: Preço do pedido gravado no momento da compra",
+      "status": "Concluído",
+      "pontos": 2,
+      "updated": "2026-11-24T17:11:03.467-0300"
+    },
+    {
+      "key": "GK-48",
+      "summary": "[US-48] RNF: Telas sempre mostram carregando, lista vazia ou erro",
+      "status": "Concluído",
+      "pontos": 3,
+      "updated": "2026-11-22T21:08:48.397-0300"
+    },
+    {
+      "key": "GK-73",
+      "summary": "[DA-CON-I2-02] Preço congelado no pedido",
+      "status": "Concluído",
+      "pontos": 2,
+      "updated": "2026-11-24T13:28:31.471-0300"
+    },
+    {
+      "key": "GK-77",
+      "summary": "[DA-USA-I3-03] Telas nunca ficam em branco",
+      "status": "Concluído",
+      "pontos": 2,
+      "updated": "2026-11-24T17:11:02.893-0300"
+    },
+    {
+      "key": "GK-136",
+      "summary": "[US-136] Deploy contínuo em homologação para a Sprint Review",
+      "status": "Concluído",
+      "pontos": 3,
+      "updated": "2026-11-24T13:28:35.903-0300"
+    },
+    {
+      "key": "GK-143",
+      "summary": "[US-143] Reunião da Equipe - Sprint 3",
+      "status": "Concluído",
+      "pontos": 1,
+      "updated": "2026-11-25T10:26:23.248-0300"
+    },
+    {
+      "key": "GK-144",
+      "summary": "[US-144] Resultados da Sprint 3",
+      "status": "Concluído",
+      "pontos": 1,
+      "updated": "2026-11-25T10:26:16.549-0300"
+    },
+    {
+      "key": "GK-145",
+      "summary": "[US-145] Impedimentos e plano de ação da Retrospectiva - Sprint 3",
+      "status": "Concluído",
+      "pontos": 1,
+      "updated": "2026-11-25T10:26:28.633-0300"
+    }
+  ],
+  "estado_sprint3": {
+    "id": 38,
+    "name": "Sprint 3",
+    "state": "active",
+    "boardId": 34,
+    "goal": "O cliente finaliza a compra, paga de forma simulada, recebe a chave e acompanha o status do pedido.",
+    "startDate": "2026-11-13T16:09:09.000Z",
+    "endDate": "2026-11-27T02:30:00.000Z"
+  },
+  "release2_jira": {
+    "self": "https://api.atlassian.com/ex/jira/0fc843c8-8aad-4b5d-bca9-00b455a162f1/rest/api/3/version/10001",
+    "id": "10001",
+    "description": "Compra completa: carrinho, pagamento simulado e entrega da chave\n\nScrum Master - Pedro Lucas Vaz Andrade\nPO e DevOps - Wagner Tiburcio da Silva Junior\nQA - Rodrigo Almeida Gomes",
+    "name": "Release 2",
+    "archived": false,
+    "released": false,
+    "releaseDate": "2026-11-26"
+  },
+  "sprint2": [
+    {
+      "key": "GK-135",
+      "status": "Concluído",
+      "pontos": 3
+    },
+    {
+      "key": "GK-117",
+      "status": "Concluído",
+      "pontos": 2
+    },
+    {
+      "key": "GK-115",
+      "status": "Concluído",
+      "pontos": 3
+    },
+    {
+      "key": "GK-110",
+      "status": "Concluído",
+      "pontos": 3
+    },
+    {
+      "key": "GK-109",
+      "status": "Concluído",
+      "pontos": 1
+    },
+    {
+      "key": "GK-108",
+      "status": "Concluído",
+      "pontos": 1
+    },
+    {
+      "key": "GK-107",
+      "status": "Concluído",
+      "pontos": 1
+    },
+    {
+      "key": "GK-72",
+      "status": "Concluído",
+      "pontos": 5
+    },
+    {
+      "key": "GK-46",
+      "status": "Concluído",
+      "pontos": 3
+    },
+    {
+      "key": "GK-15",
+      "status": "Concluído",
+      "pontos": 5
+    },
+    {
+      "key": "GK-12",
+      "status": "Concluído",
+      "pontos": 3
+    },
+    {
+      "key": "GK-11",
+      "status": "Concluído",
+      "pontos": 5
+    }
+  ],
+  "transicoes_processo": [
+    {
+      "key": "GK-143",
+      "transicoes": [
+        {
+          "data": "2026-11-25T10:26:23.248-0300",
+          "de": "Em revisão",
+          "para": "Concluído"
+        },
+        {
+          "data": "2026-11-24T21:43:21.239-0300",
+          "de": "Em andamento",
+          "para": "Em revisão"
+        },
+        {
+          "data": "2026-11-23T20:53:36.731-0300",
+          "de": "Pronto para a Sprint",
+          "para": "Em andamento"
+        },
+        {
+          "data": "2026-11-16T09:07:36.570-0300",
+          "de": "Backlog",
+          "para": "Pronto para a Sprint"
+        }
+      ]
+    },
+    {
+      "key": "GK-144",
+      "transicoes": [
+        {
+          "data": "2026-11-25T10:26:16.549-0300",
+          "de": "Em revisão",
+          "para": "Concluído"
+        },
+        {
+          "data": "2026-11-25T10:26:15.093-0300",
+          "de": "Em andamento",
+          "para": "Em revisão"
+        },
+        {
+          "data": "2026-11-23T20:53:38.156-0300",
+          "de": "Pronto para a Sprint",
+          "para": "Em andamento"
+        },
+        {
+          "data": "2026-11-16T09:07:39.085-0300",
+          "de": "Backlog",
+          "para": "Pronto para a Sprint"
+        }
+      ]
+    },
+    {
+      "key": "GK-145",
+      "transicoes": [
+        {
+          "data": "2026-11-25T10:26:28.633-0300",
+          "de": "Em revisão",
+          "para": "Concluído"
+        },
+        {
+          "data": "2026-11-24T21:43:24.805-0300",
+          "de": "Em andamento",
+          "para": "Em revisão"
+        },
+        {
+          "data": "2026-11-23T20:53:39.602-0300",
+          "de": "Pronto para a Sprint",
+          "para": "Em andamento"
+        },
+        {
+          "data": "2026-11-16T09:07:42.310-0300",
+          "de": "Backlog",
+          "para": "Pronto para a Sprint"
+        }
+      ]
+    }
+  ],
+  "q05": {
+    "aprovados": 5,
+    "total": 5,
+    "tempos_s": [
+      203,
+      187,
+      140,
+      200,
+      203
+    ],
+    "media_s": 186.6,
+    "aceite": "https://pedrolucas0721.atlassian.net/browse/GK-144?focusedCommentId=10409"
+  },
+  "bugs_abertos": 0,
+  "pendencias_de_registro": [
+    "Link do vídeo ainda não disponibilizado pelo PO.",
+    "Feedback e novas decisões da Review não registrados.",
+    "Propostas da Retrospectiva aguardam confirmação da equipe.",
+    "Sprint 3 ainda ativa; versão R2 não lançada administrativamente no Jira."
+  ],
+  "documentos": [
+    {
+      "label": "review",
+      "id": "1XMyS5UIxRc5ZUx4lp36kWLxwnIF3v-alP_lwutjP-4k",
+      "copia": "docs/release-2/sprint-3/Ata-Review-Sprint-3.docx",
+      "revisao_google": "AHj4eMRIxY7HBRFRixHAKgOqHi21Y3n6RP_D9HreFiHzc39lSL_r3CAS86cJJdvbagsgHJYYmUNdltW2cP-WazyPGSJB70ZSaCKkJ0J2ZQ",
+      "paginas": 4,
+      "tabelas": 4,
+      "texto_docx_conferido": true,
+      "sha256_docx": "eb28f545ad0ead92fcb5e24e19a9d74177104142fc8556633f0177b74dd0a11e"
+    },
+    {
+      "label": "metrics",
+      "id": "1IyVjX6vxpduGJTnIEaqRWyqQ4TeakPdtwjvTaTtG8oQ",
+      "copia": "docs/release-2/Relatorio-de-Metricas-R2.docx",
+      "revisao_google": "AHj4eMQhmmmruIuZlmWL6kL-s3qbbwvhsCVm1OMPN-rfSwdGpECmkMIKPtCgRWr4mcbQo453B6j5K_09eRT7SUvEDDzAOhj6kQPHNY849w",
+      "paginas": 9,
+      "tabelas": 6,
+      "texto_docx_conferido": true,
+      "sha256_docx": "e48db62f35bcf12bed1348060d4967dde845880c7fcf931fedc66cbdb2dd3d09"
+    },
+    {
+      "label": "tracking",
+      "id": "1whd2f6HFlZUfOG_1D6iozZtAJcmGTjUKn-_iZsxDC7I",
+      "copia": "docs/release-2/sprint-3/Acompanhamento-e-Resultados-Sprint-3.docx",
+      "revisao_google": "AHj4eMSUWS2rsUaDbACqPjD9MRO1iiXcU5AVPb5CIISUnKZgf2vb5sUKl6WkQ9RLdxFTjWdLLbQJyZkoUT3nku14e24xrZ6noWpt1ydNLw",
+      "paginas": 14,
+      "tabelas": 8,
+      "texto_docx_conferido": true,
+      "sha256_docx": "376c386bb9ce3a2092926dc1aa88a01a74e5d555252f7d104f35cdc3399c8fcb"
+    },
+    {
+      "label": "retro",
+      "id": "1bb2QoZqK2gICaA3sgv0O6bkjFgrjSicQrlgVzDwDs8M",
+      "copia": "docs/release-2/sprint-3/Ata-Retrospectiva-Sprint-3.docx",
+      "revisao_google": "AHj4eMT0yHqOTptxWusQvd56jib0OFPyiFf4j8rtcR4f1Uuk1PDcDxUgh0QHuUIOBMCZd4GcDpkCRlbBFdxIRLdeAMhNkn251b_iMNsKmw",
+      "paginas": 5,
+      "tabelas": 6,
+      "texto_docx_conferido": true,
+      "sha256_docx": "22b0955c890482a62c19a7b8a468a9703b31ec5dbb286e40023b23c413753444"
+    }
+  ],
+  "homologacao_recusada": {
+    "run": 45733404983,
+    "motivo": "Publicação recusada; versões anteriores restauradas.",
+    "restauracao": {
+      "gamekeys-web": "confirmada",
+      "gamekeys-api": "confirmada"
+    }
+  },
+  "limites": "A contagem de cards concluídos não é evidência de entrega do vídeo ou de realização das cerimônias; as propostas do SM permanecem propostas.",
+  "github": {
+    "card": "GK-144",
+    "corte_utc": "2026-11-26T13:40:18.803765+00:00",
+    "inicio_recorte_utc": "2026-11-13T03:00:00Z",
+    "main": "b04ed22bc4aac024a5803294518040673706240f",
+    "q11": {
+      "integrados": 32,
+      "revisados": 32
+    },
+    "prs": [
+      {
+        "numero": 76,
+        "autor": "PedroLuvaz",
+        "head": "fb3ec7bb5a336cb77df4844829c52d5f7e0d8af3",
+        "merge": "2026-11-26T01:17:01Z",
+        "sha_merge": "b04ed22bc4aac024a5803294518040673706240f",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/76",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "fb3ec7bb5a336cb77df4844829c52d5f7e0d8af3",
+            "data": "2026-11-26T01:16:23Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 75,
+        "autor": "PedroLuvaz",
+        "head": "2f7b807231c3f7a9c68dcc27ce75e55851117bde",
+        "merge": "2026-11-26T01:03:08Z",
+        "sha_merge": "67ec913695d7f84e3cc3dccda9c42f9416ed8b43",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/75",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "2f7b807231c3f7a9c68dcc27ce75e55851117bde",
+            "data": "2026-11-26T01:03:00Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 74,
+        "autor": "PedroLuvaz",
+        "head": "11b0805011d73967cd8f45428f1b84ea4137ec78",
+        "merge": "2026-11-25T15:26:35Z",
+        "sha_merge": "49fce584aeb7e181c7be9d6bd291962e605d5b4e",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/74",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "11b0805011d73967cd8f45428f1b84ea4137ec78",
+            "data": "2026-11-25T15:26:27Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 73,
+        "autor": "rodrigoalmei",
+        "head": "9ce1fcba08d0901ec5d609e2b0f4435b70efaf9b",
+        "merge": "2026-11-24T22:36:00Z",
+        "sha_merge": "24071d22d8d245c53e8c9fddc03afc9289d1b4a4",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/73",
+        "revisoes": [
+          {
+            "autor": "PedroLuvaz",
+            "estado": "APPROVED",
+            "commit": "9ce1fcba08d0901ec5d609e2b0f4435b70efaf9b",
+            "data": "2026-11-24T22:35:47Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 72,
+        "autor": "Wagnerxxdd",
+        "head": "1beda9dd2146accf860a97d77e39a43edfbd52a0",
+        "merge": "2026-11-24T22:06:46Z",
+        "sha_merge": "bbcd7799b9a930aad58bf75b817c4223d68a9122",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/72",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "1beda9dd2146accf860a97d77e39a43edfbd52a0",
+            "data": "2026-11-24T22:06:06Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 71,
+        "autor": "rodrigoalmei",
+        "head": "584d233448a810c01ca81e14a3d9ce9fdb64500a",
+        "merge": "2026-11-24T21:59:14Z",
+        "sha_merge": "3463aad8ec3a225e8c1e0ec155fa9493b5095774",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/71",
+        "revisoes": [
+          {
+            "autor": "PedroLuvaz",
+            "estado": "APPROVED",
+            "commit": "584d233448a810c01ca81e14a3d9ce9fdb64500a",
+            "data": "2026-11-24T21:59:04Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 70,
+        "autor": "Wagnerxxdd",
+        "head": "0fe6996edc7d8bdbe9ed5494c51b7a879403c254",
+        "merge": "2026-11-24T16:45:56Z",
+        "sha_merge": "acdb062e03c96472cc1ece197cf994d21e043918",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/70",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "0fe6996edc7d8bdbe9ed5494c51b7a879403c254",
+            "data": "2026-11-24T16:45:35Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 69,
+        "autor": "PedroLuvaz",
+        "head": "91b1c04b650a0bdbc97ec30ce0ca4adc3d7c4990",
+        "merge": "2026-11-24T16:41:46Z",
+        "sha_merge": "04f9f70ccce7f5cea4425c1e27c0543c321bce61",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/69",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "91b1c04b650a0bdbc97ec30ce0ca4adc3d7c4990",
+            "data": "2026-11-24T16:41:38Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 68,
+        "autor": "Wagnerxxdd",
+        "head": "8e2e1f602a2c161535b25a270b7db55562cbdda7",
+        "merge": "2026-11-24T16:41:05Z",
+        "sha_merge": "c48b8aabdaaefbf140f6275dc2731a255c86661e",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/68",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "8e2e1f602a2c161535b25a270b7db55562cbdda7",
+            "data": "2026-11-24T16:40:31Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 67,
+        "autor": "Wagnerxxdd",
+        "head": "a2a21ca50e76496a76f5b134b6ec5cbcb0b77522",
+        "merge": "2026-11-24T14:45:16Z",
+        "sha_merge": "bcd143cda532d2e1449b5f0273f3f1e9aeeb8f68",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/67",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "a2a21ca50e76496a76f5b134b6ec5cbcb0b77522",
+            "data": "2026-11-24T14:45:07Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 66,
+        "autor": "PedroLuvaz",
+        "head": "26d267fddd199f032e507a929481341920c2a533",
+        "merge": "2026-11-24T14:29:09Z",
+        "sha_merge": "7572ce521536c5e1c79c6aec889d9a37123f7af1",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/66",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "26d267fddd199f032e507a929481341920c2a533",
+            "data": "2026-11-24T14:29:01Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 65,
+        "autor": "Wagnerxxdd",
+        "head": "0c7a3a6505d9c74cea0eaf552125926ce4cfec15",
+        "merge": "2026-11-24T01:08:45Z",
+        "sha_merge": "9b447289ed39cc8326f55c2af01383a89894d048",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/65",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "0c7a3a6505d9c74cea0eaf552125926ce4cfec15",
+            "data": "2026-11-24T01:08:34Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 64,
+        "autor": "Wagnerxxdd",
+        "head": "c4f5406d14c9ec00f497d486f343f8286877223c",
+        "merge": "2026-11-24T00:35:27Z",
+        "sha_merge": "e8123f2531d4e3e204390eacbfaa141a0c701043",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/64",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "c4f5406d14c9ec00f497d486f343f8286877223c",
+            "data": "2026-11-24T00:35:20Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 63,
+        "autor": "PedroLuvaz",
+        "head": "5130ae16eb9e0898d7a8440f54a07cd58420c510",
+        "merge": "2026-11-24T00:17:04Z",
+        "sha_merge": "9c83939c86a5c8991397aa0a065e5b0645011e47",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/63",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "5130ae16eb9e0898d7a8440f54a07cd58420c510",
+            "data": "2026-11-24T00:16:57Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 62,
+        "autor": "Wagnerxxdd",
+        "head": "9fcf42b74a4a150d6649aad6fff69de3cc6179f5",
+        "merge": "2026-11-24T00:16:27Z",
+        "sha_merge": "283f45e488fe80bd18e6889e79df57e751ea5ac9",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/62",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "9fcf42b74a4a150d6649aad6fff69de3cc6179f5",
+            "data": "2026-11-24T00:16:20Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 61,
+        "autor": "Wagnerxxdd",
+        "head": "448ceb94906230a9f6127e04425c08112a80c1c6",
+        "merge": "2026-11-23T15:31:55Z",
+        "sha_merge": "73f3af57239dba6301334d4b714ec924b6ae2ada",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/61",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "448ceb94906230a9f6127e04425c08112a80c1c6",
+            "data": "2026-11-23T15:31:48Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 60,
+        "autor": "PedroLuvaz",
+        "head": "e4e42e8e7eb73c52af0e8b8d4edc79b20c9cc5d3",
+        "merge": "2026-11-23T01:33:02Z",
+        "sha_merge": "ffb4aedd0088b6b87b63a4098e39326b803d99d0",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/60",
+        "revisoes": [
+          {
+            "autor": "Wagnerxxdd",
+            "estado": "APPROVED",
+            "commit": "e4e42e8e7eb73c52af0e8b8d4edc79b20c9cc5d3",
+            "data": "2026-11-23T01:32:56Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 59,
+        "autor": "PedroLuvaz",
+        "head": "971e3a58cad86193c4dcebe93a17f5c5a0f811f2",
+        "merge": "2026-11-23T01:32:46Z",
+        "sha_merge": "11ffd2c566b82fc96d41c7ebdc679fc9c88ad100",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/59",
+        "revisoes": [
+          {
+            "autor": "Wagnerxxdd",
+            "estado": "APPROVED",
+            "commit": "971e3a58cad86193c4dcebe93a17f5c5a0f811f2",
+            "data": "2026-11-23T01:32:39Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 58,
+        "autor": "PedroLuvaz",
+        "head": "c3086582ee645c411b1095e13fd7953abbd655dc",
+        "merge": "2026-11-23T01:32:28Z",
+        "sha_merge": "21dd74c332a012581ab29f68cd623ca94830f003",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/58",
+        "revisoes": [
+          {
+            "autor": "Wagnerxxdd",
+            "estado": "APPROVED",
+            "commit": "c3086582ee645c411b1095e13fd7953abbd655dc",
+            "data": "2026-11-23T01:32:14Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 57,
+        "autor": "PedroLuvaz",
+        "head": "67e40efb9a8d48ce6698df4758fe49e4abb8419c",
+        "merge": "2026-11-19T18:47:35Z",
+        "sha_merge": "b0d0153c350e6308057aae9bc4b4286648887cb0",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/57",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "67e40efb9a8d48ce6698df4758fe49e4abb8419c",
+            "data": "2026-11-19T18:47:23Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 56,
+        "autor": "PedroLuvaz",
+        "head": "d2a64b66cead3495aeabf8949531b204b347c58b",
+        "merge": "2026-11-19T18:37:43Z",
+        "sha_merge": "338ce0de176a2a3f8604107b3522a9af08b205bd",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/56",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "d2a64b66cead3495aeabf8949531b204b347c58b",
+            "data": "2026-11-19T18:37:35Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 55,
+        "autor": "Wagnerxxdd",
+        "head": "0b31fc87f1d0899028527c118fc108da97321b35",
+        "merge": "2026-11-19T18:36:34Z",
+        "sha_merge": "058520bce237139f505b24cff4830222be1a6a66",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/55",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "0b31fc87f1d0899028527c118fc108da97321b35",
+            "data": "2026-11-19T18:36:27Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 54,
+        "autor": "PedroLuvaz",
+        "head": "ca64a5ccfe3d7517e95fa84427b3b6755629ef0d",
+        "merge": "2026-11-18T14:50:29Z",
+        "sha_merge": "2fe6a7e18bb5989215fe608299d026d6fafbff05",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/54",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "ca64a5ccfe3d7517e95fa84427b3b6755629ef0d",
+            "data": "2026-11-18T14:50:01Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 53,
+        "autor": "rodrigoalmei",
+        "head": "1733f0aa35a4326409b44e6a16322d647ec88543",
+        "merge": "2026-11-18T01:00:06Z",
+        "sha_merge": "1d13e1ec8feb54668f728c9d7a1b274b842679a9",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/53",
+        "revisoes": [
+          {
+            "autor": "PedroLuvaz",
+            "estado": "APPROVED",
+            "commit": "1733f0aa35a4326409b44e6a16322d647ec88543",
+            "data": "2026-11-18T00:58:37Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 52,
+        "autor": "PedroLuvaz",
+        "head": "3a1d979d0f5252cd5920ab288941ce52ff0d34fe",
+        "merge": "2026-11-17T23:03:34Z",
+        "sha_merge": "758a88916fba9afc1d8f401db10c6b6ade4e4358",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/52",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "3a1d979d0f5252cd5920ab288941ce52ff0d34fe",
+            "data": "2026-11-17T23:03:27Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 51,
+        "autor": "rodrigoalmei",
+        "head": "3822d757e15ddb2ce5f7e8ae064503cfac675c25",
+        "merge": "2026-11-16T20:42:54Z",
+        "sha_merge": "8c8c93e88f1f2bf9dfdc53bb9691bac87dd1cde3",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/51",
+        "revisoes": [
+          {
+            "autor": "PedroLuvaz",
+            "estado": "APPROVED",
+            "commit": "3822d757e15ddb2ce5f7e8ae064503cfac675c25",
+            "data": "2026-11-16T20:42:37Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 50,
+        "autor": "rodrigoalmei",
+        "head": "909a2d431c2578f3ed1519693decac70c5d2528d",
+        "merge": "2026-11-16T16:21:07Z",
+        "sha_merge": "cee5d5e5622c8bc009afdfe63befaf8df36011c5",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/50",
+        "revisoes": [
+          {
+            "autor": "Wagnerxxdd",
+            "estado": "APPROVED",
+            "commit": "909a2d431c2578f3ed1519693decac70c5d2528d",
+            "data": "2026-11-16T16:20:46Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 49,
+        "autor": "PedroLuvaz",
+        "head": "7a589a823724fef9d7d56f6945fbf800553783a4",
+        "merge": "2026-11-16T13:10:29Z",
+        "sha_merge": "b8f823222acd3fa989e7eeb7d9c1ad289521de8f",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/49",
+        "revisoes": [
+          {
+            "autor": "rodrigoalmei",
+            "estado": "APPROVED",
+            "commit": "7a589a823724fef9d7d56f6945fbf800553783a4",
+            "data": "2026-11-16T13:09:40Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 48,
+        "autor": "PedroLuvaz",
+        "head": "dbf828f40957d410442ad0c24c42794bc33b274f",
+        "merge": "2026-11-14T15:46:49Z",
+        "sha_merge": "aa0fdbe0d85f9b19292f0c8938c7bb9d2dab3dcf",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/48",
+        "revisoes": [
+          {
+            "autor": "Wagnerxxdd",
+            "estado": "APPROVED",
+            "commit": "dbf828f40957d410442ad0c24c42794bc33b274f",
+            "data": "2026-11-14T15:46:36Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 47,
+        "autor": "PedroLuvaz",
+        "head": "46c07f36790c3a6d7e1238c24ff436b80a5b6141",
+        "merge": "2026-11-14T15:46:03Z",
+        "sha_merge": "87646aba9f47b7460372b0fd5026834dbe2143f1",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/47",
+        "revisoes": [
+          {
+            "autor": "Wagnerxxdd",
+            "estado": "APPROVED",
+            "commit": "46c07f36790c3a6d7e1238c24ff436b80a5b6141",
+            "data": "2026-11-14T15:45:27Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 46,
+        "autor": "PedroLuvaz",
+        "head": "f926d6141d6f643cc82da46913f3f94e1a5b184d",
+        "merge": "2026-11-14T13:02:21Z",
+        "sha_merge": "2fcfcd31043ba74c11294e9fd459c1efe1b818b6",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/46",
+        "revisoes": [
+          {
+            "autor": "Wagnerxxdd",
+            "estado": "APPROVED",
+            "commit": "f926d6141d6f643cc82da46913f3f94e1a5b184d",
+            "data": "2026-11-14T13:02:13Z"
+          }
+        ],
+        "revisao_independente": true
+      },
+      {
+        "numero": 45,
+        "autor": "PedroLuvaz",
+        "head": "357d09a2fe6676e1a44cf609f53b6e6ae5caff01",
+        "merge": "2026-11-14T13:01:58Z",
+        "sha_merge": "04f6e675f917fab36de12f4d8011627bbdf3b1c1",
+        "url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/pull/45",
+        "revisoes": [
+          {
+            "autor": "Wagnerxxdd",
+            "estado": "APPROVED",
+            "commit": "357d09a2fe6676e1a44cf609f53b6e6ae5caff01",
+            "data": "2026-11-14T13:01:50Z"
+          }
+        ],
+        "revisao_independente": true
+      }
+    ],
+    "q12": {
+      "concluidos": 32,
+      "sucessos": 31,
+      "em_execucao": 0
+    },
+    "ci_main": [
+      {
+        "id": 45734702334,
+        "event": "push",
+        "head_sha": "b04ed22bc4aac024a5803294518040673706240f",
+        "created_at": "2026-11-26T01:17:04Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45734702334"
+      },
+      {
+        "id": 45733058150,
+        "event": "push",
+        "head_sha": "67ec913695d7f84e3cc3dccda9c42f9416ed8b43",
+        "created_at": "2026-11-26T01:03:10Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45733058150"
+      },
+      {
+        "id": 45645221124,
+        "event": "push",
+        "head_sha": "49fce584aeb7e181c7be9d6bd291962e605d5b4e",
+        "created_at": "2026-11-25T15:26:38Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45645221124"
+      },
+      {
+        "id": 45502446109,
+        "event": "push",
+        "head_sha": "24071d22d8d245c53e8c9fddc03afc9289d1b4a4",
+        "created_at": "2026-11-24T22:36:03Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45502446109"
+      },
+      {
+        "id": 45497764944,
+        "event": "push",
+        "head_sha": "bbcd7799b9a930aad58bf75b817c4223d68a9122",
+        "created_at": "2026-11-24T22:06:49Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45497764944"
+      },
+      {
+        "id": 45496504254,
+        "event": "push",
+        "head_sha": "3463aad8ec3a225e8c1e0ec155fa9493b5095774",
+        "created_at": "2026-11-24T21:59:17Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45496504254"
+      },
+      {
+        "id": 45440918782,
+        "event": "push",
+        "head_sha": "acdb062e03c96472cc1ece197cf994d21e043918",
+        "created_at": "2026-11-24T16:45:59Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45440918782"
+      },
+      {
+        "id": 45440129393,
+        "event": "push",
+        "head_sha": "04f9f70ccce7f5cea4425c1e27c0543c321bce61",
+        "created_at": "2026-11-24T16:41:53Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45440129393"
+      },
+      {
+        "id": 45439987805,
+        "event": "push",
+        "head_sha": "c48b8aabdaaefbf140f6275dc2731a255c86661e",
+        "created_at": "2026-11-24T16:41:07Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45439987805"
+      },
+      {
+        "id": 45417624163,
+        "event": "push",
+        "head_sha": "bcd143cda532d2e1449b5f0273f3f1e9aeeb8f68",
+        "created_at": "2026-11-24T14:45:19Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45417624163"
+      },
+      {
+        "id": 45414617455,
+        "event": "push",
+        "head_sha": "7572ce521536c5e1c79c6aec889d9a37123f7af1",
+        "created_at": "2026-11-24T14:29:13Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45414617455"
+      },
+      {
+        "id": 45302792645,
+        "event": "push",
+        "head_sha": "9b447289ed39cc8326f55c2af01383a89894d048",
+        "created_at": "2026-11-24T01:08:48Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45302792645"
+      },
+      {
+        "id": 45298397655,
+        "event": "push",
+        "head_sha": "e8123f2531d4e3e204390eacbfaa141a0c701043",
+        "created_at": "2026-11-24T00:35:30Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45298397655"
+      },
+      {
+        "id": 45295903758,
+        "event": "push",
+        "head_sha": "9c83939c86a5c8991397aa0a065e5b0645011e47",
+        "created_at": "2026-11-24T00:17:07Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45295903758"
+      },
+      {
+        "id": 45295818202,
+        "event": "push",
+        "head_sha": "283f45e488fe80bd18e6889e79df57e751ea5ac9",
+        "created_at": "2026-11-24T00:16:30Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45295818202"
+      },
+      {
+        "id": 45206282916,
+        "event": "push",
+        "head_sha": "73f3af57239dba6301334d4b714ec924b6ae2ada",
+        "created_at": "2026-11-23T15:31:58Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45206282916"
+      },
+      {
+        "id": 45095186351,
+        "event": "push",
+        "head_sha": "ffb4aedd0088b6b87b63a4098e39326b803d99d0",
+        "created_at": "2026-11-23T01:33:05Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45095186351"
+      },
+      {
+        "id": 45095160894,
+        "event": "push",
+        "head_sha": "11ffd2c566b82fc96d41c7ebdc679fc9c88ad100",
+        "created_at": "2026-11-23T01:32:48Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45095160894"
+      },
+      {
+        "id": 45095137667,
+        "event": "push",
+        "head_sha": "21dd74c332a012581ab29f68cd623ca94830f003",
+        "created_at": "2026-11-23T01:32:31Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45095137667"
+      },
+      {
+        "id": 44591541007,
+        "event": "push",
+        "head_sha": "b0d0153c350e6308057aae9bc4b4286648887cb0",
+        "created_at": "2026-11-19T18:47:38Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/44591541007"
+      },
+      {
+        "id": 44589830189,
+        "event": "push",
+        "head_sha": "338ce0de176a2a3f8604107b3522a9af08b205bd",
+        "created_at": "2026-11-19T18:37:46Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/44589830189"
+      },
+      {
+        "id": 44589626275,
+        "event": "push",
+        "head_sha": "058520bce237139f505b24cff4830222be1a6a66",
+        "created_at": "2026-11-19T18:36:37Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/44589626275"
+      },
+      {
+        "id": 44328721840,
+        "event": "push",
+        "head_sha": "2fe6a7e18bb5989215fe608299d026d6fafbff05",
+        "created_at": "2026-11-18T14:50:31Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/44328721840"
+      },
+      {
+        "id": 44212369831,
+        "event": "push",
+        "head_sha": "1d13e1ec8feb54668f728c9d7a1b274b842679a9",
+        "created_at": "2026-11-18T01:00:09Z",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/44212369831"
+      },
+      {
+        "id": 44195927334,
+        "event": "push",
+        "head_sha": "758a88916fba9afc1d8f401db10c6b6ade4e4358",
+        "created_at": "2026-11-17T23:03:37Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/44195927334"
+      },
+      {
+        "id": 43952625216,
+        "event": "push",
+        "head_sha": "8c8c93e88f1f2bf9dfdc53bb9691bac87dd1cde3",
+        "created_at": "2026-11-16T20:42:56Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/43952625216"
+      },
+      {
+        "id": 43906518113,
+        "event": "push",
+        "head_sha": "cee5d5e5622c8bc009afdfe63befaf8df36011c5",
+        "created_at": "2026-11-16T16:21:09Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/43906518113"
+      },
+      {
+        "id": 43873266220,
+        "event": "push",
+        "head_sha": "b8f823222acd3fa989e7eeb7d9c1ad289521de8f",
+        "created_at": "2026-11-16T13:10:32Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/43873266220"
+      },
+      {
+        "id": 43612006093,
+        "event": "push",
+        "head_sha": "aa0fdbe0d85f9b19292f0c8938c7bb9d2dab3dcf",
+        "created_at": "2026-11-14T15:46:52Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/43612006093"
+      },
+      {
+        "id": 43611940016,
+        "event": "push",
+        "head_sha": "87646aba9f47b7460372b0fd5026834dbe2143f1",
+        "created_at": "2026-11-14T15:46:06Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/43611940016"
+      },
+      {
+        "id": 43597735251,
+        "event": "push",
+        "head_sha": "2fcfcd31043ba74c11294e9fd459c1efe1b818b6",
+        "created_at": "2026-11-14T13:02:23Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/43597735251"
+      },
+      {
+        "id": 43597702237,
+        "event": "push",
+        "head_sha": "04f6e675f917fab36de12f4d8011627bbdf3b1c1",
+        "created_at": "2026-11-14T13:02:00Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/43597702237"
+      }
+    ],
+    "homologacao": [
+      {
+        "id": 45735102960,
+        "event": "workflow_run",
+        "head_sha": "b04ed22bc4aac024a5803294518040673706240f",
+        "created_at": "2026-11-26T01:20:32Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45735102960"
+      },
+      {
+        "id": 45733404983,
+        "event": "workflow_run",
+        "head_sha": "67ec913695d7f84e3cc3dccda9c42f9416ed8b43",
+        "created_at": "2026-11-26T01:06:05Z",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45733404983"
+      },
+      {
+        "id": 45645916307,
+        "event": "workflow_run",
+        "head_sha": "49fce584aeb7e181c7be9d6bd291962e605d5b4e",
+        "created_at": "2026-11-25T15:30:26Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45645916307"
+      },
+      {
+        "id": 45502869568,
+        "event": "workflow_run",
+        "head_sha": "24071d22d8d245c53e8c9fddc03afc9289d1b4a4",
+        "created_at": "2026-11-24T22:38:49Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45502869568"
+      },
+      {
+        "id": 45498180179,
+        "event": "workflow_run",
+        "head_sha": "bbcd7799b9a930aad58bf75b817c4223d68a9122",
+        "created_at": "2026-11-24T22:09:20Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45498180179"
+      },
+      {
+        "id": 45497019151,
+        "event": "workflow_run",
+        "head_sha": "3463aad8ec3a225e8c1e0ec155fa9493b5095774",
+        "created_at": "2026-11-24T22:02:23Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45497019151"
+      },
+      {
+        "id": 45441545482,
+        "event": "workflow_run",
+        "head_sha": "acdb062e03c96472cc1ece197cf994d21e043918",
+        "created_at": "2026-11-24T16:49:17Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45441545482"
+      },
+      {
+        "id": 45440598984,
+        "event": "workflow_run",
+        "head_sha": "04f9f70ccce7f5cea4425c1e27c0543c321bce61",
+        "created_at": "2026-11-24T16:44:22Z",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45440598984"
+      },
+      {
+        "id": 45440569484,
+        "event": "workflow_run",
+        "head_sha": "04f9f70ccce7f5cea4425c1e27c0543c321bce61",
+        "created_at": "2026-11-24T16:44:13Z",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45440569484"
+      },
+      {
+        "id": 45418172612,
+        "event": "workflow_run",
+        "head_sha": "bcd143cda532d2e1449b5f0273f3f1e9aeeb8f68",
+        "created_at": "2026-11-24T14:48:15Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45418172612"
+      },
+      {
+        "id": 45415177297,
+        "event": "workflow_run",
+        "head_sha": "7572ce521536c5e1c79c6aec889d9a37123f7af1",
+        "created_at": "2026-11-24T14:32:10Z",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45415177297"
+      },
+      {
+        "id": 45303218571,
+        "event": "workflow_run",
+        "head_sha": "9b447289ed39cc8326f55c2af01383a89894d048",
+        "created_at": "2026-11-24T01:12:03Z",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45303218571"
+      },
+      {
+        "id": 45298778597,
+        "event": "workflow_run",
+        "head_sha": "e8123f2531d4e3e204390eacbfaa141a0c701043",
+        "created_at": "2026-11-24T00:38:17Z",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/PedroLuvaz/gamekeys-uepb-2026-2/actions/runs/45298778597"
+      }
+    ]
+  },
+  "indicadores": {
+    "sprint3_pontos_concluidos": 28,
+    "r2_pontos_concluidos": 63,
+    "q11_percentual": 100,
+    "q12_percentual": 96.88,
+    "homologacao": {
+      "success": 8,
+      "failure": 5
+    }
+  },
+  "verificacao_documental": {
+    "texto_docx_igual_ao_google_docs": true,
+    "historico_preservado": "Seções históricas QA do Relatório e pautas/riscos do Acompanhamento preservadas; campos correntes atualizados de modo pontual.",
+    "renderizacao": "PDF nativo do Google Docs inspecionado; renderizador DOCX local depende de LibreOffice ausente neste runtime."
+  },
+  "verificacao_visual": {
+    "origem": "PDF exportado pelo Google Docs",
+    "paginas_inspecionadas": 32,
+    "review": 4,
+    "metricas": 9,
+    "acompanhamento": 14,
+    "retrospectiva": 5,
+    "limite": "Renderizador local DOCX indisponivel por ausencia de LibreOffice; paginacao em todas as versoes do Word nao verificada"
+  },
+  "dod_release2": {
+    "data": "2026-11-26",
+    "versao_documental": "2.0",
+    "versao_sistema": "v0.2.0",
+    "celulas_editadas": 54,
+    "historico_e_criterios_preservados": true,
+    "formulas_originais_preservadas": true,
+    "validacao_e_formatacao_condicional_preservadas": true,
+    "sha256": "e00074f38a83392a4aac44c9cc3c1146e2714570ffa372fc7b81ad0c58a65359",
+    "formulas": {
+      "sprint": [
+        [
+          0.9047619047619048
+        ],
+        [
+          0
+        ]
+      ],
+      "release": [
+        [
+          0.7894736842105263
+        ],
+        [
+          0
+        ]
+      ]
+    },
+    "metodo": "Edicao e calculo pelo Artifact Tool; pacote original preservado fora das celulas, formatos e alturas autorizados.",
+    "drive_id": "1Mr-6oT0po8POyaRGD75hCEQjqA-TzI4Q",
+    "arquivo": "docs/qualidade/DoD-Sprint-e-Release.xlsx",
+    "arquivo_no_drive_identico_ao_git": true,
+    "pendencias": [
+      "Comprovacao da demonstracao da Review por video",
+      "Confirmacao das deliberacoes da Retrospectiva",
+      "Avaliacao entre pares por todos",
+      "Encerramento administrativo da Sprint 3 e versao R2 no Jira"
+    ],
+    "autorizacao": "Wagner autorizou atualizar os resultados e a versao documental a cada release em 26/11/2026",
+    "criterios_alterados": false
+  }
+}
