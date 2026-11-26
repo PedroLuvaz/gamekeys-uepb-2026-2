@@ -215,7 +215,7 @@ foi baixado e conferido; expira em 22/02/2027 às 11:32:11 (America/Fortaleza).
   HTTP 200 e o mesmo SHA completo `7572ce521536c5e1c79c6aec889d9a37123f7af1`.
 - Proxy `/api/saude/banco`: HTTP 200 e status `ok`.
 
-API: <https://gamekeys-api.vercel.app>. Site: <https://gamekeys-web.vercel.app>.
+API: <https://gamekeys-api.vercel.app/saude>. Site: <https://gamekeys-web.vercel.app>.
 A evidência sem credenciais está em
 [`../evidencias/GK-136-publicacao-2026-11-24.json`](../evidencias/GK-136-publicacao-2026-11-24.json).
 
