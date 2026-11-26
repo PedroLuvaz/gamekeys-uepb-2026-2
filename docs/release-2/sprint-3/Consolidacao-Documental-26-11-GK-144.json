@@ -1357,7 +1357,7 @@
     "historico_e_criterios_preservados": true,
     "formulas_originais_preservadas": true,
     "validacao_e_formatacao_condicional_preservadas": true,
-    "sha256": "e00074f38a83392a4aac44c9cc3c1146e2714570ffa372fc7b81ad0c58a65359",
+    "sha256": "419c6b192f210b9d3e6e610bac1b44f11fa0b82a7afb41f58b03242f6196c439",
     "formulas": {
       "sprint": [
         [
@@ -1386,7 +1386,40 @@
       "Avaliacao entre pares por todos",
       "Encerramento administrativo da Sprint 3 e versao R2 no Jira"
     ],
-    "autorizacao": "Wagner autorizou atualizar os resultados e a versao documental a cada release em 26/11/2026",
-    "criterios_alterados": false
+    "autorizacao": "Autorização coletiva de Pedro, Wagner e Rodrigo confirmada por Wagner em 26/11/2026.",
+    "criterios_alterados": false,
+    "sha256_anterior": "e00074f38a83392a4aac44c9cc3c1146e2714570ffa372fc7b81ad0c58a65359",
+    "padronizacao_26_11": {
+      "data": "2026-11-26",
+      "versao_documental": "2.0",
+      "versao_sistema": "v0.2.0",
+      "celulas_editadas": 61,
+      "historico_e_criterios_preservados": true,
+      "formulas_originais_preservadas": true,
+      "validacao_e_formatacao_condicional_preservadas": true,
+      "sha256": "419c6b192f210b9d3e6e610bac1b44f11fa0b82a7afb41f58b03242f6196c439",
+      "formulas": {
+        "sprint": [
+          [
+            0.9047619048
+          ],
+          [
+            0
+          ]
+        ],
+        "release": [
+          [
+            0.7894736842
+          ],
+          [
+            0
+          ]
+        ]
+      },
+      "metodo": "Edicao e calculo pelo Artifact Tool; pacote original preservado fora das celulas, formatos, larguras e alturas autorizados.",
+      "autorizacao": "Autorização coletiva de Pedro, Wagner e Rodrigo confirmada por Wagner em 26/11/2026.",
+      "status_preservados": true,
+      "texto_sem_aguardando_registro": true
+    }
   }
 }
