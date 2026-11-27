@@ -145,6 +145,16 @@ Em 24/11, a seção 10 registra a [publicação real da GK-136](docs/release-2/s
 com API, site e proxy no mesmo commit `7572ce5`. O fechamento do relatório em
 26/11, a validação funcional do QA e o aceite do PO permanecem pendentes.
 
+### Release 3
+
+Os [modelos da Release 3 e da Sprint 4](docs/release-3/README.md) estão preparados para preenchimento, seguindo as seções e tabelas usadas na Release 2. O índice relaciona cada documento ao responsável, ao card do Jira e à cópia no repositório.
+
+- [Pasta da Release 3 no Drive](https://drive.google.com/drive/folders/1oHkpLxIkcZD1gFPe6j438dS8p6hzlz0B): Plano da Release, Release Notes, relatórios de Métricas e Pipeline, Plano de Qualidade e Testes e planilha de Acompanhamento QA.
+- [Sprint 4 no Drive](https://drive.google.com/drive/folders/1CTLFXpnKXIkTyiJthcUiALhgTT-f4YZD): atas da Planning, Review e Retrospectiva, Acompanhamento e Resultados e Roteiro da Review.
+- [Qualidade da Sprint 4](https://drive.google.com/drive/folders/1ftViNscvFUEe5k_hOoq5rCvycuXxa7DX): espaço para protocolos e evidências, incluindo os drivers GK-70 e GK-75.
+
+Modelos iniciais de 27/11/2026, vinculados às GK-150 a GK-155. O Drive é a versão de trabalho; as cópias do Git devem ser sincronizadas após o preenchimento. Resultados, presenças, decisões e aceites aguardam seus registros efetivos.
+
 ## Tecnologias
 
 Python 3.12 com FastAPI, PostgreSQL, React com TypeScript e GitHub Actions.
