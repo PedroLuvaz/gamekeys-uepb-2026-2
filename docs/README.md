@@ -17,6 +17,9 @@ A versão que vale é a do Google Drive, onde a equipe preenche. As cópias dest
 | `release-2/sprint-2/testes/` | Roteiros, evidências e experimentos de teste da Sprint 2 (GK-11, GK-110, GK-116, GK-124 e GK-140)                                                                                                                                                                                                                                                      |
 | `release-2/sprint-3/`        | Ata da Planning (realizada em 17/11), Acompanhamento, roteiro e atas da Review e da Retrospectiva da Sprint 3, preparados antes das reuniões                                                                                                                                                                                                           |
 | `release-2/sprint-3/testes/` | Roteiros e evidências de teste da Sprint 3, incluindo o [Registro QA de 24/11/2026](release-2/sprint-3/testes/REGISTRO-QA-2026-11-24.md), o [Ensaio Q-05 automatizado](release-2/sprint-3/testes/REGISTRO-Q05-AUTOMACAO-2026-11-24.md) e o [Resultado presencial da Q-05](release-2/sprint-3/testes/REGISTRO-Q05-PRESENCIAL-2026-11-24.md) para GK-144 |
+| `release-3/` | [Índice da Release 3](release-3/README.md), Plano, Release Notes, relatórios de Métricas e Pipeline, Plano de Qualidade e Testes e Acompanhamento QA; modelos iniciais para preenchimento |
+| `release-3/sprint-4/` | Atas da Planning, Review e Retrospectiva, Acompanhamento e Resultados e Roteiro da Review; modelos iniciais para preenchimento |
+| `release-3/sprint-4/testes/` | Espaço para protocolos, roteiros e evidências da Sprint 4, incluindo os drivers GK-70 e GK-75 |
 
 ## Onde colocar um documento novo
 
@@ -30,7 +33,7 @@ A atualização de 24/11 da GK-147 está na seção 5 da [Priorização do Backl
 - Relatório ou Release Notes de uma release: `release-N/`.
 - Ata, acompanhamento, roteiro ou evidência de uma sprint: `release-N/sprint-N/`.
 
-Para a Release 3, crie `release-3/` com `sprint-4/` e `sprint-5/` dentro, seguindo o mesmo padrão. Os nomes dos arquivos seguem o padrão `Tipo-do-Documento-Sprint-N.docx` ou `Tipo-do-Documento-RN.docx`.
+Para a Release 3, use `release-3/` e `sprint-4/`, já preparados. Os documentos da Sprint 5 serão criados no planejamento correspondente, em `release-3/sprint-5/`. Os nomes dos arquivos seguem o padrão `Tipo-do-Documento-Sprint-N.docx` ou `Tipo-do-Documento-RN.docx`.
 
 ## No Drive
 
@@ -39,5 +42,6 @@ A pasta [GameKeys - Documentos](https://drive.google.com/drive/folders/1pbRMCUuc
 - `Projeto` e `Qualidade`, com os documentos que valem para todas as releases.
 - `GameKeys - Release 1` e `GameKeys - Release 2`, com as subpastas `Sprint 1` (na Release 1) e `Sprint 2` e `Sprint 3` (na Release 2), onde ficam atas, plano, acompanhamento e roteiros.
 - `GameKeys - Sprint 0`, com o material que sobrou da preparação do projeto.
+- [GameKeys - Release 3](https://drive.google.com/drive/folders/1oHkpLxIkcZD1gFPe6j438dS8p6hzlz0B), com as subpastas Sprint 4 (incluindo Qualidade) e Sprint 5. Os links e responsáveis estão no [índice da Release 3](release-3/README.md).
 
 Mover um arquivo no Drive não muda o link dele, então os links do [README da raiz](../README.md) continuam valendo.

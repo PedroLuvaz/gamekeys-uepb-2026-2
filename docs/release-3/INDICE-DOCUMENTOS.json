@@ -1,0 +1,118 @@
+{
+  "createdAt": "2026-11-27",
+  "release": "Release 3",
+  "sprint": "Sprint 4",
+  "driveFolder": "https://drive.google.com/drive/folders/1oHkpLxIkcZD1gFPe6j438dS8p6hzlz0B",
+  "documents": [
+    {
+      "ref": "plan",
+      "title": "GameKeys - Plano da Release 3",
+      "owner": "Rodrigo",
+      "card": "GK-153",
+      "path": "docs/release-3/Plano-da-Release-3.docx",
+      "driveUrl": "https://docs.google.com/document/d/1UIElHLsm6CaOhSQMNL3ZmI_nx5MZmNiZEdSxKgUqCdA/edit?usp=drivesdk",
+      "sourceTemplateId": "1TBzpeiyrZG81ur2l_uoBKzavjskJAV71tsItetSN9JM",
+      "state": "modelo para preenchimento"
+    },
+    {
+      "ref": "metrics",
+      "title": "GameKeys - Relatório de Métricas R3",
+      "owner": "Wagner",
+      "card": "GK-151",
+      "path": "docs/release-3/Relatorio-de-Metricas-R3.docx",
+      "driveUrl": "https://docs.google.com/document/d/1Pvz3QL33Nh5OqpxwA-Qte-b-u_0nWsn2vCcnTabvQ5M/edit?usp=drivesdk",
+      "sourceTemplateId": "1IyVjX6vxpduGJTnIEaqRWyqQ4TeakPdtwjvTaTtG8oQ",
+      "state": "modelo para preenchimento"
+    },
+    {
+      "ref": "pipeline",
+      "title": "GameKeys - Relatório do Pipeline R3",
+      "owner": "Rodrigo",
+      "card": "GK-154",
+      "path": "docs/release-3/Relatorio-do-Pipeline-R3.docx",
+      "driveUrl": "https://docs.google.com/document/d/13KxG-uAs2i4-YQUP_LTSt563xYzDFdg1sOwfpxu6Uro/edit?usp=drivesdk",
+      "sourceTemplateId": "1ytrAHueI3WjsGOLkoqxo27KSbnhg9-GlQYWEpLBQHkk",
+      "state": "modelo para preenchimento"
+    },
+    {
+      "ref": "notes",
+      "title": "GameKeys - Release Notes R3",
+      "owner": "Rodrigo",
+      "card": "GK-153",
+      "path": "docs/release-3/Release-Notes-R3.docx",
+      "driveUrl": "https://docs.google.com/document/d/1xd4v3hmXJ2OCNQcrdhCmwT7RU27_6cxx6TQTsbkOBEY/edit?usp=drivesdk",
+      "sourceTemplateId": "1UdJmrl6cJJKUHXRpbsmcUC_vVgT0bjTRhU-fs1Y4Oi8",
+      "state": "modelo para preenchimento"
+    },
+    {
+      "ref": "qa",
+      "title": "GameKeys - Plano de Qualidade e Testes da Release 3",
+      "owner": "Pedro",
+      "card": "GK-155",
+      "path": "docs/release-3/Plano-de-Qualidade-e-Testes-Release-3.docx",
+      "driveUrl": "https://docs.google.com/document/d/1mDdxtrJHCuWBl0R0OGmVV3VwQGZiLs9ScUxhb2EYeUE/edit?usp=drivesdk",
+      "sourceTemplateId": "1IFobma41GfA1SwybH1yJDNPN8vf76YyoLbZQ1Cg2DC4",
+      "state": "modelo para preenchimento"
+    },
+    {
+      "ref": "planning",
+      "title": "GameKeys - Ata da Planning - Sprint 4",
+      "owner": "Wagner",
+      "card": "GK-150",
+      "path": "docs/release-3/sprint-4/Ata-Planning-Sprint-4.docx",
+      "driveUrl": "https://docs.google.com/document/d/1vZ-HyL7qzG56UF7XCr4tA6-eM93trsfefqhOebwr5os/edit?usp=drivesdk",
+      "sourceTemplateId": "138YLvywoY2VsDsh4ILc8HddrOjphJnpN5sYQk1F8xnQ",
+      "state": "modelo para preenchimento"
+    },
+    {
+      "ref": "results",
+      "title": "GameKeys - Acompanhamento e Resultados - Sprint 4",
+      "owner": "Wagner",
+      "card": "GK-151",
+      "path": "docs/release-3/sprint-4/Acompanhamento-e-Resultados-Sprint-4.docx",
+      "driveUrl": "https://docs.google.com/document/d/1dnJtUIsGdtrfEzQE59f_-gBvbER_oQbhG32hsmRUJ7w/edit?usp=drivesdk",
+      "sourceTemplateId": "1whd2f6HFlZUfOG_1D6iozZtAJcmGTjUKn-_iZsxDC7I",
+      "state": "modelo para preenchimento"
+    },
+    {
+      "ref": "review",
+      "title": "GameKeys - Ata da Review - Sprint 4",
+      "owner": "Wagner",
+      "card": "GK-150",
+      "path": "docs/release-3/sprint-4/Ata-Review-Sprint-4.docx",
+      "driveUrl": "https://docs.google.com/document/d/1j5K4CcgdHeL0Xgp8rvVXoY77CSl5wf__Ncpmj5iIbVM/edit?usp=drivesdk",
+      "sourceTemplateId": "1XMyS5UIxRc5ZUx4lp36kWLxwnIF3v-alP_lwutjP-4k",
+      "state": "modelo para preenchimento"
+    },
+    {
+      "ref": "retro",
+      "title": "GameKeys - Ata da Retrospectiva - Sprint 4",
+      "owner": "Wagner",
+      "card": "GK-152",
+      "path": "docs/release-3/sprint-4/Ata-Retrospectiva-Sprint-4.docx",
+      "driveUrl": "https://docs.google.com/document/d/1Ta9MnN6QKAApfRMMHa7BCLmUwliqkNRF6SvET61Ja4E/edit?usp=drivesdk",
+      "sourceTemplateId": "1bb2QoZqK2gICaA3sgv0O6bkjFgrjSicQrlgVzDwDs8M",
+      "state": "modelo para preenchimento"
+    },
+    {
+      "ref": "script",
+      "title": "GameKeys - Roteiro da Review - Sprint 4",
+      "owner": "Wagner",
+      "card": "GK-150",
+      "path": "docs/release-3/sprint-4/Roteiro-Review-Sprint-4.docx",
+      "driveUrl": "https://docs.google.com/document/d/1DT7ss9_fVprXL3v23BJZlK7h-BSvVQxbKojfJZ7ZrXY/edit?usp=drivesdk",
+      "sourceTemplateId": "1avYpaniGPN7ELNlpHsxl4jVFfXBYvjzpd8WlsQKdNQc",
+      "state": "modelo para preenchimento"
+    },
+    {
+      "ref": "qaSheet",
+      "title": "GameKeys - Acompanhamento QA R3 (Métricas, Testes e Riscos)",
+      "owner": "Pedro",
+      "card": "GK-155",
+      "path": "docs/release-3/Acompanhamento-QA-R3.xlsx",
+      "driveUrl": "https://docs.google.com/spreadsheets/d/14KzBixl4VSOzBkbSITEfVc2ihrQ2HK34rmzvcPPHFSg/edit?usp=drivesdk",
+      "sourceTemplateId": "1ZJsomiV2_mLoEhCEVhpdOIKnlsPTkwyq43jIpFViLOQ",
+      "state": "modelo para preenchimento"
+    }
+  ]
+}
